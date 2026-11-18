@@ -1,6 +1,8 @@
 # URWA — Supabase connection status
 
-**Live Supabase project:** `https://kwqaorzvflrgepepfwwg.supabase.co`  
+**Live website:** https://gleaming-queijadas-521c0f.netlify.app/  
+**GitHub repository:** https://github.com/aaliyanah56/Urwa  
+**Live Supabase project:** https://kwqaorzvflrgepepfwwg.supabase.co  
 **Project ref:** `kwqaorzvflrgepepfwwg`
 
 The live database has already been provisioned for URWA through the connected Supabase project integration. **Do not run `supabase-schema.sql` again on this project**; it is retained as a reference copy of the original schema.
@@ -23,14 +25,30 @@ The live database has already been provisioned for URWA through the connected Su
 - Role and approval checks before redirecting to a portal dashboard.
 - Dashboard guards that require an active session and matching approved role.
 - Logout and live profile-name display.
+- Student password-reset email and new-password flow.
 
 Only the publishable key is included in the website. Never add a Supabase secret or `service_role` key to browser code, GitHub, or Netlify frontend variables.
 
-## Required project-owner configuration
+## Required Supabase Auth URL configuration
 
-1. Open [URWA Authentication URL Configuration](https://supabase.com/dashboard/project/kwqaorzvflrgepepfwwg/auth/url-configuration). Set the Site URL to the final Netlify domain. Add the deployed domain wildcard (for example `https://YOUR-SITE.netlify.app/**`) and local test redirect (for example `http://localhost:5500/**`) to Redirect URLs. The student password-reset flow returns to `/portal/student/student-reset-password.html`.
-2. Keep email confirmation enabled and configure reliable SMTP before public launch.
-3. Invite the first administrator from **Authentication → Users**. After the invited user exists, promote only that account using SQL (replace the email):
+Open [URWA Authentication URL Configuration](https://supabase.com/dashboard/project/kwqaorzvflrgepepfwwg/auth/url-configuration) and enter:
+
+**Site URL**
+```text
+https://gleaming-queijadas-521c0f.netlify.app
+```
+
+**Additional Redirect URLs**
+```text
+https://gleaming-queijadas-521c0f.netlify.app/**
+http://localhost:5500/**
+```
+
+The first value is the production website. The localhost value is only for local development with VS Code Live Server on port 5500. The website's email confirmation and recovery flows provide explicit redirect destinations on the same Netlify origin. Supabase only accepts those destinations when they match its configured redirect allow-list.
+
+## Administrator and teacher setup
+
+1. Invite the first administrator from **Authentication → Users**. After the invited user exists, promote only that account using SQL (replace the email):
 
 ```sql
 update public.profiles
@@ -38,14 +56,14 @@ set role = 'admin', status = 'approved'
 where email = 'YOUR-ADMIN-EMAIL';
 ```
 
-4. Invite each Abla from Authentication, then assign the `teacher` role and `approved` status using the admin-controlled process. Assign each teacher to the correct Halaqa. Do not expose staff role selection in public registration.
+2. Invite each Abla from Authentication, then assign the `teacher` role and `approved` status using the admin-controlled process. Assign each teacher to the correct Halaqa. Do not expose staff role selection in public registration.
 
-## Still to be completed
+## Remaining launch checks
 
-- Configure the deployed site domain and email delivery in Supabase Auth.
-- Deploy this project to the user's GitHub/Netlify website.
+- Save the Site URL and Redirect URLs above in Supabase Auth.
+- Keep email confirmation enabled and configure reliable SMTP before public launch.
+- Create the first approved administrator and Abla accounts.
 - Connect each dashboard's data panels and actions (admissions, student/teacher management, attendance, assignments, submissions, Hifdh/Muraja'ah and announcements) to live Supabase queries. The current dashboard panels remain presentation placeholders until that integration pass is complete.
 - Test a real student signup, confirmation email, admin approval, login to each role portal and RLS behaviour using dedicated test accounts.
-
 
 For the full list of URWA page routes and direct platform settings links, see [URWA-CONNECTION-LINKS.md](URWA-CONNECTION-LINKS.md).
