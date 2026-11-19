@@ -169,3 +169,106 @@ if (resetPasswordForm) resetPasswordForm.addEventListener('submit', async (e) =>
     button.disabled = false;
   }
 });
+
+
+// Admin account activation for an existing, already-approved Supabase admin.
+// This deliberately uses a magic link with shouldCreateUser:false: it cannot
+// create a new user, assign roles, or turn a public signup into admin access.
+const adminActivationRequestForm = $('adminActivationRequestForm');
+const adminPasswordSetupForm = $('adminPasswordSetupForm');
+const adminActivationMessage = $('adminActivationMessage');
+const adminActivationRequestPanel = $('adminActivationRequestPanel');
+const adminPasswordSetupPanel = $('adminPasswordSetupPanel');
+const ADMIN_ACTIVATION_EMAIL = 'rahmaibrahimnoor47@gmail.com';
+
+function adminActivationMessageText(message, isError = false) {
+  if (!adminActivationMessage) return;
+  adminActivationMessage.textContent = message;
+  adminActivationMessage.hidden = false;
+  adminActivationMessage.style.background = isError ? '#fff0ed' : '#f1eadc';
+  adminActivationMessage.style.color = isError ? '#8c2f20' : '#1f2a44';
+}
+
+async function showAdminPasswordSetup(session) {
+  if (!session?.user || (session.user.email || '').toLowerCase() !== ADMIN_ACTIVATION_EMAIL) return false;
+  let profile;
+  try { profile = await getProfile(session.user.id); }
+  catch (_) { return false; }
+  if (profile.role !== 'admin' || profile.status !== 'approved' ||
+      (profile.email || '').toLowerCase() !== ADMIN_ACTIVATION_EMAIL) return false;
+  if (adminActivationRequestPanel) adminActivationRequestPanel.hidden = true;
+  if (adminPasswordSetupPanel) adminPasswordSetupPanel.hidden = false;
+  adminActivationMessageText('Email verified by Supabase. Create a new password for the approved URWA administrator account.');
+  return true;
+}
+
+if (adminActivationRequestForm) {
+  // A magic-link return places the authenticated session in the URL fragment.
+  // supabase-js detects and stores that session before getSession resolves.
+  (async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session) {
+      const validAdmin = await showAdminPasswordSetup(session);
+      if (!validAdmin) {
+        await supabase.auth.signOut();
+        adminActivationMessageText('This link is not for the approved Rahma administrator account. Please request a new link using the admin email.', true);
+      }
+    }
+  })();
+
+  adminActivationRequestForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const button = adminActivationRequestForm.querySelector('[type="submit"]');
+    button.disabled = true;
+    try {
+      const email = $('adminActivationEmail')?.value.trim().toLowerCase();
+      if (email !== ADMIN_ACTIVATION_EMAIL) throw new Error('Use the administrator email shown on this page.');
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          shouldCreateUser: false,
+          emailRedirectTo: `${location.origin}/portal/admin/register.html`
+        }
+      });
+      if (error) {
+        if (error.status === 429 || error.code === 'over_email_send_rate_limit') {
+          throw new Error('Supabase has temporarily rate-limited emails for this project. Please stop retrying for now. The project owner may need to configure custom SMTP in Supabase before another link can be sent.');
+        }
+        throw error;
+      }
+      adminActivationMessageText('A secure sign-in link has been requested from Supabase for the existing admin account. Check the inbox and spam folder, then open the latest link on this device.');
+    } catch (err) {
+      adminActivationMessageText(err.message || 'Unable to request the admin setup link.', true);
+    } finally {
+      button.disabled = false;
+    }
+  });
+}
+
+if (adminPasswordSetupForm) {
+  adminPasswordSetupForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const button = adminPasswordSetupForm.querySelector('[type="submit"]');
+    button.disabled = true;
+    try {
+      const password = $('adminNewPassword')?.value || '';
+      const confirmation = $('adminConfirmPassword')?.value || '';
+      if (password.length < 8) throw new Error('Use a password with at least 8 characters.');
+      if (password !== confirmation) throw new Error('The passwords do not match.');
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      if (sessionError) throw sessionError;
+      if (!session || !(await showAdminPasswordSetup(session))) {
+        throw new Error('Your secure admin link is invalid or expired. Request a new link.');
+      }
+      const { error } = await supabase.auth.updateUser({ password });
+      if (error) throw error;
+      adminActivationMessageText('Your administrator password has been saved in Supabase. Redirecting to the admin sign-in page.');
+      await supabase.auth.signOut();
+      setTimeout(() => { window.location.href = '/portal/admin/login.html'; }, 1200);
+    } catch (err) {
+      adminActivationMessageText(err.message || 'Your admin password could not be saved.', true);
+    } finally {
+      button.disabled = false;
+    }
+  });
+}
