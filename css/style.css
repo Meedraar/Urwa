@@ -4,50 +4,50 @@
 ========================================= */
 
 :root {
-  --bg: #fbf6e9;
+  --bg: #fbfaf7;
   --card: #fff;
-  --tint: #e3f0ea;
-  --ink: #24332e;
-  --muted: #687770;
-  --head: #0e4a40;
-  --gold: #e0a526;
-  --goldtx: #936713;
-  --line: #d8e7df;
-  --band: #0e4a40;
-  --onband: #e3f0ea;
+  --tint: #f1eadc;
+  --ink: #17191e;
+  --muted: #687080;
+  --head: #1f2a44;
+  --gold: #c6a75e;
+  --goldtx: #9b7b37;
+  --line: #e8e5de;
+  --band: #1f2a44;
+  --onband: #e0e3e9;
 
-  --brand: #0e4a40;
-  --cream: #fbf6e9;
-  --mint: #e3f0ea;
+  --brand: #1f2a44;
+  --cream: #fbfaf7;
+  --mint: #e8dcc8;
 
   color-scheme: light;
 }
 
 :root[data-theme="dark"] {
-  --bg: #092f29;
-  --card: #0e4a40;
-  --tint: #123f36;
-  --ink: #fbf6e9;
-  --muted: #bcd2c8;
-  --head: #f2c94c;
-  --goldtx: #f2c94c;
-  --line: #265f52;
-  --band: #08372f;
+  --bg: #121828;
+  --card: #1b2338;
+  --tint: #222b42;
+  --ink: #e9ebf0;
+  --muted: #a9b0bf;
+  --head: #f1e6c8;
+  --goldtx: #d9bd78;
+  --line: #2d3752;
+  --band: #1b2640;
 
   color-scheme: dark;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #092f29;
-    --card: #0e4a40;
-    --tint: #123f36;
-    --ink: #fbf6e9;
-    --muted: #bcd2c8;
-    --head: #f2c94c;
-    --goldtx: #f2c94c;
-    --line: #265f52;
-    --band: #08372f;
+    --bg: #121828;
+    --card: #1b2338;
+    --tint: #222b42;
+    --ink: #e9ebf0;
+    --muted: #a9b0bf;
+    --head: #f1e6c8;
+    --goldtx: #d9bd78;
+    --line: #2d3752;
+    --band: #1b2640;
 
     color-scheme: dark;
   }
@@ -176,11 +176,11 @@ section {
 
 .gold {
   background: var(--gold);
-  color: #24332e;
+  color: #17191e;
 }
 
 .dark {
-  background: #0e4a40;
+  background: #1f2a44;
   color: #fff;
 }
 
@@ -883,7 +883,7 @@ nav details[open] .dd {
 }
 
 .about-cta-kicker {
-  color: #f2c94c;
+  color: #e5d3a5;
 }
 
 .about-cta-actions {
@@ -892,7 +892,7 @@ nav details[open] .dd {
 }
 
 .about-cta-line {
-  border-color: #e0a526;
+  border-color: #c6a75e;
   color: #fff;
 }
 
@@ -985,13 +985,13 @@ nav details[open] .dd {
 ========================================= */
 
 footer {
-  background: #08372f;
-  color: #e3f0ea;
+  background: #151e32;
+  color: #c6cbd5;
   padding: 52px 0 24px;
 }
 
 footer h4 {
-  color: #f2c94c;
+  color: #e5d3a5;
   margin: 0 0 12px;
 }
 
@@ -1012,7 +1012,7 @@ footer .brand b {
 }
 
 .copy {
-  border-top: 1px solid #265f52;
+  border-top: 1px solid #354057;
   margin-top: 30px;
   padding-top: 18px;
   font-size: .84rem;
@@ -1062,7 +1062,7 @@ footer .brand b {
 }
 
 .tabs button.on {
-  background: #0e4a40;
+  background: #1f2a44;
   color: #fff;
 }
 
@@ -1078,7 +1078,7 @@ footer .brand b {
   bottom: 22px;
   left: 50%;
   transform: translateX(-50%);
-  background: #0e4a40;
+  background: #1f2a44;
   color: #fff;
   padding: 12px 18px;
   border-radius: 99px;
@@ -1096,7 +1096,7 @@ footer .brand b {
   left: -9999px;
   top: 8px;
   background: #fff;
-  color: #24332e;
+  color: #17191e;
   padding: 10px;
   z-index: 200;
 }
