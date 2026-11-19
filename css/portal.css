@@ -917,7 +917,7 @@ img {
 }
 
 .urwa-heat.late {
-    background: #f2c94c;
+    background: var(--gold);
 }
 
 .urwa-heat.absent {
