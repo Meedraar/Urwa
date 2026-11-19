@@ -5,17 +5,17 @@
    ===================================================== */
 
 :root {
-    --green: #0e4a40;
-    --green-dark: #08372f;
-    --green-light: #e3f0ea;
-    --green-soft: #e3f0ea;
-    --gold: #e0a526;
-    --gold-light: #f2c94c;
-    --cream: #fbf6e9;
+    --green: #1f2a44;
+    --green-dark: #151e32;
+    --green-light: #e8dcc8;
+    --green-soft: #f1eadc;
+    --gold: #c6a75e;
+    --gold-light: #e5d3a5;
+    --cream: #fbfaf7;
     --white: #ffffff;
-    --ink: #24332e;
-    --muted: #78857f;
-    --line: #d8e7df;
+    --ink: #17191e;
+    --muted: #687080;
+    --line: #e8e5de;
     --red: #d95353;
     --red-soft: #fdebec;
     --blue: #4776d0;
@@ -39,7 +39,7 @@ html {
 body {
     font-family: "Segoe UI", Arial, sans-serif;
     color: var(--ink);
-    background: #fbf6e9;
+    background: #fbfaf7;
     line-height: 1.55;
 }
 
@@ -183,7 +183,7 @@ img {
     display: grid;
     place-items: center;
     border-radius: 50%;
-    background: linear-gradient(135deg, #0e4a40, #176b59);
+    background: linear-gradient(135deg, #1f2a44, #303849);
     color: var(--white);
     font-weight: 700;
     font-size: 1.05rem;
@@ -447,7 +447,7 @@ img {
     margin-bottom: 22px;
     border-radius: var(--radius);
     color: var(--white);
-    background: linear-gradient(115deg, var(--green-dark), #176b59);
+    background: linear-gradient(115deg, var(--green-dark), #303849);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -628,7 +628,7 @@ img {
 .urwa-progress-fill {
     height: 100%;
     border-radius: inherit;
-    background: #176b59;
+    background: var(--green);
 }
 
 .urwa-progress-fill.gold {
@@ -672,7 +672,7 @@ img {
 }
 
 .urwa-learning-step.completed:not(:last-child)::after {
-    background: #176b59;
+    background: var(--green);
 }
 
 .urwa-step-circle {
@@ -690,7 +690,7 @@ img {
 }
 
 .urwa-learning-step.completed .urwa-step-circle {
-    background: #176b59;
+    background: var(--green);
     box-shadow: 0 3px 12px rgba(22,163,122,.2);
 }
 
@@ -766,9 +766,9 @@ img {
 .urwa-feedback {
     margin-top: 10px;
     padding: 9px;
-    border-left: 3px solid #176b59;
+    border-left: 3px solid var(--gold);
     border-radius: 7px;
-    background: #e3f0ea;
+    background: #e8dcc8;
     text-align: left;
     color: var(--muted);
     font-size: .72rem;
@@ -913,7 +913,7 @@ img {
 }
 
 .urwa-heat.present {
-    background: #e3f0ea;
+    background: #e8dcc8;
 }
 
 .urwa-heat.late {
