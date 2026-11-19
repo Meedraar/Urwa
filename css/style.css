@@ -4,17 +4,17 @@
 ========================================= */
 
 :root {
-  --bg: #fbfaf7;
+  --bg: #fbf6e9;
   --card: #fff;
-  --tint: #f1eadc;
-  --ink: #17191e;
-  --muted: #5f6877;
-  --head: #1f2a44;
+  --tint: #e3f0ea;
+  --ink: #24332e;
+  --muted: #687770;
+  --head: #0e4a40;
   --gold: #e0a526;
-  --goldtx: #8a6a24;
-  --line: #e8e5de;
-  --band: #1f2a44;
-  --onband: #e6e9ef;
+  --goldtx: #936713;
+  --line: #d8e7df;
+  --band: #0e4a40;
+  --onband: #e3f0ea;
 
   --brand: #0e4a40;
   --cream: #fbf6e9;
@@ -24,30 +24,30 @@
 }
 
 :root[data-theme="dark"] {
-  --bg: #121828;
-  --card: #1b2338;
-  --tint: #222b42;
-  --ink: #e9ebf0;
-  --muted: #a9b0bf;
-  --head: #f1e6c8;
-  --goldtx: #d9bd78;
-  --line: #2d3752;
-  --band: #1b2640;
+  --bg: #092f29;
+  --card: #0e4a40;
+  --tint: #123f36;
+  --ink: #fbf6e9;
+  --muted: #bcd2c8;
+  --head: #f2c94c;
+  --goldtx: #f2c94c;
+  --line: #265f52;
+  --band: #08372f;
 
   color-scheme: dark;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #121828;
-    --card: #1b2338;
-    --tint: #222b42;
-    --ink: #e9ebf0;
-    --muted: #a9b0bf;
-    --head: #f1e6c8;
-    --goldtx: #d9bd78;
-    --line: #2d3752;
-    --band: #1b2640;
+    --bg: #092f29;
+    --card: #0e4a40;
+    --tint: #123f36;
+    --ink: #fbf6e9;
+    --muted: #bcd2c8;
+    --head: #f2c94c;
+    --goldtx: #f2c94c;
+    --line: #265f52;
+    --band: #08372f;
 
     color-scheme: dark;
   }
@@ -176,11 +176,11 @@ section {
 
 .gold {
   background: var(--gold);
-  color: #17191e;
+  color: #24332e;
 }
 
 .dark {
-  background: #1f2a44;
+  background: #0e4a40;
   color: #fff;
 }
 
@@ -330,7 +330,7 @@ nav details[open] .dd {
 .hero {
   padding: 84px 0;
   background:
-    radial-gradient(circle at 85% 25%, rgba(198, 167, 94, .22), transparent 30%),
+    radial-gradient(circle at 85% 25%, rgba(224, 165, 38, .18), transparent 30%),
     var(--bg);
 }
 
@@ -371,14 +371,14 @@ nav details[open] .dd {
   border: 1px solid var(--gold);
   background: var(--card);
   position: relative;
-  box-shadow: 0 24px 70px rgba(31, 42, 68, .14);
+  box-shadow: 0 24px 70px rgba(14, 74, 64, .14);
 }
 
 .orb::before {
   content: "";
   position: absolute;
   inset: 22px;
-  border: 1px solid rgba(198, 167, 94, .5);
+  border: 1px solid rgba(224, 165, 38, .5);
   transform: rotate(45deg);
   border-radius: 26px;
 }
@@ -883,7 +883,7 @@ nav details[open] .dd {
 }
 
 .about-cta-kicker {
-  color: #e6d3a4;
+  color: #f2c94c;
 }
 
 .about-cta-actions {
@@ -892,7 +892,7 @@ nav details[open] .dd {
 }
 
 .about-cta-line {
-  border-color: #d9bd78;
+  border-color: #e0a526;
   color: #fff;
 }
 
@@ -985,13 +985,13 @@ nav details[open] .dd {
 ========================================= */
 
 footer {
-  background: #151e32;
-  color: #c6cbd5;
+  background: #08372f;
+  color: #e3f0ea;
   padding: 52px 0 24px;
 }
 
 footer h4 {
-  color: #e5d3a5;
+  color: #f2c94c;
   margin: 0 0 12px;
 }
 
@@ -1012,7 +1012,7 @@ footer .brand b {
 }
 
 .copy {
-  border-top: 1px solid #354057;
+  border-top: 1px solid #265f52;
   margin-top: 30px;
   padding-top: 18px;
   font-size: .84rem;
@@ -1028,7 +1028,7 @@ footer .brand b {
   position: fixed;
   inset: 0;
   z-index: 60;
-  background: rgba(12, 19, 33, .65);
+  background: rgba(8, 55, 47, .65);
   padding: 20px;
   overflow: auto;
 }
@@ -1062,7 +1062,7 @@ footer .brand b {
 }
 
 .tabs button.on {
-  background: #1f2a44;
+  background: #0e4a40;
   color: #fff;
 }
 
@@ -1078,7 +1078,7 @@ footer .brand b {
   bottom: 22px;
   left: 50%;
   transform: translateX(-50%);
-  background: #1f2a44;
+  background: #0e4a40;
   color: #fff;
   padding: 12px 18px;
   border-radius: 99px;
@@ -1096,7 +1096,7 @@ footer .brand b {
   left: -9999px;
   top: 8px;
   background: #fff;
-  color: #17191e;
+  color: #24332e;
   padding: 10px;
   z-index: 200;
 }
