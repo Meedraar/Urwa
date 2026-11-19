@@ -8,14 +8,14 @@
     --green: #0e4a40;
     --green-dark: #08372f;
     --green-light: #e3f0ea;
-    --green-soft: #f0f7f3;
+    --green-soft: #e3f0ea;
     --gold: #e0a526;
     --gold-light: #f2c94c;
     --cream: #fbf6e9;
     --white: #ffffff;
     --ink: #24332e;
     --muted: #78857f;
-    --line: #e7ece8;
+    --line: #d8e7df;
     --red: #d95353;
     --red-soft: #fdebec;
     --blue: #4776d0;
@@ -39,7 +39,7 @@ html {
 body {
     font-family: "Segoe UI", Arial, sans-serif;
     color: var(--ink);
-    background: #f7f9f8;
+    background: #fbf6e9;
     line-height: 1.55;
 }
 
@@ -183,7 +183,7 @@ img {
     display: grid;
     place-items: center;
     border-radius: 50%;
-    background: linear-gradient(135deg, #238a73, #65bda1);
+    background: linear-gradient(135deg, #0e4a40, #176b59);
     color: var(--white);
     font-weight: 700;
     font-size: 1.05rem;
@@ -628,7 +628,7 @@ img {
 .urwa-progress-fill {
     height: 100%;
     border-radius: inherit;
-    background: #259879;
+    background: #176b59;
 }
 
 .urwa-progress-fill.gold {
@@ -667,12 +667,12 @@ img {
     top: 17px;
     left: 50%;
     width: 100%;
-    background: #dce4df;
+    background: #d8e7df;
     z-index: 0;
 }
 
 .urwa-learning-step.completed:not(:last-child)::after {
-    background: #20a47e;
+    background: #176b59;
 }
 
 .urwa-step-circle {
@@ -690,7 +690,7 @@ img {
 }
 
 .urwa-learning-step.completed .urwa-step-circle {
-    background: #16a37a;
+    background: #176b59;
     box-shadow: 0 3px 12px rgba(22,163,122,.2);
 }
 
@@ -728,7 +728,7 @@ img {
 .urwa-objective::before {
     content: "";
     height: 4px;
-    background: #dce5df;
+    background: #d8e7df;
     position: absolute;
     top: 20px;
     left: 50%;
@@ -766,9 +766,9 @@ img {
 .urwa-feedback {
     margin-top: 10px;
     padding: 9px;
-    border-left: 3px solid #29977a;
+    border-left: 3px solid #176b59;
     border-radius: 7px;
-    background: #f6f9f7;
+    background: #e3f0ea;
     text-align: left;
     color: var(--muted);
     font-size: .72rem;
@@ -909,15 +909,15 @@ img {
 .urwa-heat {
     height: 24px;
     border-radius: 6px;
-    background: #dce4df;
+    background: #d8e7df;
 }
 
 .urwa-heat.present {
-    background: #9bd1ad;
+    background: #e3f0ea;
 }
 
 .urwa-heat.late {
-    background: #f0d27f;
+    background: #f2c94c;
 }
 
 .urwa-heat.absent {
