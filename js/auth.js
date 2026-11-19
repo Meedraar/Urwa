@@ -152,11 +152,17 @@ if (resetPasswordForm) resetPasswordForm.addEventListener('submit', async (e) =>
     const { data: { session }, error: sessionError } = await supabase.auth.getSession();
     if (sessionError) throw sessionError;
     if (!session) throw new Error('This password-reset link is invalid or has expired. Request a new one.');
+    let destination = '/portal/student/student-login.html';
+    try {
+      const resetProfile = await getProfile(session.user.id);
+      if (resetProfile.role === 'admin') destination = '/portal/admin/login.html';
+      else if (resetProfile.role === 'teacher') destination = '/portal/abla/teacher-login.html';
+    } catch (_) {}
     const { error } = await supabase.auth.updateUser({ password });
     if (error) throw error;
-    showMessage(resetPasswordForm, 'Your password has been updated. You can now sign in with your new password.', false);
+    showMessage(resetPasswordForm, 'Your password has been updated. You can now sign in to URWA.', false);
     await supabase.auth.signOut();
-    setTimeout(() => { window.location.href = '/portal/student/student-login.html'; }, 1200);
+    setTimeout(() => { window.location.href = destination; }, 1200);
   } catch (err) {
     showMessage(resetPasswordForm, err.message || 'Your password could not be updated.');
   } finally {
