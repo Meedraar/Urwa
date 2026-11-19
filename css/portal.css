@@ -21,7 +21,7 @@
     --blue: #4776d0;
     --blue-soft: #eaf0ff;
     --yellow-soft: #fff8e6;
-    --shadow: 0 5px 22px rgba(24, 54, 43, .06);
+    --shadow: 0 5px 22px rgba(31, 42, 68, .09);
     --radius: 15px;
     --sidebar-width: 250px;
 }
@@ -224,7 +224,7 @@ img {
     gap: 13px;
     padding: 10px 13px;
     border-radius: 10px;
-    color: #687770;
+    color: #687080;
     font-size: .9rem;
     transition: .2s ease;
 }
@@ -291,7 +291,7 @@ img {
     border: 1px solid var(--line);
     border-radius: 10px;
     outline: none;
-    background: #fbfcfb;
+    background: #fbfaf7;
     font-size: .84rem;
 }
 
@@ -560,8 +560,8 @@ img {
 .urwa-table th {
     padding: 13px 15px;
     text-align: left;
-    color: #687770;
-    background: #f8faf9;
+    color: #687080;
+    background: #fbfaf7;
     font-size: .76rem;
     font-weight: 700;
     white-space: nowrap;
@@ -575,7 +575,7 @@ img {
 }
 
 .urwa-table tbody tr:hover {
-    background: #fbfdfc;
+    background: #fbfaf7;
 }
 
 /* ---------- BADGES ---------- */
@@ -597,7 +597,7 @@ img {
 }
 
 .urwa-badge.pending {
-    color: #936713;
+    color: #9b7b37;
     background: #fff3d5;
 }
 
@@ -612,8 +612,8 @@ img {
 }
 
 .urwa-badge.neutral {
-    color: #66736d;
-    background: #edf0ee;
+    color: #687080;
+    background: #f1eadc;
 }
 
 /* ---------- PROGRESS ---------- */
@@ -622,7 +622,7 @@ img {
     height: 9px;
     overflow: hidden;
     border-radius: 30px;
-    background: #e7ece9;
+    background: #e8e5de;
 }
 
 .urwa-progress-fill {
