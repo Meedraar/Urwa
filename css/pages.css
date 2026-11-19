@@ -6,7 +6,7 @@
 .page-hero {
   padding: 68px 0 58px;
   background:
-    radial-gradient(circle at 88% 20%, rgba(224,165,38,.16), transparent 32%),
+    radial-gradient(circle at 88% 20%, rgba(198,167,94,.18), transparent 32%),
     var(--tint);
   border-bottom: 1px solid var(--line);
 }
@@ -217,7 +217,7 @@
 }
 
 .about-cta-kicker {
-  color: #f2c94c;
+  color: #c6a75e;
 }
 
 .about-cta-actions {
@@ -226,7 +226,7 @@
 }
 
 .about-cta-line {
-  border-color: #e0a526;
+  border-color: #c6a75e;
   color: #fff;
 }
 
