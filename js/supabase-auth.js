@@ -31,7 +31,7 @@ function showMessage(form, text, isError = true) {
 export async function getUrwaProfile(userId) {
   const { data, error } = await supabase
     .from('profiles')
-    .select('id, full_name, email, phone, role, status')
+    .select('id, full_name, email, phone, role, status, admin_level')
     .eq('id', userId)
     .maybeSingle();
   if (error) throw error;
@@ -230,6 +230,14 @@ if (protectedRole) {
       const { profile } = await requireSupabaseProfile(protectedRole);
       document.querySelectorAll('[data-profile-name]').forEach((node) => node.textContent = profile.full_name || 'URWA member');
       document.querySelectorAll('[data-profile-email]').forEach((node) => node.textContent = profile.email || data.user.email || '');
+      if (protectedRole === 'admin') {
+        document.querySelectorAll('[data-admin-level-label]').forEach((node) => {
+          node.textContent = profile.admin_level === 'super_admin' ? 'Super Admin' : 'Standard Admin';
+        });
+        document.querySelectorAll('[data-super-admin-only]').forEach((node) => {
+          node.hidden = profile.admin_level !== 'super_admin';
+        });
+      }
     } catch (_) {
       await supabase.auth.signOut();
       location.replace(roleLogin[protectedRole] || '/');
