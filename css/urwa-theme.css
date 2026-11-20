@@ -1,0 +1,77 @@
+/* URWA unified brand theme — follows the public homepage palette.
+   Load this file last on every page so public, portal, auth and dashboard
+   screens share one visual identity without changing their layouts. */
+:root{
+  --bg:#fbf6e9;--card:#fff;--tint:#e8dcc8;--ink:#18342d;--muted:#64756d;
+  --head:#0e4a40;--gold:#c6a75e;--goldtx:#8c6b2c;--line:#e7dfd1;
+  --band:#0e4a40;--onband:#f7f2e8;
+  --brand:#0e4a40;--cream:#fbf6e9;--mint:#e3f0ea;
+  --green:#0e4a40;--green2:#123f37;--green-dark:#08372f;
+  --green-light:#e3f0ea;--green-soft:#edf6f1;--gold-light:#e5d3a5;
+  --white:#fff;--paper:#fff;--canvas:#fbf6e9;--p-green:#0e4a40;
+  --p-gold:#c6a75e;--p-cream:#fbf6e9;--p-mint:#e3f0ea;
+  --p-ink:#18342d;--p-muted:#64756d;--p-line:#e7dfd1;
+  --emerald:#0e4a40;--shadow:0 10px 30px rgba(14,74,64,.08);
+  color-scheme:light;
+}
+html,body{background-color:var(--bg);color:var(--ink)}
+body{--surface:var(--card);--surface-soft:var(--tint)}
+h1,h2,h3,h4,h5,h6{color:var(--head)}
+a{accent-color:var(--gold)}
+button,input,select,textarea{accent-color:var(--head)}
+:focus-visible{outline-color:var(--gold)}
+header,.site-header,.portal-header,.topbar,.staff-topbar,.dashboard-header{
+  background:var(--bg);border-color:var(--line)
+}
+nav a:hover,.nav-link:hover{color:var(--goldtx)}
+button,.btn,.button,.primary-btn,.submit-btn{
+  border-color:var(--gold)
+}
+.btn.gold,.gold,.primary-btn,.btn-primary,.submit-btn{
+  background:var(--gold);color:#18342d
+}
+.btn.dark,.dark,.btn-primary-dark{background:var(--head);color:#fff}
+.card,.panel,.stat-card,.content-card,.dashboard-card,.auth-card,.login-card,
+.modal-content,.settings-card,.widget-card{
+  border-color:var(--line)
+}
+.alt,.notice,.notice-box,.alert-info,.soft-panel,.empty-state,.pp{
+  background:var(--tint)
+}
+footer,.site-footer,.portal-footer,.staff-footer{
+  background:var(--band);color:var(--onband)
+}
+footer h1,footer h2,footer h3,footer h4,footer a,
+.site-footer h1,.site-footer h2,.site-footer h3,.site-footer h4,.site-footer a{
+  color:inherit
+}
+/* Portal and staff workspaces: unify the older navy/grey variants. */
+.urwa-sidebar,.sidebar,.staff-side,.staff-sidebar,.abla-sidebar,.admin-sidebar,
+.portal-sidebar,.dashboard-sidebar{
+  background:var(--head);border-color:rgba(255,255,255,.14);color:#fff
+}
+.urwa-sidebar a,.sidebar a,.staff-side a,.staff-sidebar a,.abla-sidebar a,.admin-sidebar a,
+.portal-sidebar a,.dashboard-sidebar a{color:rgba(255,255,255,.88)}
+.urwa-sidebar a.active,.sidebar a.active,.staff-side a.active,.staff-sidebar a.active,
+.abla-sidebar a.active,.admin-sidebar a.active,.portal-sidebar a.active,
+.dashboard-sidebar a.active{background:rgba(255,255,255,.14);color:#fff}
+body[data-urwa-role="admin"],body[data-urwa-role="student"],
+body[data-urwa-role="teacher"],body.urwa-abla-dashboard,
+.urwa-app,.staff-shell,.abla-app{background:var(--bg);color:var(--ink)}
+body[data-urwa-role="admin"] .urwa-main,
+body[data-urwa-role="student"] .urwa-main,
+body[data-urwa-role="teacher"] .urwa-main,
+.urwa-main,.staff-main,.abla-main{background:var(--bg)}
+.urwa-brand,.staff-brand,.abla-brand,.staff-sidebar .brand,.staff-sidebar .brand strong{color:#fff}
+.login-art,.login-visual,.auth-visual,.auth-side{background:linear-gradient(145deg,#0e4a40,#08372f);color:#fff}
+.staff-sidebar .brand small{color:#e5d3a5}
+.urwa-brand b,.staff-brand b,.abla-brand b{color:#fff}
+.urwa-stat,.stat-card,.metric-card{border-color:var(--line)}
+input,select,textarea,.form-control{
+  background-color:#fff;border-color:var(--line);color:var(--ink)
+}
+table th{background:var(--mint);color:var(--head)}
+.badge,.pill,.status-pill{border-color:var(--line)}
+@media(prefers-reduced-motion:no-preference){
+  a,button,.btn{transition:background-color .18s ease,color .18s ease,border-color .18s ease}
+}
