@@ -91,7 +91,7 @@ async function initExtra(){
     const [d,p,m]=await Promise.all([supabase.from('departments').select('*').eq('is_active',true),supabase.from('department_positions').select('*').eq('is_active',true),supabase.from('department_memberships').select('*').eq('profile_id',extra.user.id).in('membership_status',active).maybeSingle()]);
     if(d.error)throw d.error;if(p.error)throw p.error;if(m.error)throw m.error;extra.departments=d.data||[];extra.positions=p.data||[];extra.membership=m.data;extra.department=extra.departments.find(x=>x.id===m.data?.department_id);extra.position=extra.positions.find(x=>x.id===m.data?.position_id);extra.leader=extra.admin||Boolean(extra.position?.is_leadership);
     mount();
-    if(!extra.membership){el('evaluationForm').closest('.panel').hidden=true;el('transferForm').closest('.panel').hidden=true;el('announcementForm').closest('.panel').hidden=true;el('eventForm').closest('.panel').hidden=true;}
+    if(!extra.membership){el('evaluationForm').closest('.panel').hidden=true;el('transferForm').closest('.panel').hidden=true;if(!extra.admin){el('announcementForm').closest('.panel').hidden=true;el('eventForm').closest('.panel').hidden=true;}}
     else if(!extra.leader){el('evaluationForm').closest('.panel').hidden=true;el('announcementForm').closest('.panel').hidden=true;el('eventForm').closest('.panel').hidden=true;}
     if(!canWelfare())el('welfareForm').closest('.panel').hidden=false;
     await bindForms();
