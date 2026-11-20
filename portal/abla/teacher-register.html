@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Abla Registration | URWA</title><link rel="stylesheet" href="../../css/portal.css"><style>
+body{margin:0;background:#fbf6e9;color:#173d35;font-family:Arial,sans-serif}.wrap{max-width:760px;margin:48px auto;padding:20px}.card{background:#fff;border-radius:18px;padding:clamp(22px,5vw,42px);box-shadow:0 12px 40px #0e4a4012}h1,h2{color:#0e4a40}p{line-height:1.7;color:#64716b}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}label{display:grid;gap:7px;font-weight:600;font-size:.9rem}input,select,textarea{width:100%;box-sizing:border-box;padding:12px;border:1px solid #d9e2dc;border-radius:8px;font:inherit}textarea{min-height:100px}.full{grid-column:1/-1}.btn{border:0;border-radius:9px;padding:14px 20px;background:#0e4a40;color:#fff;font-weight:700;cursor:pointer;width:100%}.note{background:#e3f0ea;border-radius:9px;padding:14px;margin:18px 0;font-size:.9rem;line-height:1.6}@media(max-width:600px){.grid{grid-template-columns:1fr}.full{grid-column:auto}}
+</style></head><body><main class="wrap"><section class="card"><p><a href="../../index.html">← URWA Home</a></p><h1>Apply to become an Abla</h1><p>Share your details and teaching background. After email verification, your application will remain pending until URWA administration reviews it.</p>
+<form id="teacherRegistrationForm"><div class="grid">
+<label>Full name<input id="fullName" autocomplete="name" required></label>
+<label>Email address<input id="email" type="email" autocomplete="email" required></label>
+<label>WhatsApp number<input id="phone" type="tel" autocomplete="tel" required></label>
+<label>Area of interest<select id="area" required><option value="">Choose an area</option><option>Qur’an Halaqa</option><option>Tajweed</option><option>Tafseer</option><option>Hifdh / Muraja’ah</option><option>Islamic Studies</option><option>Other</option></select></label>
+<label class="full">Learning / teaching background<textarea id="background" required placeholder="Qualifications, ijazah, teaching experience or relevant studies"></textarea></label>
+<label class="full">Availability<textarea id="availability" placeholder="Your available days and times"></textarea></label>
+<label>Create password<input id="password" type="password" minlength="8" autocomplete="new-password" required></label>
+<label>Confirm password<input id="confirmPassword" type="password" minlength="8" autocomplete="new-password" required></label>
+</div><p class="note">Your account status will be Pending until an administrator approves your application. Registration does not automatically grant teaching access.</p><button class="btn" type="submit">Submit Abla Application</button></form>
+<p>Already registered? <a href="teacher-login.html">Sign in</a></p></section></main><script type="module" src="../../js/supabase-auth.js"></script></body></html>
