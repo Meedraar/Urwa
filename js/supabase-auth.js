@@ -133,6 +133,41 @@ if (registration) registration.addEventListener('submit', async (event) => {
   } finally { if (button) button.disabled = false; }
 });
 
+
+// Populate the dedicated department applicant form from the live department directory.
+const departmentSelect = $('applicationDepartment');
+const positionSelect = $('applicationPosition');
+if (departmentSelect && positionSelect) {
+  const loadDepartmentChoices = async () => {
+    try {
+      const [{ data: departments, error: departmentError }, { data: positions, error: positionError }] = await Promise.all([
+        supabase.from('departments').select('id,name').eq('is_active', true).order('name'),
+        supabase.from('department_positions').select('id,department_id,title,is_leadership,is_open_for_application').eq('is_active', true).order('title')
+      ]);
+      if (departmentError) throw departmentError;
+      if (positionError) throw positionError;
+      departmentSelect.innerHTML = '<option value="">Choose a department</option>' +
+        (departments || []).map(d => '<option value="' + d.id + '">' + d.name.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])) + '</option>').join('');
+      const renderApplicantPositions = () => {
+        const departmentId = departmentSelect.value;
+        const available = (positions || []).filter(p => p.department_id === departmentId && p.is_open_for_application && !p.is_leadership);
+        positionSelect.disabled = !departmentId;
+        positionSelect.innerHTML = available.length
+          ? '<option value="">Choose a position</option>' + available.map(p => '<option value="' + p.id + '">' + p.title.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])) + '</option>').join('')
+          : '<option value="">No open positions available — contact Administration</option>';
+      };
+      departmentSelect.addEventListener('change', renderApplicantPositions);
+      renderApplicantPositions();
+    } catch (error) {
+      departmentSelect.innerHTML = '<option value="">Unable to load departments</option>';
+      positionSelect.innerHTML = '<option value="">Please refresh or contact URWA Administration</option>';
+      showMessage(departmentSelect.closest('form'), 'Department choices could not be loaded. Please refresh the page or contact URWA Administration.');
+    }
+  };
+  loadDepartmentChoices();
+}
+
+
 const departmentRegistration = $('departmentRegistrationForm');
 if (departmentRegistration) departmentRegistration.addEventListener('submit', async (event) => {
   event.preventDefault();
@@ -145,13 +180,18 @@ if (departmentRegistration) departmentRegistration.addEventListener('submit', as
     const fullName = $('fullName')?.value.trim() || '';
     const email = $('email')?.value.trim().toLowerCase() || '';
     const phone = $('phone')?.value.trim() || '';
+    const departmentId = $('applicationDepartment')?.value || '';
+    const positionId = $('applicationPosition')?.value || '';
+    const departmentName = $('applicationDepartment')?.selectedOptions?.[0]?.textContent || '';
+    const positionTitle = $('applicationPosition')?.selectedOptions?.[0]?.textContent || '';
     if (!fullName || !email || !phone) throw new Error('Enter your name, email and phone number.');
+    if (!departmentId || !positionId) throw new Error('Choose the department and position you are applying for.');
     const next = '/portal/departments/index.html';
     const { data, error } = await supabase.auth.signUp({
       email, password,
       options: {
         emailRedirectTo: location.origin + '/portal/departments/department-login.html?next=' + encodeURIComponent(next),
-        data: { full_name: fullName, phone, account_type: 'department_applicant' }
+        data: { full_name: fullName, phone, account_type: 'department_applicant', requested_department_id: departmentId, requested_department_name: departmentName, requested_position_id: positionId, requested_position_title: positionTitle }
       }
     });
     if (error) throw error;
