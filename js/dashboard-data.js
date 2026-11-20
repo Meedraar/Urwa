@@ -108,7 +108,7 @@ async function initAdmin(user) {
         const id = (accept || decline).dataset[accept ? 'accept' : 'decline'];
         const halaqaId = $('[data-admission-halaqa="' + id + '"]')?.value || null;
         if (accept && !halaqaId) throw new Error('Choose a halaqa before accepting.');
-        const next = accept ? 'approved' : 'suspended';
+        const next = accept ? 'approved' : 'cancelled';
         const { error } = await supabase.from('student_enrollments').update({
           status: next, halaqa_id: halaqaId, reviewed_by: user.id, reviewed_at: new Date().toISOString()
         }).eq('student_id', id);
