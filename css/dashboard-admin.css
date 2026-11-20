@@ -1,0 +1,63 @@
+/* URWA Admin · academy command centre */
+body[data-urwa-role="admin"]{background:#f6f8fb;color:#20263a;font-family:Inter,"Segoe UI",Arial,sans-serif}
+body[data-urwa-role="admin"] .urwa-sidebar{width:214px;background:#fff;border-right:1px solid #e8edf3}
+body[data-urwa-role="admin"] .urwa-main{width:calc(100% - 214px);margin-left:214px}
+body[data-urwa-role="admin"] .urwa-brand{min-height:76px;padding:12px 18px}
+body[data-urwa-role="admin"] .urwa-brand-name{font-size:1.05rem;letter-spacing:.09em;color:#124c42}
+body[data-urwa-role="admin"] .urwa-brand-tagline{font-size:.58rem;color:#9b7b37;font-weight:800;letter-spacing:.12em}
+body[data-urwa-role="admin"] .urwa-profile{margin:12px 10px;padding:12px;border:1px solid #edf0f5;border-radius:10px;background:#f8fafc}
+body[data-urwa-role="admin"] .urwa-nav{padding:10px 9px;gap:2px}
+body[data-urwa-role="admin"] .urwa-nav-label{font-size:.59rem;padding:12px 10px 5px}
+body[data-urwa-role="admin"] .urwa-nav a{min-height:36px;padding:8px 10px;border-radius:7px;font-size:.76rem;gap:10px}
+body[data-urwa-role="admin"] .urwa-nav a.active{background:#eaf2ff;color:#1766c2;box-shadow:inset 3px 0 #216ee3}
+body[data-urwa-role="admin"] .urwa-nav a:hover{background:#f1f6fd;color:#1766c2}
+body[data-urwa-role="admin"] .urwa-topbar{min-height:65px;padding:10px 24px;gap:15px;background:#fff;border-bottom:1px solid #edf0f4}
+body[data-urwa-role="admin"] .urwa-topbar-title{font-size:.92rem;color:#242a3d}
+body[data-urwa-role="admin"] .urwa-topbar-right{gap:12px}
+body[data-urwa-role="admin"] .urwa-search{width:min(470px,42vw)}
+body[data-urwa-role="admin"] .urwa-search input{height:38px;border-radius:7px;background:#fff;border-color:#e3e8ef;font-size:.72rem}
+body[data-urwa-role="admin"] .urwa-icon-button{width:36px;height:36px;border-radius:8px}
+body[data-urwa-role="admin"] .urwa-content{max-width:1800px;padding:21px 24px 34px}
+body[data-urwa-role="admin"] .urwa-page-heading{margin-bottom:13px}
+body[data-urwa-role="admin"] .urwa-page-heading h1{font-size:1.05rem;color:#252a3b;margin-bottom:2px}
+body[data-urwa-role="admin"] .urwa-page-heading p{font-size:.72rem;color:#85909d}
+body[data-urwa-role="admin"] .admin-kpi-grid{gap:10px}
+body[data-urwa-role="admin"] .admin-kpi{min-height:112px;padding:13px 14px;border-radius:9px;box-shadow:0 2px 8px rgba(25,43,72,.035);border-color:#e8edf3;background:#fff}
+body[data-urwa-role="admin"] .admin-kpi .urwa-stat-icon{width:32px;height:32px;border-radius:9px;font-size:.95rem}
+body[data-urwa-role="admin"] .admin-kpi.blue .urwa-stat-icon{background:#e8f1ff;color:#2670dc}
+body[data-urwa-role="admin"] .admin-kpi.green .urwa-stat-icon{background:#e6f7ef;color:#15965d}
+body[data-urwa-role="admin"] .admin-kpi.violet .urwa-stat-icon{background:#f1eaff;color:#8051cb}
+body[data-urwa-role="admin"] .admin-kpi.amber .urwa-stat-icon{background:#fff3df;color:#d38a18}
+body[data-urwa-role="admin"] .admin-kpi.rose .urwa-stat-icon{background:#ffeded;color:#d95e68}
+body[data-urwa-role="admin"] .admin-kpi .urwa-stat-label{font-size:.65rem;margin-top:6px}
+body[data-urwa-role="admin"] .admin-kpi .urwa-stat-value{font-size:1.35rem;color:#252a3b}
+body[data-urwa-role="admin"] .admin-kpi .urwa-stat-note{font-size:.61rem}
+body[data-urwa-role="admin"] .admin-quick-actions{padding:15px 16px;margin-top:13px;border:1px solid #e8edf3;border-radius:9px;background:#fff;box-shadow:0 2px 8px rgba(25,43,72,.025)}
+body[data-urwa-role="admin"] .admin-section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+body[data-urwa-role="admin"] .admin-section-head span{font-size:.55rem;letter-spacing:.13em;font-weight:800;color:#8593a3}
+body[data-urwa-role="admin"] .admin-section-head h2{font-size:.86rem;color:#252a3b;margin-top:3px}
+body[data-urwa-role="admin"] .admin-section-head>a{font-size:.61rem;color:#216bd1}
+body[data-urwa-role="admin"] .admin-action-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+body[data-urwa-role="admin"] .admin-action-grid a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;min-height:66px;padding:8px 4px;border-radius:8px;text-decoration:none;color:#344155;background:#fbfcfe;transition:.15s}
+body[data-urwa-role="admin"] .admin-action-grid a:hover{background:#f1f6ff;transform:translateY(-1px)}
+body[data-urwa-role="admin"] .admin-action-grid i{font-style:normal;font-size:1.2rem}
+body[data-urwa-role="admin"] .admin-action-grid i.blue{color:#2874db}body[data-urwa-role="admin"] .admin-action-grid i.green{color:#159a65}body[data-urwa-role="admin"] .admin-action-grid i.violet{color:#8055c9}body[data-urwa-role="admin"] .admin-action-grid i.amber{color:#d58a1c}body[data-urwa-role="admin"] .admin-action-grid i.rose{color:#d75c67}
+body[data-urwa-role="admin"] .admin-action-grid b{font-size:.61rem;font-weight:650;text-align:center}
+body[data-urwa-role="admin"] .urwa-grid{gap:12px}
+body[data-urwa-role="admin"] .urwa-card{padding:15px;border-radius:9px;border-color:#e8edf3;box-shadow:0 2px 8px rgba(25,43,72,.03)}
+body[data-urwa-role="admin"] .urwa-card-title{font-size:.8rem;color:#283044}
+body[data-urwa-role="admin"] .urwa-card-subtitle{font-size:.65rem;color:#8792a0}
+body[data-urwa-role="admin"] .urwa-card-header{margin-bottom:11px}
+body[data-urwa-role="admin"] .urwa-list-item{padding:10px 0}
+body[data-urwa-role="admin"] .urwa-list-item h4{font-size:.69rem}
+body[data-urwa-role="admin"] .urwa-list-item p{font-size:.61rem}
+body[data-urwa-role="admin"] .urwa-section-title{font-size:.9rem;margin:22px 0 10px}
+body[data-urwa-role="admin"] .urwa-table th{font-size:.62rem;padding:10px 12px}
+body[data-urwa-role="admin"] .urwa-table td{font-size:.67rem;padding:10px 12px}
+body[data-urwa-role="admin"] .urwa-btn{font-size:.68rem;border-radius:6px}
+body[data-urwa-role="admin"] .urwa-live-status{margin-top:14px}
+body[data-urwa-role="admin"] .urwa-heatmap{font-size:.64rem;gap:6px}
+body[data-urwa-role="admin"] .urwa-heat{height:20px}
+@media(max-width:1150px){body[data-urwa-role="admin"] .admin-kpi-grid{grid-template-columns:repeat(3,minmax(0,1fr))}body[data-urwa-role="admin"] .admin-action-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:850px){body[data-urwa-role="admin"] .urwa-sidebar{width:260px;transform:translateX(-100%);transition:transform .2s}body[data-urwa-role="admin"] .urwa-sidebar.open{transform:translateX(0)}body[data-urwa-role="admin"] .urwa-main{width:100%;margin-left:0}body[data-urwa-role="admin"] .urwa-menu-button{display:inline-grid;place-items:center}body[data-urwa-role="admin"] .urwa-content{padding:18px}body[data-urwa-role="admin"] .urwa-topbar{padding:10px 16px}}
+@media(max-width:600px){body[data-urwa-role="admin"] .admin-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}body[data-urwa-role="admin"] .admin-action-grid{grid-template-columns:repeat(3,minmax(0,1fr))}body[data-urwa-role="admin"] .urwa-search{display:none}body[data-urwa-role="admin"] .urwa-user-name,body[data-urwa-role="admin"] .urwa-user-role{display:none}body[data-urwa-role="admin"] .urwa-grid-2,body[data-urwa-role="admin"] .urwa-grid-3{grid-template-columns:1fr}body[data-urwa-role="admin"] .urwa-content{padding:14px 12px}}
