@@ -62,8 +62,9 @@ async function login(form, role) {
       throw new Error('This account is not approved for this portal. Contact URWA administration.');
     }
     const requestedNext = new URLSearchParams(location.search).get('next');
-    const safeNext = role === 'student' && requestedNext === '/portal/departments/index.html'
-      ? requestedNext
+    const isDepartmentLogin = form?.id === 'departmentLoginForm';
+    const safeNext = role === 'student' && (isDepartmentLogin || requestedNext === '/portal/departments/index.html')
+      ? '/portal/departments/index.html'
       : roleHome[role];
     location.replace(safeNext);
   } catch (err) {
