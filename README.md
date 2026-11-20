@@ -2,35 +2,35 @@
 
 **The Firmest Handhold**
 
-URWA is an Islamic learning and community platform for students, Ablas (teachers), administrators and the wider community.
+URWA is an Islamic learning and community platform for students, teachers (Ablas), administrators and the wider community.
 
-## Current migration target
+## Current application setup
 
-- **Frontend repository:** `aaliyanah56/urwatul-wuthqa`
-- **Backend:** existing Supabase project `urwa`
-- **Supabase URL:** `https://kwqaorzvflrgepepfwwg.supabase.co`
-- **Client key:** publishable key (browser-safe; never use a service-role key in frontend code)
-- **Hosting target:** Cloudflare Pages
+- **GitHub repository:** `Meedraar/Urwa`
+- **Frontend:** static HTML, CSS and JavaScript
+- **Backend:** Supabase project `qtiffwoqimtuchjrnjaa`
+- **Supabase URL:** `https://qtiffwoqimtuchjrnjaa.supabase.co`
+- **Hosting:** Vercel (connected to this GitHub repository)
 
-## Migration status
+The browser client is configured in `js/supabase.js` with the Supabase publishable key. Publishable keys are designed for public clients; never commit a Supabase secret or service-role key.
 
-This repository was initially empty. The existing URWA website and portal implementation is in the separate `aaliyanah56/Urwa` repository and currently uses Firebase. The application must be migrated feature-by-feature to Supabase before it is deployed from this repository.
+## Important deployment notes
 
-The existing Supabase project already contains the core URWA data model, including profiles, student enrollments, halaqas, teacher assignments, attendance, assignments, submissions, announcements, Hifdh and Muraja'ah records, and department management tables. Existing records must be preserved.
+- Vercel should deploy the repository root as a static site; no build command is required for the current HTML/CSS/JS application.
+- Push changes to `main` to trigger the connected Vercel deployment.
+- Configure the production domain and local development URLs in Supabase Authentication → URL Configuration.
+- Confirm the new Supabase project has the required URWA tables, RLS policies, functions and Auth settings before testing sign-in and dashboards.
 
-## Security requirements
+## Application areas
 
-- Use Supabase Auth for browser sign-in and registration.
-- Use the `profiles` table for role and approval status.
-- Keep Row Level Security enabled on every user-facing table.
-- Never allow public registration to assign privileged roles.
-- Never put a Supabase service-role key, database password, or other secret in frontend code.
-- Test student, teacher and admin access separately before production deployment.
+- Public pages: home, about, programmes, classes, teachers, events, departments, contact and enrolment.
+- Student portal: registration, sign-in, password recovery and dashboard.
+- Teacher portal: sign-in and dashboard.
+- Admin portal: sign-in, dashboard and department tracker.
 
-## Supabase client
+## Security
 
-The browser client is initialized in `js/supabase.js` using the project URL and publishable key. This file alone does not migrate the Firebase-powered application; portal workflows still need to be ported and tested.
-
-## Deployment
-
-Configure Cloudflare Pages to deploy the `main` branch. For a plain HTML/CSS/JavaScript site, use no build command and the repository root as the output directory.
+- Keep Row Level Security enabled on all exposed tables.
+- Public registration must not allow users to assign privileged roles.
+- Use database policies to enforce student, teacher and administrator permissions.
+- Never put service-role keys, database passwords or other secrets in frontend code or GitHub.
