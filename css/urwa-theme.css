@@ -75,3 +75,102 @@ table th{background:var(--mint);color:var(--head)}
 @media(prefers-reduced-motion:no-preference){
   a,button,.btn{transition:background-color .18s ease,color .18s ease,border-color .18s ease}
 }
+
+/* ==========================================================
+   URWA READABILITY & RESPONSIVE VISIBILITY PASS
+   Loaded last on every page, including all dashboards.
+   Preserve original wording; improve contrast, wrapping and flow.
+   ========================================================== */
+html{ text-size-adjust:100%; -webkit-text-size-adjust:100%; }
+body{ overflow-x:hidden; line-height:1.6; }
+main,section,article,aside,header,footer,nav,form,fieldset{min-width:0}
+p,li,dd,dt,td,th,label,legend,figcaption{overflow-wrap:anywhere;word-break:normal}
+button,a,input,select,textarea{max-width:100%}
+input,select,textarea{min-width:0}
+table{max-width:100%}
+img,svg,video{max-width:100%}
+
+/* Student dashboard: its own sidebar and panels are not .urwa-sidebar. */
+.student-sidebar{background:#fbf6e9!important;color:#18342d!important;border-right:1px solid #d9e3dc!important}
+.student-brand b,.student-profile strong,.student-top-user b{color:#123f37!important}
+.student-brand small,.student-profile small,.student-top-user small{color:#52675d!important}
+.student-nav-label{color:#52675d!important}
+.student-nav a{color:#29483e!important;font-size:.86rem!important}
+.student-nav a i{color:#426b5b!important}
+.student-nav a.selected,.student-nav a:hover{color:#0e4a40!important;background:#e3f0ea!important}
+.student-help p,.student-logout{color:#465d52!important}
+.student-page-title h1,.student-panel h2,.student-panel h3,.student-panel b{color:#18342d}
+.student-page-title p,.student-panel p,.student-panel small,.student-empty span,
+.halaqa-placeholder p,.resource-placeholder small,.progress-empty-state{color:#52675d!important}
+.student-dashboard-content{color:#18342d}
+.student-welcome h2,.student-welcome p,.student-welcome .welcome-eyebrow{color:#18342d!important}
+.student-welcome .welcome-eyebrow{font-weight:800}
+.student-panel,.student-stat-card{color:#18342d}
+.student-panel .panel-kicker{color:#426b5b!important}
+.student-date-chip,.read-only-tag{color:#355548!important}
+.student-search input{color:#18342d!important}
+.student-search input::placeholder{color:#64756d!important;opacity:1}
+
+/* Abla dashboard: increase contrast on navigation, helper copy and data panels. */
+.abla-sidebar{background:#fbf6e9!important;color:#18342d!important;border-right:1px solid #d9e3dc!important}
+.abla-brand b,.abla-profile b,.abla-top-user b{color:#123f37!important}
+.abla-brand small{color:#80601f!important}
+.abla-profile small,.abla-top-user small,.abla-sidebar-bottom>a{color:#52675d!important}
+.abla-nav-label{color:#52675d!important}
+.abla-nav a{color:#29483e!important;font-size:.82rem!important}
+.abla-nav a.active,.abla-nav a:hover{color:#0e4a40!important;background:#e3f0ea!important}
+.abla-support b{color:#174c3d!important}
+.abla-support p{color:#465d52!important}
+.abla-workspace,.abla-panel,.abla-stat-card{color:#18342d}
+.abla-workspace p,.abla-panel p,.abla-panel small,.abla-stat-card>span{color:#52675d}
+.abla-eyebrow,.abla-panel-head>div>small,.abla-hero-label{color:#426b5b}
+.abla-hero h2,.abla-hero p,.abla-hero .abla-hero-label{color:#fff}
+.abla-hero a{color:#fff}
+
+/* Department workspace and admin views. */
+.main{color:#18342d}
+.main .eyebrow,.main .section-intro .eyebrow,.main .panel .eyebrow,
+.main .topbar .eyebrow{color:#52675d!important}
+.main .muted,.main .section-intro p,.main .task-card p,.main .report-card p{color:#52675d!important}
+.main .form-grid label,.main .review-dialog label{color:#334b40!important;font-size:.82rem}
+.main .stat-card span,.main .stat-card small,.main .user-chip small{color:#52675d!important}
+.main .panel h3,.main .section-intro h2,.main .topbar h1{color:#123f37}
+.main td{color:#334b40}
+.main th{color:#40594e;background:#e3f0ea}
+.main .footer,.main .footer span{color:#52675d!important}
+.main .sidebar .side-label{color:#e5d3a5!important}
+.main .sidebar .nav-link{color:#f3f6f2!important}
+.main .sidebar .nav-link.active,.main .sidebar .nav-link:hover{color:#fff!important}
+
+/* Shared form and status readability across public pages and portals. */
+input::placeholder,textarea::placeholder{color:#64756d;opacity:1}
+:disabled{cursor:not-allowed}
+@media(max-width:900px){
+  .student-shell{grid-template-columns:minmax(0,1fr)}
+  .student-sidebar{position:fixed;left:0;top:0;bottom:0;width:min(290px,86vw);height:100dvh;transform:translateX(-105%);transition:transform .2s ease;z-index:100}
+  .student-sidebar.open{transform:translateX(0)}
+  .student-main{min-width:0}
+  .student-dashboard-content{padding-left:16px;padding-right:16px}
+  .abla-app{grid-template-columns:minmax(0,1fr)}
+  .abla-sidebar{position:fixed;left:0;top:0;bottom:0;width:min(290px,86vw);height:100dvh;transform:translateX(-105%);transition:transform .2s ease;z-index:100}
+  .abla-sidebar.open{transform:translateX(0)}
+  .abla-main{min-width:0}
+}
+@media(max-width:600px){
+  .student-topbar,.abla-topbar{padding-left:12px;padding-right:12px;gap:10px}
+  .student-search{width:auto;flex:1;min-width:0}
+  .student-search kbd{display:none}
+  .student-top-actions{gap:8px}
+  .student-top-user span,.abla-top-user>span{display:none}
+  .student-dashboard-grid,.abla-dashboard-columns{grid-template-columns:minmax(0,1fr)}
+  .student-page-title,.abla-title-row{align-items:flex-start;flex-wrap:wrap}
+  .student-panel,.abla-panel{min-width:0}
+  .main .topbar{gap:10px;flex-wrap:wrap}
+  .main .user-chip{min-width:0}
+  .main .panel{padding:16px}
+  .main .stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .main .department-grid{grid-template-columns:minmax(0,1fr)}
+}
+@media(prefers-reduced-motion:reduce){
+  .student-sidebar,.abla-sidebar{transition:none}
+}
