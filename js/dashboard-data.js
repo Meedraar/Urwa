@@ -89,7 +89,9 @@ async function adminLoad(user) {
       const learnerCount = enroll.filter(e => e.status === 'approved' &&
         assigned.some(a => a.halaqa_id === e.halaqa_id)).length;
       return '<tr><td><b>' + esc(p.full_name) + '</b><small>' + esc(p.email) +
-        '</small></td><td>Qur’an / Islamic Studies</td><td>' + esc(names.join(', ') || 'Not assigned') +
+        '</small></td><td>' + esc(application.area_of_interest || 'Not specified') +
+        (application.teaching_background ? '<small>' + esc(application.teaching_background) + '</small>' : '') +
+        '</td><td>' + esc(names.join(', ') || 'Not assigned') +
         '</td><td>' + learnerCount + '</td><td>' + esc(p.status) +
         (p.status === 'pending' ? ' <button class="urwa-btn urwa-btn-primary urwa-btn-small" data-approve-teacher="' + p.id + '">Approve</button><button class="urwa-btn urwa-btn-outline urwa-btn-small" data-cancel-teacher="' + p.id + '">Cancel</button>' : '') +
         '<div class="urwa-admin-actions"><select data-teacher-halaqa="' + p.id + '">' +
