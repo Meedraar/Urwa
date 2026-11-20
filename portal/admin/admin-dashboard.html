@@ -7,6 +7,7 @@
     <title>Admin Dashboard | URWA</title>
     <link rel="stylesheet" href="../../css/portal.css">
     <link rel="stylesheet" href="../../css/dashboard-live.css">
+    <link rel="stylesheet" href="../../css/dashboard-admin.css">
 </head>
 <body data-urwa-role="admin">
 <div class="urwa-app">
@@ -63,14 +64,14 @@
                 <div class="urwa-topbar-left">
                     <button class="urwa-menu-button" onclick="toggleSidebar()">☰</button>
                     <div>
-                        <div class="urwa-topbar-title">URWA Overview</div>
-                        <div class="urwa-user-role">Welcome back, Administrator</div>
+                        <div class="urwa-topbar-title">URWA Administration</div>
+                        <div class="urwa-user-role">Academy command centre</div>
                     </div>
                 </div>
 
                 <div class="urwa-topbar-right">
                     <div class="urwa-search">
-                        <input type="search" placeholder="Search students, Ablas, halaqas...">
+                        <input type="search" placeholder="Search students, Ablas, halaqas, applications...">
                     </div>
                     <button class="urwa-icon-button" aria-label="Notifications">♧</button>
                     <div class="urwa-user">
@@ -85,43 +86,28 @@
 
             <div class="urwa-content" id="overview">
                 <div class="urwa-page-heading">
-                    <h1>Dashboard Overview</h1>
-                    <p>Manage URWA's students, teachers, halaqas and learning programmes.</p>
+                    <h1>Admin Dashboard</h1>
+                    <p>One place to oversee admissions, people, learning and academy operations.</p>
                 </div>
 
-                <div class="urwa-grid urwa-grid-5">
-                    <article class="urwa-stat">
-                        <div class="urwa-stat-top"><span class="urwa-stat-icon">♙</span></div>
-                        <span class="urwa-stat-label">Total Students</span>
-                        <strong class="urwa-stat-value">—</strong>
-                        <div class="urwa-stat-note">Registered students</div>
-                    </article>
-                    <article class="urwa-stat">
-                        <div class="urwa-stat-top"><span class="urwa-stat-icon">✓</span></div>
-                        <span class="urwa-stat-label">Attendance Rate</span>
-                        <strong class="urwa-stat-value">—</strong>
-                        <div class="urwa-stat-note">Attendance overview</div>
-                    </article>
-                    <article class="urwa-stat">
-                        <div class="urwa-stat-top"><span class="urwa-stat-icon">♧</span></div>
-                        <span class="urwa-stat-label">Active Ablas</span>
-                        <strong class="urwa-stat-value">—</strong>
-                        <div class="urwa-stat-note">Approved teachers</div>
-                    </article>
-                    <article class="urwa-stat">
-                        <div class="urwa-stat-top"><span class="urwa-stat-icon">◎</span></div>
-                        <span class="urwa-stat-label">Halaqas</span>
-                        <strong class="urwa-stat-value">22</strong>
-                        <div class="urwa-stat-note">Halaqa structure</div>
-                    </article>
-                    <article class="urwa-stat">
-                        <div class="urwa-stat-top"><span class="urwa-stat-icon">◇</span></div>
-                        <span class="urwa-stat-label">Programmes</span>
-                        <strong class="urwa-stat-value">—</strong>
-                        <div class="urwa-stat-note">Available programmes</div>
-                    </article>
+                <div class="urwa-grid urwa-grid-5 admin-kpi-grid">
+                    <article class="urwa-stat admin-kpi blue"><div class="urwa-stat-top"><span class="urwa-stat-icon">♙</span></div><span class="urwa-stat-label">Total Students</span><strong class="urwa-stat-value">—</strong><div class="urwa-stat-note">Approved student accounts</div></article>
+                    <article class="urwa-stat admin-kpi green"><div class="urwa-stat-top"><span class="urwa-stat-icon">♧</span></div><span class="urwa-stat-label">Total Ablas</span><strong class="urwa-stat-value">—</strong><div class="urwa-stat-note">Approved teaching team</div></article>
+                    <article class="urwa-stat admin-kpi violet"><div class="urwa-stat-top"><span class="urwa-stat-icon">✧</span></div><span class="urwa-stat-label">New Admissions</span><strong class="urwa-stat-value">—</strong><div class="urwa-stat-note">Applications awaiting review</div></article>
+                    <article class="urwa-stat admin-kpi amber"><div class="urwa-stat-top"><span class="urwa-stat-icon">◎</span></div><span class="urwa-stat-label">Active Halaqas</span><strong class="urwa-stat-value">—</strong><div class="urwa-stat-note">Configured learning groups</div></article>
+                    <article class="urwa-stat admin-kpi rose"><div class="urwa-stat-top"><span class="urwa-stat-icon">✓</span></div><span class="urwa-stat-label">Attendance Rate</span><strong class="urwa-stat-value">—</strong><div class="urwa-stat-note">Across submitted records</div></article>
                 </div>
-
+                <section class="admin-quick-actions">
+                  <div class="admin-section-head"><div><span>WORKFLOW SHORTCUTS</span><h2>Quick Actions</h2></div><a href="#settings">Customise ↗</a></div>
+                  <div class="admin-action-grid">
+                    <a href="#students"><i class="blue">♙</i><b>Manage Students</b></a>
+                    <a href="#teachers"><i class="green">♧</i><b>Manage Ablas</b></a>
+                    <a href="#admissions"><i class="violet">✧</i><b>Review Admissions</b></a>
+                    <a href="#halaqas"><i class="amber">◎</i><b>Manage Halaqas</b></a>
+                    <a href="#reports"><i class="blue">▤</i><b>Generate Reports</b></a>
+                    <a href="#announcements"><i class="rose">♧</i><b>Publish Notice</b></a>
+                  </div>
+                </section>
                 <div class="urwa-grid urwa-grid-2" style="margin-top:20px">
                     <section class="urwa-card" id="attendance">
                         <div class="urwa-card-header">
