@@ -1,0 +1,101 @@
+import { supabase } from './supabase.js';
+
+const el = id => document.getElementById(id);
+const safe = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const say = (message, bad=false) => { const n=el('notice'); n.textContent=message; n.classList.toggle('error',bad); n.hidden=false; window.scrollTo({top:0,behavior:'smooth'}); };
+const extra = { user:null, profile:null, membership:null, department:null, position:null, admin:false, leader:false, departments:[], positions:[] };
+const active = ['active','renewal_pending','under_review','renewed'];
+
+function mount(){
+  const reportsView=document.getElementById('view-reports');
+  if(reportsView){const review=document.createElement('article');review.className='panel';review.id='reportReviewPanel';review.innerHTML='<div class="panel-head"><h3>Report review queue</h3><span class="pill">Head / Administration</span></div><div id="reportReviewRows" class="stack-list">Loading reports…</div>';reportsView.appendChild(review);}
+  const nav= document.querySelector('.side-nav');
+  const links=[
+    ['welfare','♡','Student welfare'],
+    ['transfers','⇄','Department transfers'],
+    ['reviews','✧','Annual evaluations'],
+    ['updates','▣','Announcements & events']
+  ];
+  links.forEach(([view,icon,label])=>{const b=document.createElement('button');b.className='nav-link';b.dataset.view=view;b.innerHTML=icon+' <span>'+label+'</span>';nav.insertBefore(b,el('adminNav'));b.addEventListener('click',()=>show(view));});
+  const main=document.querySelector('.main');
+  const views=[
+    ['welfare','Student welfare','Confidential support cases are visible only to authorized welfare staff and URWA Administration.','<div class="extra-grid"><article class="panel"><h3>Submit a welfare request</h3><form id="welfareForm" class="form-grid"><label>Category<select id="welfareCategory" required><option value="academic">Academic support</option><option value="financial">Financial support</option><option value="wellbeing">Wellbeing</option><option value="attendance">Attendance</option><option value="other">Other</option></select></label><label>Priority<select id="welfarePriority"><option value="normal">Normal</option><option value="high">High</option><option value="urgent">Urgent</option></select></label><label class="full">Subject<input id="welfareSubject" required></label><label class="full">Details<textarea id="welfareDetails" rows="4" required></textarea></label><div class="full"><button class="primary-btn">Submit confidential case</button></div></form></article><article class="panel"><h3>Case management</h3><p class="muted">Authorized welfare team members can assign, update and escalate cases.</p><div id="welfareCases" class="stack-list">Loading cases…</div></article></div>'],
+    ['transfers','Department transfers','Submit a request to move from your current department. Administration reviews all transfers.','<div class="extra-grid"><article class="panel"><h3>Request a transfer</h3><form id="transferForm" class="form-grid"><label>Current department<input id="transferFrom" disabled></label><label>Requested department<select id="transferTo" required></select></label><label class="full">Reason for transfer<textarea id="transferReason" rows="4" required></textarea></label><div class="full"><button class="primary-btn">Submit transfer request</button></div></form></article><article class="panel"><h3>Transfer requests</h3><div id="transferRows" class="stack-list">Loading requests…</div></article></div>'],
+    ['reviews','Annual evaluations','Department Heads submit member evaluations. Administration can review all submitted evaluations.','<div class="extra-grid"><article class="panel"><h3>Evaluate a team member</h3><form id="evaluationForm" class="form-grid"><label>Member<select id="evaluationMember" required></select></label><label>Review year<input id="evaluationYear" type="number" min="2026" required></label><label>Attendance (0–5)<input id="scoreAttendance" type="number" min="0" max="5" step=".5" required></label><label>Task completion (0–5)<input id="scoreTasks" type="number" min="0" max="5" step=".5" required></label><label>Teamwork (0–5)<input id="scoreTeamwork" type="number" min="0" max="5" step=".5" required></label><label>Reliability (0–5)<input id="scoreReliability" type="number" min="0" max="5" step=".5" required></label><label>Contribution (0–5)<input id="scoreContribution" type="number" min="0" max="5" step=".5" required></label><label>Outcome<select id="evaluationOutcome"><option value="renew">Recommend renewal</option><option value="support">Renew with support plan</option><option value="review">Further review required</option></select></label><label class="full">Notes<textarea id="evaluationNotes" rows="3"></textarea></label><div class="full"><button class="primary-btn">Submit evaluation</button></div></form></article><article class="panel"><h3>Evaluation records</h3><div id="evaluationRows" class="stack-list">Loading evaluations…</div></article></div>'],
+    ['updates','Announcements & events','Publish department updates and keep a shared calendar of upcoming activities.','<div class="extra-grid"><article class="panel"><h3>Publish an announcement</h3><form id="announcementForm" class="form-grid"><label class="full">Title<input id="announcementTitle" required></label><label class="full">Message<textarea id="announcementBody" rows="4" required></textarea></label><label>Audience<select id="announcementAudience"><option value="department">My department</option><option value="all_departments">All departments</option></select></label><div class="full"><button class="primary-btn">Publish announcement</button></div></form></article><article class="panel"><h3>Create an event</h3><form id="eventForm" class="form-grid"><label class="full">Event title<input id="eventTitle" required></label><label>Starts<input id="eventStarts" type="datetime-local" required></label><label>Ends<input id="eventEnds" type="datetime-local"></label><label class="full">Location<input id="eventLocation"></label><label class="full">Description<textarea id="eventDescription" rows="2"></textarea></label><div class="full"><button class="primary-btn">Add to calendar</button></div></form></article><article class="panel"><h3>Announcements</h3><div id="announcementRows" class="stack-list">Loading announcements…</div></article><article class="panel"><h3>Upcoming events</h3><div id="eventRows" class="stack-list">Loading events…</div></article></div>']
+  ];
+  views.forEach(([id,title,desc,body])=>{const section=document.createElement('section');section.className='view';section.id='view-'+id;section.innerHTML='<div class="section-intro"><span class="eyebrow">URWA TEAM OPERATIONS</span><h2>'+title+'</h2><p>'+desc+'</p></div>'+body;main.insertBefore(section,document.querySelector('.footer'));});
+  document.querySelectorAll('.side-nav [data-view]').forEach(b=>b.addEventListener('click',()=>show(b.dataset.view)));
+}
+function show(view){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id==='view-'+view));document.querySelectorAll('[data-view]').forEach(v=>v.classList.toggle('active',v.dataset.view===view));const title=document.querySelector('#view-'+view+' h2');if(title)el('pageTitle').textContent=title.textContent;}
+const canWelfare=()=>extra.admin || (extra.department?.name||'').toLowerCase().includes('student affairs');
+async function loadWelfare(){
+  const {data,error}=await supabase.from('student_welfare_cases').select('*').order('created_at',{ascending:false});
+  if(error)throw error;
+  el('welfareCases').innerHTML=(data||[]).length?(data||[]).map(c=>'<article class="stack-item"><div class="item-top"><b>'+safe(c.subject)+'</b><span class="pill">'+safe(c.status)+'</span></div><p>'+safe(c.category)+' · '+safe(c.priority)+' priority</p><small>Created '+new Date(c.created_at).toLocaleDateString()+(c.escalated_to_admin?' · Escalated to Administration':'')+'</small>'+(canWelfare()?'<div class="inline-actions"><button class="text-btn" data-case-status="'+c.id+'" data-status="in_progress">In progress</button><button class="text-btn" data-case-status="'+c.id+'" data-status="resolved">Resolve</button><button class="text-btn" data-case-escalate="'+c.id+'">Escalate to Admin</button></div>':'')+'</article>').join(''):'<p class="muted">No cases available to your account.</p>';
+  document.querySelectorAll('[data-case-status]').forEach(b=>b.addEventListener('click',async()=>{const {error}=await supabase.from('student_welfare_cases').update({status:b.dataset.status,updated_at:new Date().toISOString(),resolved_at:b.dataset.status==='resolved'?new Date().toISOString():null}).eq('id',b.dataset.caseStatus);if(error)throw error;await loadWelfare();say('Case updated.');}));
+  document.querySelectorAll('[data-case-escalate]').forEach(b=>b.addEventListener('click',async()=>{const {error}=await supabase.from('student_welfare_cases').update({escalated_to_admin:true,updated_at:new Date().toISOString()}).eq('id',b.dataset.caseEscalate);if(error)throw error;await loadWelfare();say('Case escalated to Administration.');}));
+}
+async function loadTransfers(){
+  const {data,error}=await supabase.from('department_transfers').select('*').order('created_at',{ascending:false});if(error)throw error;
+  el('transferRows').innerHTML=(data||[]).length?(data||[]).map(t=>'<article class="stack-item"><div class="item-top"><b>'+safe(extra.departments.find(d=>d.id===t.from_department_id)?.name||'Current team')+' → '+safe(extra.departments.find(d=>d.id===t.to_department_id)?.name||'Requested team')+'</b><span class="pill">'+safe(t.status)+'</span></div><p>'+safe(t.reason)+'</p><small>'+new Date(t.created_at).toLocaleDateString()+'</small>'+(extra.admin&&t.status==='pending'?'<div class="inline-actions"><button class="text-btn" data-transfer="'+t.id+'" data-decision="approved">Approve</button><button class="text-btn danger-text" data-transfer="'+t.id+'" data-decision="declined">Decline</button></div>':'')+'</article>').join(''):'<p class="muted">No transfer requests yet.</p>';
+  document.querySelectorAll('[data-transfer]').forEach(b=>b.addEventListener('click',()=>decideTransfer(b.dataset.transfer,b.dataset.decision)));
+}
+async function decideTransfer(id,status){
+  const {data:request,error}=await supabase.from('department_transfers').select('*').eq('id',id).single();if(error)throw error;
+  if(status==='approved'){
+    const target=extra.positions.find(p=>p.department_id===request.to_department_id&&!p.is_leadership&&p.is_open_for_application);
+    if(!target)throw new Error('The requested department has no available general position. Keep this request pending until Administration appoints a suitable position.');
+    const moved=await supabase.from('department_memberships').update({department_id:request.to_department_id,position_id:target.id,updated_at:new Date().toISOString()}).eq('id',request.membership_id);
+    if(moved.error)throw moved.error;
+  }
+  const {error:updateError}=await supabase.from('department_transfers').update({status,reviewed_by:extra.user.id,reviewed_at:new Date().toISOString()}).eq('id',id);if(updateError)throw updateError;
+  await loadTransfers();say('Transfer request '+status+'.');
+}
+async function loadEvaluations(){
+  const {data,error}=await supabase.from('department_reviews').select('*').order('reviewed_at',{ascending:false});if(error)throw error;
+  const rows=data||[];const ids=[...new Set(rows.map(r=>r.profile_id))];const people=ids.length?await supabase.from('profiles').select('id,full_name,email').in('id',ids):{data:[],error:null};if(people.error)throw people.error;
+  el('evaluationRows').innerHTML=rows.length?rows.map(r=>{const p=(people.data||[]).find(x=>x.id===r.profile_id);const avg=['attendance_score','task_completion_score','teamwork_score','reliability_score','contribution_score'].reduce((n,k)=>n+Number(r[k]||0),0)/5;return '<article class="stack-item"><div class="item-top"><b>'+safe(p?.full_name||p?.email||'Member')+'</b><span class="pill">'+avg.toFixed(1)+'/5</span></div><p>'+safe(r.outcome||'Evaluation')+' · '+r.review_year+'</p><small>'+safe(r.overall_notes||'No notes added')+'</small></article>';}).join(''):'<p class="muted">No evaluations recorded.</p>';
+}
+async function loadReportReviews(){
+  const panel=el('reportReviewPanel');if(!panel)return;
+  if(!extra.leader){panel.hidden=true;return;}
+  const query=supabase.from('department_reports').select('*').order('created_at',{ascending:false});
+  const {data,error}=await query;if(error)throw error;
+  const rows=data||[];
+  el('reportReviewRows').innerHTML=rows.length?rows.map(r=>'<article class="stack-item"><div class="item-top"><b>'+safe(r.title)+'</b><span class="pill">'+safe(r.status)+'</span></div><p>'+safe(r.summary)+'</p><small>'+new Date(r.created_at).toLocaleDateString()+'</small><label class="small">Review note<textarea id="report-note-'+r.id+'" rows="2">'+safe(r.review_notes||'')+'</textarea></label><div class="inline-actions"><button class="text-btn" data-report-review="'+r.id+'" data-report-status="reviewed">Mark reviewed</button><button class="text-btn" data-report-review="'+r.id+'" data-report-status="needs_revision">Request revision</button></div></article>').join(''):'<p class="muted">No reports have been submitted.</p>';
+  document.querySelectorAll('[data-report-review]').forEach(b=>b.addEventListener('click',async()=>{const id=b.dataset.reportReview;const {error}=await supabase.from('department_reports').update({status:b.dataset.reportStatus,reviewed_by:extra.user.id,reviewed_at:new Date().toISOString(),review_notes:el('report-note-'+id).value.trim()||null}).eq('id',id);if(error)throw error;await loadReportReviews();say('Report review saved.');}));
+}
+async function loadUpdates(){
+  const [a,e]=await Promise.all([supabase.from('department_announcements').select('*').order('published_at',{ascending:false}),supabase.from('department_events').select('*').gte('starts_at',new Date().toISOString()).order('starts_at')]);
+  if(a.error)throw a.error;if(e.error)throw e.error;
+  el('announcementRows').innerHTML=(a.data||[]).length?a.data.map(x=>'<article class="stack-item"><b>'+safe(x.title)+'</b><p>'+safe(x.body)+'</p><small>'+new Date(x.published_at).toLocaleString()+'</small></article>').join(''):'<p class="muted">No announcements yet.</p>';
+  el('eventRows').innerHTML=(e.data||[]).length?e.data.map(x=>'<article class="stack-item"><b>'+safe(x.title)+'</b><p>'+safe(x.description||'')+'</p><small>'+new Date(x.starts_at).toLocaleString()+' · '+safe(x.location||'Location to be confirmed')+'</small></article>').join(''):'<p class="muted">No upcoming events.</p>';
+}
+async function bindForms(){
+  el('welfareForm').addEventListener('submit',async e=>{e.preventDefault();const {error}=await supabase.from('student_welfare_cases').insert({student_id:extra.user.id,category:el('welfareCategory').value,subject:el('welfareSubject').value.trim(),details:el('welfareDetails').value.trim(),priority:el('welfarePriority').value});if(error)throw error;e.target.reset();say('Confidential welfare request submitted.');await loadWelfare();});
+  el('transferFrom').value=extra.department?.name||'No active membership';
+  el('transferTo').innerHTML=extra.departments.filter(d=>d.id!==extra.membership?.department_id).map(d=>'<option value="'+d.id+'">'+safe(d.name)+'</option>').join('');
+  el('transferForm').addEventListener('submit',async e=>{e.preventDefault();if(!extra.membership)throw new Error('Only current members can request a transfer.');const {error}=await supabase.from('department_transfers').insert({membership_id:extra.membership.id,profile_id:extra.user.id,from_department_id:extra.membership.department_id,to_department_id:el('transferTo').value,reason:el('transferReason').value.trim()});if(error)throw error;e.target.reset();say('Transfer request submitted for Administration review.');await loadTransfers();});
+  const members=extra.department?await supabase.from('department_memberships').select('profile_id').eq('department_id',extra.membership.department_id).in('membership_status',active):{data:[],error:null};if(members.error)throw members.error;
+  const ids=(members.data||[]).map(m=>m.profile_id);const profiles=ids.length?await supabase.from('profiles').select('id,full_name,email').in('id',ids):{data:[],error:null};if(profiles.error)throw profiles.error;
+  el('evaluationMember').innerHTML=(profiles.data||[]).map(p=>'<option value="'+p.id+'">'+safe(p.full_name||p.email)+'</option>').join('');el('evaluationYear').value=new Date().getFullYear();
+  el('evaluationForm').addEventListener('submit',async e=>{e.preventDefault();const n=id=>Number(el(id).value);const {error}=await supabase.from('department_reviews').insert({membership_id:extra.membership.id,profile_id:el('evaluationMember').value,department_id:extra.membership.department_id,review_year:n('evaluationYear'),attendance_score:n('scoreAttendance'),task_completion_score:n('scoreTasks'),teamwork_score:n('scoreTeamwork'),reliability_score:n('scoreReliability'),contribution_score:n('scoreContribution'),overall_notes:el('evaluationNotes').value.trim()||null,outcome:el('evaluationOutcome').value,reviewed_by:extra.user.id});if(error)throw error;e.target.reset();say('Annual evaluation saved.');await loadEvaluations();});
+  el('announcementForm').addEventListener('submit',async e=>{e.preventDefault();const {error}=await supabase.from('department_announcements').insert({department_id:el('announcementAudience').value==='all_departments'?null:extra.membership?.department_id,title:el('announcementTitle').value.trim(),body:el('announcementBody').value.trim(),audience:el('announcementAudience').value,published_by:extra.user.id});if(error)throw error;e.target.reset();say('Announcement published.');await loadUpdates();});
+  el('eventForm').addEventListener('submit',async e=>{e.preventDefault();const {error}=await supabase.from('department_events').insert({department_id:extra.membership?.department_id||null,title:el('eventTitle').value.trim(),description:el('eventDescription').value.trim()||null,starts_at:new Date(el('eventStarts').value).toISOString(),ends_at:el('eventEnds').value?new Date(el('eventEnds').value).toISOString():null,location:el('eventLocation').value.trim()||null,created_by:extra.user.id});if(error)throw error;e.target.reset();say('Event added to the calendar.');await loadUpdates();});
+}
+async function initExtra(){
+  try{
+    const {data,error}=await supabase.auth.getUser();if(error||!data.user)return;extra.user=data.user;
+    const profile=await supabase.from('profiles').select('id,role,status').eq('id',extra.user.id).maybeSingle();if(profile.error)throw profile.error;extra.profile=profile.data;extra.admin=profile.data?.role==='admin';
+    const [d,p,m]=await Promise.all([supabase.from('departments').select('*').eq('is_active',true),supabase.from('department_positions').select('*').eq('is_active',true),supabase.from('department_memberships').select('*').eq('profile_id',extra.user.id).in('membership_status',active).maybeSingle()]);
+    if(d.error)throw d.error;if(p.error)throw p.error;if(m.error)throw m.error;extra.departments=d.data||[];extra.positions=p.data||[];extra.membership=m.data;extra.department=extra.departments.find(x=>x.id===m.data?.department_id);extra.position=extra.positions.find(x=>x.id===m.data?.position_id);extra.leader=extra.admin||Boolean(extra.position?.is_leadership);
+    mount();
+    if(!extra.membership){el('evaluationForm').closest('.panel').hidden=true;el('transferForm').closest('.panel').hidden=true;if(!extra.admin){el('announcementForm').closest('.panel').hidden=true;el('eventForm').closest('.panel').hidden=true;}}
+    else if(!extra.leader){el('evaluationForm').closest('.panel').hidden=true;el('announcementForm').closest('.panel').hidden=true;el('eventForm').closest('.panel').hidden=true;}
+    if(!canWelfare())el('welfareForm').closest('.panel').hidden=false;
+    await bindForms();
+    await Promise.all([loadWelfare(),loadTransfers(),loadEvaluations(),loadUpdates(),loadReportReviews()]);
+  }catch(error){say(error.message||'Unable to load additional department tools.',true);}
+}
+initExtra();
