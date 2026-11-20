@@ -190,7 +190,8 @@ async function loadAdmin(){
     supabase.from('department_applications').select('*').order('created_at',{ascending:false}),
     supabase.from('department_memberships').select('*').in('membership_status',activeStatuses).order('created_at',{ascending:false}),
     supabase.from('profiles').select('id,full_name,email').eq('status','approved').order('full_name'),
-    supabase.from('department_reviews').select('id'),\n    supabase.from('department_renewal_requests').select('*').order('created_at',{ascending:false})
+    supabase.from('department_reviews').select('id'),
+    supabase.from('department_renewal_requests').select('*').order('created_at',{ascending:false})
   ]);
   for(const x of [apps,members,profiles,reviews,renewals])if(x.error)throw x.error;
   const people=profiles.data||[];const appsData=apps.data||[];const membersData=members.data||[];
