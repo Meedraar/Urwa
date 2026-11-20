@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0e4a40">
+  <title>Department Workspace | URWA</title>
+  <link rel="stylesheet" href="../../css/departments-portal.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="../../index.html"><span class="brand-mark">U</span><span><b>URWA</b><small>THE FIRMEST HANDHOLD</small></span></a>
+      <div class="side-label">WORKSPACE</div>
+      <nav class="side-nav">
+        <button class="nav-link active" data-view="overview">▦ <span>Overview</span></button>
+        <button class="nav-link" data-view="directory">◇ <span>Departments</span></button>
+        <button class="nav-link" data-view="tasks">☷ <span>My tasks</span></button>
+        <button class="nav-link" data-view="messages">✉ <span>Messages</span></button>
+        <button class="nav-link" data-view="reports">▤ <span>Reports</span></button>
+        <button class="nav-link" data-view="admin" id="adminNav" hidden>⚙ <span>Administration</span></button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="sidebar-note"><span class="note-dot"></span><div><b>One amanah. One team.</b><small>Serve with ihsan.</small></div></div>
+        <button class="signout" id="signOut">↪ Sign out</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div><div class="eyebrow">URWA · TEAM OPERATIONS</div><h1 id="pageTitle">Department overview</h1></div>
+        <div class="user-chip"><div class="avatar" id="userInitials">U</div><div><b id="userName">Loading…</b><small id="userRole">Member</small></div></div>
+      </header>
+
+      <div class="notice" id="notice" role="status" hidden></div>
+      <section class="view active" id="view-overview">
+        <div class="welcome-panel">
+          <div><div class="eyebrow light">YOUR URWA WORKSPACE</div><h2 id="welcomeTitle">Assalamu alaykum</h2><p id="welcomeText">A shared system for six teams, working together in service of URWA.</p></div>
+          <div class="welcome-symbol">و</div>
+        </div>
+        <div class="stat-grid">
+          <article class="stat-card"><span>Departments</span><b id="statDepartments">6</b><small>One shared system</small></article>
+          <article class="stat-card"><span>My open tasks</span><b id="statTasks">—</b><small>Assigned to you</small></article>
+          <article class="stat-card"><span>My reports</span><b id="statReports">—</b><small>Submitted updates</small></article>
+          <article class="stat-card"><span>Membership</span><b id="statMembership">—</b><small id="membershipCaption">Application status</small></article>
+        </div>
+        <div class="content-grid">
+          <article class="panel"><div class="panel-head"><div><span class="eyebrow">YOUR TEAM</span><h3 id="teamTitle">Department membership</h3></div><span class="pill" id="memberStatus">Not assigned</span></div><p class="muted" id="teamDescription">Explore the six URWA departments and apply for a position that matches your skills and availability.</p><div id="teamLeaders" class="people-list"></div></article>
+          <article class="panel"><div class="panel-head"><div><span class="eyebrow">QUICK ACCESS</span><h3>Continue your work</h3></div></div><div class="quick-links"><button data-view="directory">Explore departments <span>→</span></button><button data-view="tasks">View my tasks <span>→</span></button><button data-view="messages">Open team messages <span>→</span></button><button data-view="reports">Submit a report <span>→</span></button></div></article>
+        </div>
+      </section>
+
+      <section class="view" id="view-directory">
+        <div class="section-intro"><span class="eyebrow">SIX TEAMS · ONE PURPOSE</span><h2>Find where you can contribute</h2><p>Every member may hold one department membership at a time. Department Heads and Assistant Heads are appointed directly by URWA Administration.</p></div>
+        <div class="department-grid" id="departmentGrid"><div class="loading-card">Loading departments…</div></div>
+        <article class="panel application-panel" id="applicationPanel">
+          <div class="panel-head"><div><span class="eyebrow">JOIN THE TEAM</span><h3>Department application</h3></div><span class="pill gold-pill">Approval required</span></div>
+          <p class="muted">Choose one department and one open position. Your application will be reviewed by URWA Administration.</p>
+          <form id="applicationForm" class="form-grid">
+            <label>Department<select id="applicationDepartment" required><option value="">Choose department</option></select></label>
+            <label>Position<select id="applicationPosition" required disabled><option value="">Choose a department first</option></select></label>
+            <label class="full">Why would you like to join?<textarea id="motivation" rows="3" required></textarea></label>
+            <label class="full">Skills and relevant experience<textarea id="skills" rows="3"></textarea></label>
+            <label class="full">Previous leadership or volunteering experience<textarea id="leadershipExperience" rows="2"></textarea></label>
+            <label>Availability<input id="availability" placeholder="e.g. Weekday evenings"></label>
+            <label>Additional information<input id="additionalInfo" placeholder="Optional"></label>
+            <div class="full form-actions"><button class="primary-btn" type="submit">Submit application <span>→</span></button><span class="muted small">One active application at a time.</span></div>
+          </form>
+          <div id="myApplication" class="application-status" hidden></div>
+        </article>
+      </section>
+
+      <section class="view" id="view-tasks">
+        <div class="section-intro"><span class="eyebrow">DELIVER WITH EXCELLENCE</span><h2>Tasks & assignments</h2><p>See what has been assigned to you and keep your department moving forward.</p></div>
+        <article class="panel" id="taskCreatePanel" hidden><div class="panel-head"><h3>Create a department task</h3><span class="pill">Head / Admin</span></div><form id="taskForm" class="form-grid"><label class="full">Task title<input id="taskTitle" required></label><label class="full">Description<textarea id="taskDescription" rows="2"></textarea></label><label>Priority<select id="taskPriority"><option value="normal">Normal</option><option value="low">Low</option><option value="high">High</option><option value="urgent">Urgent</option></select></label><label>Due date<input id="taskDue" type="datetime-local"></label><label class="full">Assign to team members<select id="taskAssignees" multiple size="4"></select></label><div class="full"><button class="primary-btn">Create task</button></div></form></article>
+        <div class="task-list" id="taskList"><div class="loading-card">Loading tasks…</div></div>
+      </section>
+
+      <section class="view" id="view-messages">
+        <div class="section-intro"><span class="eyebrow">STAY CONNECTED</span><h2>Team communication</h2><p>Use your private department channel or start a collaboration conversation with members of other departments.</p></div>
+        <div class="content-grid messages-layout">
+          <article class="panel"><div class="panel-head"><h3>Conversations</h3><button class="text-btn" id="newConversationBtn">＋ New</button></div><div id="conversationList" class="conversation-list"><p class="muted">Select a conversation.</p></div></article>
+          <article class="panel chat-panel"><div class="panel-head"><div><span class="eyebrow">MESSAGES</span><h3 id="chatTitle">Choose a conversation</h3></div></div><div id="messageList" class="message-list"><div class="empty-state">Your messages will appear here.</div></div><form id="messageForm" class="message-compose"><input id="messageText" placeholder="Write a message…" autocomplete="off" required><button class="primary-btn" aria-label="Send message">Send</button></form></article>
+        </div>
+        <article class="panel" id="newConversationPanel" hidden><div class="panel-head"><h3>Start a collaboration group</h3><button class="text-btn" id="cancelConversation">Cancel</button></div><form id="conversationForm" class="form-grid"><label class="full">Group name<input id="conversationTitle" required placeholder="e.g. Annual sisters' gathering"></label><label class="full">Invite members from any department<select id="conversationMembers" multiple size="6"></select></label><div class="full"><button class="primary-btn">Create collaboration group</button></div></form></article>
+      </section>
+
+      <section class="view" id="view-reports">
+        <div class="section-intro"><span class="eyebrow">ACCOUNTABILITY & GROWTH</span><h2>Reports</h2><p>Submit progress updates and keep a record of your department's work.</p></div>
+        <article class="panel" id="reportPanel"><div class="panel-head"><h3>Submit a report</h3><span class="pill">Department members</span></div><form id="reportForm" class="form-grid"><label>Report title<input id="reportTitle" required></label><label>Reporting period start<input id="reportStart" type="date"></label><label class="full">Summary<textarea id="reportSummary" rows="4" required></textarea></label><label class="full">Achievements<textarea id="reportAchievements" rows="3"></textarea></label><label class="full">Challenges and recommendations<textarea id="reportChallenges" rows="3"></textarea></label><div class="full"><button class="primary-btn">Submit report</button></div></form></article>
+        <div class="report-list" id="reportList"></div>
+      </section>
+
+      <section class="view" id="view-admin">
+        <div class="section-intro"><span class="eyebrow">CENTRAL OVERSIGHT</span><h2>Administration</h2><p>Review applications, appoint department leadership, manage membership and monitor all six teams.</p></div>
+        <div class="stat-grid admin-stats"><article class="stat-card"><span>Pending applications</span><b id="adminPending">—</b></article><article class="stat-card"><span>Active members</span><b id="adminMembers">—</b></article><article class="stat-card"><span>Departments</span><b>6</b></article><article class="stat-card"><span>Annual reviews</span><b id="adminReviews">—</b><small>Records on file</small></article></div>
+        <article class="panel"><div class="panel-head"><h3>Department applications</h3><span class="pill gold-pill">Administration review</span></div><div class="table-wrap"><table><thead><tr><th>Applicant</th><th>Department</th><th>Position</th><th>Availability</th><th>Submitted</th><th>Action</th></tr></thead><tbody id="applicationRows"><tr><td colspan="6">Loading applications…</td></tr></tbody></table></div></article>
+        <article class="panel"><div class="panel-head"><h3>Appoint department leadership</h3><span class="pill">Admin only</span></div><p class="muted">Department Head and Assistant Head roles are appointed directly by URWA Administration, not through open applications.</p><form id="appointmentForm" class="form-grid"><label>Department<select id="appointmentDepartment"></select></label><label>Leadership position<select id="appointmentPosition"><option value="department_head">Department Head</option><option value="assistant_head">Assistant Head</option></select></label><label class="full">Approved URWA member<select id="appointmentMember"></select></label><div class="full"><button class="primary-btn">Appoint leader</button></div></form></article>
+        <article class="panel"><div class="panel-head"><h3>Current department membership</h3></div><div class="table-wrap"><table><thead><tr><th>Member</th><th>Department</th><th>Position</th><th>Status</th><th>Joined</th></tr></thead><tbody id="membershipRows"><tr><td colspan="5">Loading members…</td></tr></tbody></table></div></article>
+      </section>
+      <footer class="footer">URWA · Urwatul Wuthqaa <span>One vision. Many hands. One amanah.</span></footer>
+    </main>
+  </div>
+
+  <dialog id="reviewDialog" class="review-dialog"><form method="dialog" id="reviewForm"><button class="dialog-close" value="cancel" aria-label="Close">×</button><span class="eyebrow">APPLICATION REVIEW</span><h2 id="reviewApplicant">Applicant</h2><div id="reviewDetails"></div><label>Review note<textarea id="reviewNote" rows="3"></textarea></label><div class="dialog-actions"><button class="secondary-btn" value="cancel">Cancel</button><button class="secondary-btn" type="button" id="requestInfoBtn">Request information</button><button class="primary-btn" type="button" id="approveApplicationBtn">Approve & add member</button><button class="danger-btn" type="button" id="declineApplicationBtn">Decline</button></div></form></dialog>
+  <script type="module" src="../../js/departments-portal.js"></script>
+</body>
+</html>
