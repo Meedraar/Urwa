@@ -46,13 +46,13 @@ footer h1,footer h2,footer h3,footer h4,footer a,
   color:inherit
 }
 /* Portal and staff workspaces: unify the older navy/grey variants. */
-.urwa-sidebar,.sidebar,.staff-side,.abla-sidebar,.admin-sidebar,
+.urwa-sidebar,.sidebar,.staff-side,.staff-sidebar,.abla-sidebar,.admin-sidebar,
 .portal-sidebar,.dashboard-sidebar{
   background:var(--head);border-color:rgba(255,255,255,.14);color:#fff
 }
-.urwa-sidebar a,.sidebar a,.staff-side a,.abla-sidebar a,.admin-sidebar a,
+.urwa-sidebar a,.sidebar a,.staff-side a,.staff-sidebar a,.abla-sidebar a,.admin-sidebar a,
 .portal-sidebar a,.dashboard-sidebar a{color:rgba(255,255,255,.88)}
-.urwa-sidebar a.active,.sidebar a.active,.staff-side a.active,
+.urwa-sidebar a.active,.sidebar a.active,.staff-side a.active,.staff-sidebar a.active,
 .abla-sidebar a.active,.admin-sidebar a.active,.portal-sidebar a.active,
 .dashboard-sidebar a.active{background:rgba(255,255,255,.14);color:#fff}
 body[data-urwa-role="admin"],body[data-urwa-role="student"],
@@ -62,7 +62,9 @@ body[data-urwa-role="admin"] .urwa-main,
 body[data-urwa-role="student"] .urwa-main,
 body[data-urwa-role="teacher"] .urwa-main,
 .urwa-main,.staff-main,.abla-main{background:var(--bg)}
-.urwa-brand,.staff-brand,.abla-brand{color:#fff}
+.urwa-brand,.staff-brand,.abla-brand,.staff-sidebar .brand,.staff-sidebar .brand strong{color:#fff}
+.login-art,.login-visual,.auth-visual,.auth-side{background:linear-gradient(145deg,#0e4a40,#08372f);color:#fff}
+.staff-sidebar .brand small{color:#e5d3a5}
 .urwa-brand b,.staff-brand b,.abla-brand b{color:#fff}
 .urwa-stat,.stat-card,.metric-card{border-color:var(--line)}
 input,select,textarea,.form-control{
