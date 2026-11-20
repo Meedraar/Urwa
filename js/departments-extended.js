@@ -7,6 +7,8 @@ const extra = { user:null, profile:null, membership:null, department:null, posit
 const active = ['active','renewal_pending','under_review','renewed'];
 
 function mount(){
+  const reportsView=document.getElementById('view-reports');
+  if(reportsView){const review=document.createElement('article');review.className='panel';review.id='reportReviewPanel';review.innerHTML='<div class="panel-head"><h3>Report review queue</h3><span class="pill">Head / Administration</span></div><div id="reportReviewRows" class="stack-list">Loading reports…</div>';reportsView.appendChild(review);}
   const nav= document.querySelector('.side-nav');
   const links=[
     ['welfare','♡','Student welfare'],
@@ -55,6 +57,15 @@ async function loadEvaluations(){
   const rows=data||[];const ids=[...new Set(rows.map(r=>r.profile_id))];const people=ids.length?await supabase.from('profiles').select('id,full_name,email').in('id',ids):{data:[],error:null};if(people.error)throw people.error;
   el('evaluationRows').innerHTML=rows.length?rows.map(r=>{const p=(people.data||[]).find(x=>x.id===r.profile_id);const avg=['attendance_score','task_completion_score','teamwork_score','reliability_score','contribution_score'].reduce((n,k)=>n+Number(r[k]||0),0)/5;return '<article class="stack-item"><div class="item-top"><b>'+safe(p?.full_name||p?.email||'Member')+'</b><span class="pill">'+avg.toFixed(1)+'/5</span></div><p>'+safe(r.outcome||'Evaluation')+' · '+r.review_year+'</p><small>'+safe(r.overall_notes||'No notes added')+'</small></article>';}).join(''):'<p class="muted">No evaluations recorded.</p>';
 }
+async function loadReportReviews(){
+  const panel=el('reportReviewPanel');if(!panel)return;
+  if(!extra.leader){panel.hidden=true;return;}
+  const query=supabase.from('department_reports').select('*').order('created_at',{ascending:false});
+  const {data,error}=await query;if(error)throw error;
+  const rows=data||[];
+  el('reportReviewRows').innerHTML=rows.length?rows.map(r=>'<article class="stack-item"><div class="item-top"><b>'+safe(r.title)+'</b><span class="pill">'+safe(r.status)+'</span></div><p>'+safe(r.summary)+'</p><small>'+new Date(r.created_at).toLocaleDateString()+'</small><label class="small">Review note<textarea id="report-note-'+r.id+'" rows="2">'+safe(r.review_notes||'')+'</textarea></label><div class="inline-actions"><button class="text-btn" data-report-review="'+r.id+'" data-report-status="reviewed">Mark reviewed</button><button class="text-btn" data-report-review="'+r.id+'" data-report-status="needs_revision">Request revision</button></div></article>').join(''):'<p class="muted">No reports have been submitted.</p>';
+  document.querySelectorAll('[data-report-review]').forEach(b=>b.addEventListener('click',async()=>{const id=b.dataset.reportReview;const {error}=await supabase.from('department_reports').update({status:b.dataset.reportStatus,reviewed_by:extra.user.id,reviewed_at:new Date().toISOString(),review_notes:el('report-note-'+id).value.trim()||null}).eq('id',id);if(error)throw error;await loadReportReviews();say('Report review saved.');}));
+}
 async function loadUpdates(){
   const [a,e]=await Promise.all([supabase.from('department_announcements').select('*').order('published_at',{ascending:false}),supabase.from('department_events').select('*').gte('starts_at',new Date().toISOString()).order('starts_at')]);
   if(a.error)throw a.error;if(e.error)throw e.error;
@@ -84,7 +95,7 @@ async function initExtra(){
     else if(!extra.leader){el('evaluationForm').closest('.panel').hidden=true;el('announcementForm').closest('.panel').hidden=true;el('eventForm').closest('.panel').hidden=true;}
     if(!canWelfare())el('welfareForm').closest('.panel').hidden=false;
     await bindForms();
-    await Promise.all([loadWelfare(),loadTransfers(),loadEvaluations(),loadUpdates()]);
+    await Promise.all([loadWelfare(),loadTransfers(),loadEvaluations(),loadUpdates(),loadReportReviews()]);
   }catch(error){say(error.message||'Unable to load additional department tools.',true);}
 }
 initExtra();
