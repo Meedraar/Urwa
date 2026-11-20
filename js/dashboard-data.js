@@ -101,11 +101,13 @@ async function adminLoad(user) {
         p.id + '">Assign</button></div></td></tr>';
     }).join(''), '<tr><td colspan="5">No Abla accounts. Staff accounts must be created through a trusted administrator workflow.</td></tr>');
 
-    const stats = $$('.urwa-stat-value');
+    const stats = $('.admin-kpi .urwa-stat-value');
     if (stats[0]) stats[0].textContent = students.filter(p => (byStudent.get(p.id)?.status || p.status) === 'approved').length;
-    if (stats[1]) stats[1].textContent = attendance.length
+    if (stats[1]) stats[1].textContent = teachers.filter(p => p.status === 'approved').length;
+    if (stats[2]) stats[2].textContent = pending.length;
+    if (stats[3]) stats[3].textContent = halaqas.filter(h => h.is_active).length;
+    if (stats[4]) stats[4].textContent = attendance.length
       ? Math.round(attendance.filter(a => ['present', 'late'].includes(a.status)).length / attendance.length * 100) + '%' : '—';
-    if (stats[2]) stats[2].textContent = teachers.filter(p => p.status === 'approved').length;
     const adminAccounts = people.filter(p => p.role === 'admin');
     const currentProfile = people.find(p => p.id === user.id);
     const isSuperAdmin = currentProfile?.admin_level === 'super_admin';
