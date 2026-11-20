@@ -125,7 +125,8 @@ async function loadConversations(){
     supabase.from('department_conversations').select('*').eq('conversation_type','department').eq('department_id',state.membership.department_id)
   ]);
   if(mine.error)throw mine.error;if(channels.error)throw channels.error;
-  if(!(channels.data||[]).length){const created=await supabase.from('department_conversations').insert({conversation_type:'department',department_id:state.membership.department_id,title:dept(state.membership.department_id)?.name+' · Team channel',created_by:state.user.id}).select('id').single();if(created.error && created.error.code!=='23505')throw created.error;return loadConversations();}\n  const ids=[...new Set([...(mine.data||[]).map(x=>x.conversation_id),...(channels.data||[]).map(x=>x.id)])];
+  if(!(channels.data||[]).length){const created=await supabase.from('department_conversations').insert({conversation_type:'department',department_id:state.membership.department_id,title:dept(state.membership.department_id)?.name+' · Team channel',created_by:state.user.id}).select('id').single();if(created.error && created.error.code!=='23505')throw created.error;return loadConversations();}
+  const ids=[...new Set([...(mine.data||[]).map(x=>x.conversation_id),...(channels.data||[]).map(x=>x.id)])];
   if(!ids.length){state.conversations=[];renderConversations();return;}
   const result=await supabase.from('department_conversations').select('*').in('id',ids).order('created_at',{ascending:false});
   if(result.error)throw result.error;state.conversations=result.data||[];renderConversations();
