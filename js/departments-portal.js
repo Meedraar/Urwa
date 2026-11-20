@@ -61,7 +61,7 @@ async function loadMemberState() {
   $('teamTitle').textContent=state.membership?dept(state.membership.department_id)?.name||'Your department':'Department membership';
   $('teamDescription').textContent=state.membership?'Your position: '+(position(state.membership.position_id)?.title||'Team member')+'. Your workspace is ready.':'Explore the six URWA departments and apply for a position that matches your skills and availability.';
   $('memberStatus').textContent=state.membership?position(state.membership.position_id)?.title||'Active member':state.application?.status?.replaceAll('_',' ')||'Not assigned';
-  if(state.membership) $('applicationPanel').hidden=true;
+  if(state.membership) { $('applicationPanel').hidden=true; $('renewalPanel').hidden=false; $('renewalYear').value=new Date().getFullYear(); await loadRenewalStatus(); }
   else if(state.application){$('myApplication').hidden=false;$('myApplication').innerHTML='<b>Your latest application:</b> '+esc(dept(state.application.department_id)?.name||'Department')+' · '+esc(position(state.application.position_id)?.title||'Position')+' — <b>'+esc(state.application.status.replaceAll('_',' '))+'</b>'; if(['pending','under_review','more_information_required'].includes(state.application.status)) $('applicationForm').hidden=true;}
   $('adminNav').hidden=!state.admin;
   $('teamLeaders').innerHTML=state.membership?'<div class="person-row"><span>Your position</span><b>'+esc(position(state.membership.position_id)?.title||'Member')+'</b></div><div class="person-row"><span>Membership since</span><b>'+new Date(state.membership.start_date).toLocaleDateString()+'</b></div>':'<div class="person-row"><span>Membership</span><b>Application based</b></div>';
@@ -167,15 +167,32 @@ async function createConversation(e){
   }catch(err){notify(err.message,true);}finally{button.disabled=false;}
 }
 
+
+async function loadRenewalStatus(){
+  if(!state.membership)return;
+  const {data,error}=await supabase.from('department_renewal_requests').select('*').eq('membership_id',state.membership.id).order('review_year',{ascending:false}).limit(1).maybeSingle();
+  if(error)throw error;
+  if(data){$('renewalStatus').hidden=false;$('renewalStatus').textContent='Your '+data.review_year+' renewal: '+data.status.replaceAll('_',' ');$('renewalForm').hidden=['submitted','under_review','renewed','not_renewed'].includes(data.status);}
+}
+async function submitRenewal(e){
+  e.preventDefault();const button=e.submitter;button.disabled=true;
+  try{
+    const year=Number($('renewalYear').value);
+    const {error}=await supabase.from('department_renewal_requests').insert({membership_id:state.membership.id,profile_id:state.user.id,department_id:state.membership.department_id,review_year:year,continued_interest:true,availability:$('renewalAvailability').value.trim()||null,member_notes:$('renewalNotes').value.trim()||null});
+    if(error)throw error;
+    notify('Your annual renewal request has been submitted.');await loadMemberState();
+  }catch(err){notify(err.message,true);}finally{button.disabled=false;}
+}
+
 async function loadAdmin(){
   if(!state.admin)return;
-  const [apps,members,profiles,reviews]=await Promise.all([
+  const [apps,members,profiles,reviews,renewals]=await Promise.all([
     supabase.from('department_applications').select('*').order('created_at',{ascending:false}),
     supabase.from('department_memberships').select('*').in('membership_status',activeStatuses).order('created_at',{ascending:false}),
     supabase.from('profiles').select('id,full_name,email').eq('status','approved').order('full_name'),
-    supabase.from('department_reviews').select('id')
+    supabase.from('department_reviews').select('id'),\n    supabase.from('department_renewal_requests').select('*').order('created_at',{ascending:false})
   ]);
-  for(const x of [apps,members,profiles,reviews])if(x.error)throw x.error;
+  for(const x of [apps,members,profiles,reviews,renewals])if(x.error)throw x.error;
   const people=profiles.data||[];const appsData=apps.data||[];const membersData=members.data||[];
   $('adminPending').textContent=appsData.filter(a=>['pending','under_review','more_information_required'].includes(a.status)).length;
   $('adminMembers').textContent=membersData.length;$('adminReviews').textContent=(reviews.data||[]).length;
@@ -183,6 +200,8 @@ async function loadAdmin(){
   $('membershipRows').innerHTML=membersData.length?membersData.map(m=>'<tr><td>'+esc(people.find(p=>p.id===m.profile_id)?.full_name||'Member')+'</td><td>'+esc(dept(m.department_id)?.name||'')+'</td><td>'+esc(position(m.position_id)?.title||'')+'</td><td>'+esc(m.membership_status.replaceAll('_',' '))+'</td><td>'+new Date(m.start_date).toLocaleDateString()+'</td></tr>').join(''):'<tr><td colspan="5">No active memberships yet.</td></tr>';
   $('appointmentMember').innerHTML=people.map(p=>'<option value="'+p.id+'">'+esc(p.full_name||p.email)+'</option>').join('');
   document.querySelectorAll('[data-review]').forEach(b=>b.addEventListener('click',()=>openReview(appsData.find(a=>a.id===b.dataset.review),people)));
+  $('renewalRows').innerHTML=(renewals.data||[]).length?(renewals.data||[]).map(r=>'<tr><td>'+esc(people.find(p=>p.id===r.profile_id)?.full_name||'Member')+'</td><td>'+esc(dept(r.department_id)?.name||'')+'</td><td>'+r.review_year+'</td><td>'+esc(r.availability||'—')+'</td><td>'+esc(r.status.replaceAll('_',' '))+'</td><td>'+(r.status==='submitted'||r.status==='under_review'?'<button class="table-action" data-renew="'+r.id+'" data-status="renewed">Renew</button> <button class="table-action" data-renew="'+r.id+'" data-status="not_renewed">Decline</button>':'—')+'</td></tr>').join(''):'<tr><td colspan="6">No renewal requests received.</td></tr>';
+  document.querySelectorAll('[data-renew]').forEach(b=>b.addEventListener('click',async()=>{b.disabled=true;try{const {error}=await supabase.from('department_renewal_requests').update({status:b.dataset.status,reviewed_by:state.user.id,reviewed_at:new Date().toISOString()}).eq('id',b.dataset.renew);if(error)throw error;notify('Membership renewal decision saved.');await loadAdmin();}catch(err){notify(err.message,true);b.disabled=false;}}));
 }
 function openReview(app,people){
   if(!app)return;state.selectedApplication=app;
@@ -212,14 +231,14 @@ async function appointLeader(e){
   }catch(err){notify(err.message,true);}finally{button.disabled=false;}
 }
 async function init(){
-  const {data,error}=await supabase.auth.getUser();if(error||!data.user){location.replace('/portal/admin/login.html');return;}
+  const {data,error}=await supabase.auth.getUser();if(error||!data.user){location.replace('/portal/student/student-login.html');return;}
   state.user=data.user;
   const {data:profile,error:profileError}=await supabase.from('profiles').select('id,full_name,email,role,status').eq('id',state.user.id).maybeSingle();
   if(profileError)throw profileError;if(!profile||profile.status!=='approved'){notify('Your URWA account is not approved for portal access.',true);return;}
   state.profile=profile;state.admin=profile.role==='admin';
   $('userName').textContent=profile.full_name||profile.email;$('userRole').textContent=state.admin?'URWA Administration':'URWA member';$('userInitials').textContent=(profile.full_name||'U').split(' ').map(x=>x[0]).slice(0,2).join('').toUpperCase();
   $('signOut').addEventListener('click',async()=>{await supabase.auth.signOut();location.replace('/portal/student/student-login.html');});
-  $('applicationForm').addEventListener('submit',submitApplication);$('taskForm').addEventListener('submit',createTask);$('reportForm').addEventListener('submit',submitReport);$('messageForm').addEventListener('submit',sendMessage);$('conversationForm').addEventListener('submit',createConversation);$('appointmentForm').addEventListener('submit',appointLeader);
+  $('applicationForm').addEventListener('submit',submitApplication);$('renewalForm').addEventListener('submit',submitRenewal);$('taskForm').addEventListener('submit',createTask);$('reportForm').addEventListener('submit',submitReport);$('messageForm').addEventListener('submit',sendMessage);$('conversationForm').addEventListener('submit',createConversation);$('appointmentForm').addEventListener('submit',appointLeader);
   $('newConversationBtn').addEventListener('click',()=>showNewConversation().catch(e=>notify(e.message,true)));$('cancelConversation').addEventListener('click',()=>$('newConversationPanel').hidden=true);
   $('approveApplicationBtn').addEventListener('click',()=>reviewApplication('approved').catch(e=>notify(e.message,true)));
   $('declineApplicationBtn').addEventListener('click',()=>reviewApplication('declined').catch(e=>notify(e.message,true)));
