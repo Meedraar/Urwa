@@ -74,6 +74,7 @@ async function login(form, role) {
 
 for (const [selector, role] of [
   ['#studentLoginForm', 'student'],
+  ['#departmentLoginForm', 'student'],
   ['[data-staff-login="teacher"]', 'teacher'],
   ['#adminLoginForm', 'admin']
 ]) {
@@ -128,6 +129,41 @@ if (registration) registration.addEventListener('submit', async (event) => {
     registration.reset();
   } catch (error) {
     showMessage(registration, error.message || 'Registration could not be completed.');
+  } finally { if (button) button.disabled = false; }
+});
+
+const departmentRegistration = $('departmentRegistrationForm');
+if (departmentRegistration) departmentRegistration.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const button = departmentRegistration.querySelector('[type="submit"]');
+  const password = $('password')?.value || '';
+  if (password.length < 8) return showMessage(departmentRegistration, 'Use a password with at least 8 characters.');
+  if (password !== $('confirmPassword')?.value) return showMessage(departmentRegistration, 'Your passwords do not match.');
+  if (button) button.disabled = true;
+  try {
+    const fullName = $('fullName')?.value.trim() || '';
+    const email = $('email')?.value.trim().toLowerCase() || '';
+    const phone = $('phone')?.value.trim() || '';
+    if (!fullName || !email || !phone) throw new Error('Enter your name, email and phone number.');
+    const next = '/portal/departments/index.html';
+    const { data, error } = await supabase.auth.signUp({
+      email, password,
+      options: {
+        emailRedirectTo: location.origin + '/portal/departments/department-login.html?next=' + encodeURIComponent(next),
+        data: { full_name: fullName, phone, account_type: 'department_applicant' }
+      }
+    });
+    if (error) throw error;
+    if (!data.user) throw new Error('Registration could not be completed. Please try again.');
+    if (data.session) await supabase.auth.signOut();
+    showMessage(departmentRegistration,
+      data.session
+        ? 'Your URWA Department Applicant account has been created and is awaiting Administration approval. Once approved, sign in here to continue your department application.'
+        : 'Your URWA Department Applicant registration has been received. Verify your email, then wait for Administration approval. After approval, sign in here to continue your department application.',
+      false);
+    departmentRegistration.reset();
+  } catch (error) {
+    showMessage(departmentRegistration, error.message || 'Registration could not be completed.');
   } finally { if (button) button.disabled = false; }
 });
 
