@@ -61,7 +61,11 @@ async function login(form, role) {
     if (profile.role !== role || profile.status !== 'approved') {
       throw new Error('This account is not approved for this portal. Contact URWA administration.');
     }
-    location.replace(roleHome[role]);
+    const requestedNext = new URLSearchParams(location.search).get('next');
+    const safeNext = role === 'student' && requestedNext === '/portal/departments/index.html'
+      ? requestedNext
+      : roleHome[role];
+    location.replace(safeNext);
   } catch (err) {
     await supabase.auth.signOut();
     throw err;
@@ -103,7 +107,7 @@ if (registration) registration.addEventListener('submit', async (event) => {
     const { data, error } = await supabase.auth.signUp({
       email, password,
       options: {
-        emailRedirectTo: location.origin + '/portal/student/student-login.html',
+        emailRedirectTo: location.origin + '/portal/student/student-login.html?next=' + encodeURIComponent(new URLSearchParams(location.search).get('next') === '/portal/departments/index.html' ? '/portal/departments/index.html' : '/portal/student/student-dashboard.html'),
         data: {
           full_name: fullName,
           phone,
