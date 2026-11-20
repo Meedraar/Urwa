@@ -123,6 +123,49 @@ if (registration) registration.addEventListener('submit', async (event) => {
   } finally { if (button) button.disabled = false; }
 });
 
+const teacherRegistration = $('teacherRegistrationForm');
+if (teacherRegistration) teacherRegistration.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const button = teacherRegistration.querySelector('[type="submit"]');
+  const password = $('password')?.value || '';
+  if (password.length < 8) return showMessage(teacherRegistration, 'Use a password with at least 8 characters.');
+  if (password !== $('confirmPassword')?.value) return showMessage(teacherRegistration, 'Your passwords do not match.');
+  if (button) button.disabled = true;
+  try {
+    const fullName = $('fullName')?.value.trim() || '';
+    const email = $('email')?.value.trim().toLowerCase() || '';
+    const phone = $('phone')?.value.trim() || '';
+    if (!fullName || !email || !phone) throw new Error('Enter your name, email and phone number.');
+    const { data, error } = await supabase.auth.signUp({
+      email, password,
+      options: {
+        emailRedirectTo: location.origin + '/portal/abla/teacher-login.html',
+        data: {
+          account_type: 'teacher',
+          full_name: fullName,
+          phone
+        }
+      }
+    });
+    if (error) throw error;
+    if (!data.user) throw new Error('Registration could not be completed. Please try again.');
+    const { error: applicationError } = await supabase.from('teacher_applications').insert({
+      id: data.user.id,
+      area_of_interest: $('area')?.value || null,
+      teaching_background: $('background')?.value.trim() || null,
+      availability: $('availability')?.value.trim() || null
+    });
+    if (applicationError) throw applicationError;
+    if (data.session) await supabase.auth.signOut();
+    showMessage(teacherRegistration,
+      'Your Abla application has been received. Please verify your email, then wait for URWA administration approval.',
+      false);
+    teacherRegistration.reset();
+  } catch (error) {
+    showMessage(teacherRegistration, error.message || 'Registration could not be completed.');
+  } finally { if (button) button.disabled = false; }
+});
+
 const forgot = $('studentForgotPasswordForm');
 if (forgot) forgot.addEventListener('submit', async (event) => {
   event.preventDefault();
