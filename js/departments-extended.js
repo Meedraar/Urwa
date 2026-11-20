@@ -49,7 +49,7 @@ async function decideTransfer(id,status){
     const moved=await supabase.from('department_memberships').update({department_id:request.to_department_id,position_id:target.id,updated_at:new Date().toISOString()}).eq('id',request.membership_id);
     if(moved.error)throw moved.error;
   }
-  const {error}=await supabase.from('department_transfers').update({status,reviewed_by:extra.user.id,reviewed_at:new Date().toISOString()}).eq('id',id);if(error)throw error;
+  const {error:updateError}=await supabase.from('department_transfers').update({status,reviewed_by:extra.user.id,reviewed_at:new Date().toISOString()}).eq('id',id);if(updateError)throw updateError;
   await loadTransfers();say('Transfer request '+status+'.');
 }
 async function loadEvaluations(){
