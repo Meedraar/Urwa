@@ -550,7 +550,7 @@
 
         <p class="register-note">
           Don't have a student account?
-          <a href="student-register.html">Register here</a>
+          <a id="studentRegisterLink" href="student-register.html">Register here</a>
         </p>
 
         <div class="help-note">
@@ -574,6 +574,15 @@
 
   </main>
 
+  <script>
+    const next = new URLSearchParams(location.search).get("next");
+    if (next === "/portal/departments/index.html") {
+      document.getElementById("studentRegisterLink").href = "student-register.html?next=" + encodeURIComponent(next);
+      document.querySelector(".login-card .eyebrow").textContent = "Department applicant sign in";
+      document.querySelector(".login-card .intro").textContent = "Sign in with your approved URWA account to continue to the department application. New applicants can create an account first; approval is required before applying.";
+      document.querySelector(".sign-in-btn").textContent = "Sign in and continue";
+    }
+  </script>
   <script type="module" src="../../js/supabase-auth.js"></script>
   <script>
     // Show and hide password

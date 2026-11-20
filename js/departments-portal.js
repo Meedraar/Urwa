@@ -232,7 +232,7 @@ async function appointLeader(e){
   }catch(err){notify(err.message,true);}finally{button.disabled=false;}
 }
 async function init(){
-  const {data,error}=await supabase.auth.getUser();if(error||!data.user){location.replace('/portal/student/student-login.html');return;}
+  const {data,error}=await supabase.auth.getUser();if(error||!data.user){location.replace('/portal/student/student-login.html?next='+encodeURIComponent('/portal/departments/index.html'));return;}
   state.user=data.user;
   const {data:profile,error:profileError}=await supabase.from('profiles').select('id,full_name,email,role,status').eq('id',state.user.id).maybeSingle();
   if(profileError)throw profileError;if(!profile||profile.status!=='approved'){notify('Your URWA account is not approved for portal access.',true);return;}

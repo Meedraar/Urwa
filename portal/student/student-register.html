@@ -647,6 +647,17 @@
   </footer>
 
   <script>
+    const next = new URLSearchParams(location.search).get("next");
+    if (next === "/portal/departments/index.html") {
+      document.querySelector(".form-heading .eyebrow").textContent = "DEPARTMENT APPLICANT ACCOUNT";
+      document.querySelector(".form-heading h2").textContent = "Create your URWA account first";
+      document.querySelector(".form-heading p").textContent = "A URWA account is required before you can apply to join a department. Submit this account registration, wait for Administration approval, then sign in to continue to the department application.";
+      document.querySelector(".login-prompt a").href = "student-login.html?next=" + encodeURIComponent(next);
+      const note = document.createElement("div");
+      note.className = "security-note";
+      note.textContent = "Your department application is not submitted by this registration form. After your account is approved, sign in and you will be returned to the department application page.";
+      document.querySelector(".form-heading").append(note);
+    }
     document.getElementById("year").textContent = new Date().getFullYear();
 
     document.querySelectorAll(".toggle-password").forEach(button => {
