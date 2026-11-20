@@ -8,3 +8,65 @@ body[data-urwa-role="student"],body[data-urwa-role="teacher"]{background:#f7faf8
 .urwa-card,.urwa-stat{border:1px solid #e5ece7;border-radius:18px;box-shadow:0 5px 18px rgba(20,55,43,.055);transition:box-shadow .2s}.urwa-card:hover,.urwa-stat:hover{box-shadow:0 10px 26px rgba(20,55,43,.085)}.urwa-card{padding:23px;background:#fff}.urwa-card-title,.urwa-section-title{color:#0e4a40}.urwa-section-title{margin:30px 0 14px;font-size:1.08rem;letter-spacing:-.01em}.urwa-stat{padding:20px;background:linear-gradient(145deg,#fff,#fbfdfb)}.urwa-stat-icon{background:#e3f0ea;color:#0e7b61;border-radius:12px}.urwa-stat.green,.urwa-stat.yellow,.urwa-stat.blue,.urwa-stat.red{background:#fff;border-color:#e5ece7}.urwa-badge.success{background:#e3f0ea;color:#0e6b50}.urwa-badge.info{background:#edf4f1;color:#356b59}.urwa-badge.pending{background:#fff5d9;color:#8b6821}.urwa-progress-fill{background:linear-gradient(90deg,#0e9b70,#65c7a3)}.urwa-table th{background:#f3f8f5;color:#52675d}.urwa-empty{background:#fbfdfb;border-color:#d9e7df}.urwa-empty strong{color:#0e4a40}
 .urwa-community-section{scroll-margin-top:90px}.urwa-community-card{background:linear-gradient(145deg,#fff,#fcfefc)}.urwa-announcement-feed{display:grid;gap:12px}.urwa-announcement-item{padding:17px 18px;border:1px solid #e4eee8;border-left:4px solid #0e9b70;border-radius:13px;background:#fff}.urwa-announcement-item h4{margin:5px 0;color:#18342d;font-size:.96rem}.urwa-announcement-item p{color:#52675d;font-size:.86rem;white-space:pre-wrap}.urwa-announcement-meta{color:#9a7935;font-size:.7rem;font-weight:750;letter-spacing:.04em;text-transform:uppercase}.urwa-btn-primary{background:#0e7b61;border-color:#0e7b61}.urwa-btn-primary:hover{background:#08372f;border-color:#08372f}
 @media(max-width:850px){.urwa-content{padding:22px 18px}.urwa-welcome{padding:24px}.urwa-page-heading h1{font-size:1.5rem}}@media(max-width:600px){.urwa-content{padding:17px 13px}.urwa-welcome{padding:21px}.urwa-welcome h2{font-size:1.25rem}.urwa-card{padding:17px}.urwa-announcement-item{padding:14px}}
+
+
+/* Premium responsive dashboard refresh */
+:root{--urwa-canvas:#f4f8f5;--urwa-forest:#0e4a40;--urwa-deep:#082f29;--urwa-gold:#e0a526;--urwa-mint:#e3f0ea;--urwa-ink:#18342d;--urwa-muted:#718078;--urwa-line:#e6eee8;--urwa-shadow:0 10px 30px rgba(14,74,64,.07)}
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+body[data-urwa-role="student"],body[data-urwa-role="teacher"]{background:var(--urwa-canvas);color:var(--urwa-ink);font-family:Inter,"Segoe UI",Arial,sans-serif}
+.urwa-sidebar{width:268px;background:#fff;border-right:1px solid var(--urwa-line);box-shadow:5px 0 24px rgba(14,74,64,.025)}
+.urwa-brand{padding:25px 22px 21px;border-bottom:1px solid #eef2ef;display:flex;align-items:center;gap:12px}
+.urwa-brand img{width:46px;height:46px;object-fit:contain;border-radius:13px;background:#fbf6e9;padding:4px}
+.urwa-brand-name{font-size:1.15rem;font-weight:850;letter-spacing:.15em;color:var(--urwa-forest)}
+.urwa-brand-tagline{font-size:.57rem;letter-spacing:.13em;font-weight:750;color:#a27b2b}
+.urwa-profile{margin:19px 15px 15px;padding:14px;border:1px solid #e8f0ea;border-radius:16px;background:linear-gradient(130deg,#f0f7f2,#fffaf0);display:flex;align-items:center;gap:11px}
+.urwa-nav{padding:5px 13px}.urwa-nav-label{padding:18px 12px 7px;color:#9aa9a0;font-size:.62rem;letter-spacing:.16em;font-weight:800;text-transform:uppercase}
+.urwa-nav a{margin:3px 0;padding:11px 13px;border-radius:12px;color:#53655c;font-size:.83rem;font-weight:650;transition:.18s}
+.urwa-nav a:hover{background:#f1f7f3;color:var(--urwa-forest);transform:translateX(2px)}
+.urwa-nav a.active{background:var(--urwa-mint);color:var(--urwa-forest);box-shadow:inset 3px 0 var(--urwa-gold)}
+.urwa-topbar{height:78px;min-height:78px;padding:0 clamp(20px,3vw,44px);background:rgba(255,255,255,.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--urwa-line);position:sticky;top:0;z-index:20}
+.urwa-topbar-title{font-size:.98rem;color:var(--urwa-ink);font-weight:800}
+.urwa-content{width:100%;max-width:1680px;margin:0 auto;padding:32px clamp(20px,3.4vw,52px) 55px}
+.urwa-page-heading h1{font-size:clamp(1.55rem,2.4vw,2rem);font-weight:850;letter-spacing:-.045em;color:var(--urwa-ink)}
+.urwa-page-heading p{color:var(--urwa-muted);font-size:.88rem;line-height:1.6}
+.urwa-welcome{position:relative;overflow:hidden;min-height:170px;padding:32px 36px;margin:0 0 25px;border:1px solid rgba(224,165,38,.24);border-radius:22px;background:radial-gradient(circle at 86% 16%,rgba(242,201,76,.23),transparent 24%),linear-gradient(112deg,#082f29,#0e4a40 58%,#176657);box-shadow:0 15px 35px rgba(8,47,41,.14)}
+.urwa-welcome h2{font-size:clamp(1.3rem,2.2vw,1.75rem);font-weight:800;letter-spacing:-.04em;color:#fff}
+.urwa-welcome p{color:rgba(255,255,255,.8);font-size:.9rem;line-height:1.65}
+.urwa-welcome .arabic{color:#f2c94c;font-size:2rem}
+.urwa-card,.urwa-stat{min-width:0;border:1px solid var(--urwa-line);border-radius:18px;background:#fff;box-shadow:0 5px 18px rgba(14,74,64,.045);transition:box-shadow .2s,border-color .2s}
+.urwa-card{padding:23px}.urwa-card:hover,.urwa-stat:hover{box-shadow:0 16px 38px rgba(14,74,64,.1);border-color:#d9e9df}
+.urwa-stat{min-height:145px;padding:19px 20px;background:linear-gradient(145deg,#fff,#fbfdfb)}
+.urwa-stat-icon{width:40px;height:40px;border-radius:13px;background:var(--urwa-mint);color:var(--urwa-forest)}
+.urwa-stat-label{color:var(--urwa-muted);font-size:.74rem;font-weight:650}
+.urwa-stat-value{color:var(--urwa-ink);font-size:1.7rem;font-weight:850;letter-spacing:-.04em}
+.urwa-stat-note{color:#8a9890;font-size:.7rem}
+.urwa-stat.green,.urwa-stat.yellow,.urwa-stat.blue,.urwa-stat.red{background:#fff;border-color:var(--urwa-line)}
+.urwa-card-title,.urwa-section-title{color:var(--urwa-forest)}
+.urwa-card-title{font-size:.98rem;font-weight:800;letter-spacing:-.02em}
+.urwa-card-subtitle{font-size:.77rem;line-height:1.55;color:var(--urwa-muted)}
+.urwa-section-title{margin:31px 0 14px;font-size:1.04rem;font-weight:850;letter-spacing:-.025em}
+.urwa-section-title:before{content:"";display:inline-block;width:4px;height:17px;margin-right:10px;vertical-align:-3px;border-radius:4px;background:var(--urwa-gold)}
+.urwa-badge{padding:5px 10px;border-radius:30px;font-size:.66rem;font-weight:800}
+.urwa-badge.success{background:#e4f3e9;color:#176b4b}.urwa-badge.info{background:#edf4f1;color:#356b59}.urwa-badge.pending{background:#fff4d8;color:#8b6821}
+.urwa-table-wrap{border:1px solid var(--urwa-line);border-radius:14px;background:#fff}
+.urwa-table th{background:#f5f9f6;color:#718078;font-size:.7rem;letter-spacing:.04em;text-transform:uppercase}
+.urwa-empty{padding:32px 18px;border:1px dashed #d8e6dc;border-radius:14px;background:#fbfdfb;color:var(--urwa-muted);font-size:.82rem;line-height:1.6}
+.urwa-empty strong{color:var(--urwa-forest)}
+.urwa-community-section{scroll-margin-top:100px}.urwa-community-card{background:linear-gradient(145deg,#fff,#fcfefc)}
+.urwa-announcement-feed{display:grid;gap:12px}
+.urwa-announcement-item{padding:17px 19px;border:1px solid #e5eee8;border-left:4px solid #0e9b70;border-radius:14px;background:#fff}
+.urwa-announcement-item h4{margin:5px 0 7px;color:var(--urwa-ink);font-size:.94rem;font-weight:800}
+.urwa-announcement-item p{color:#53675d;font-size:.84rem;line-height:1.65;white-space:pre-wrap}
+.urwa-announcement-meta{color:#9a7935;font-size:.67rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase}
+.urwa-btn{border-radius:11px;font-weight:750}.urwa-btn-primary{background:var(--urwa-forest);border-color:var(--urwa-forest)}
+.urwa-btn-primary:hover{background:var(--urwa-deep);border-color:var(--urwa-deep)}
+.urwa-form-group input,.urwa-form-group select,.urwa-form-group textarea{border:1px solid #dfe9e2;border-radius:11px;background:#fcfdfc}
+.urwa-form-group input:focus,.urwa-form-group select:focus,.urwa-form-group textarea:focus{border-color:#78aa94;box-shadow:0 0 0 3px rgba(14,74,64,.08)}
+.urwa-attendance-card{border:1px solid #e2eee6;border-radius:15px;background:#f0f7f2}
+.urwa-attendance-card strong{color:var(--urwa-forest)}
+.urwa-live-status{padding:15px 18px!important;margin:0 0 22px;border:1px solid #e5eee8!important;border-left:4px solid var(--urwa-gold)!important;border-radius:14px!important;background:#fff!important}
+@media(max-width:1150px){.urwa-grid-4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:850px){.urwa-sidebar{width:270px;z-index:50}.urwa-content{padding:24px 20px 45px}.urwa-topbar{height:70px;min-height:70px;padding:0 18px}.urwa-welcome{padding:27px}}
+@media(max-width:600px){.urwa-content{padding:18px 13px 38px}.urwa-topbar{padding:0 13px}.urwa-grid-2,.urwa-grid-3{grid-template-columns:1fr}.urwa-grid-4{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.urwa-stat{min-height:130px;padding:14px}.urwa-stat-value{font-size:1.4rem}.urwa-welcome{min-height:0;padding:23px 20px;border-radius:17px}.urwa-welcome h2{font-size:1.28rem}.urwa-welcome .arabic{display:none}.urwa-card{padding:17px;border-radius:15px}.urwa-user-name,.urwa-topbar-right .urwa-user-role{display:none}}
+@media(max-width:380px){.urwa-grid-4{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
