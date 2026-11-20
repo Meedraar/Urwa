@@ -134,11 +134,16 @@ if (registration) registration.addEventListener('submit', async (event) => {
 });
 
 
-// Populate the dedicated department applicant form from the live department directory.
+// Populate the department applicant form from the public, read-only department directory.
+// The database grants anonymous visitors SELECT access only to active directory rows.
 const departmentSelect = $('applicationDepartment');
 const positionSelect = $('applicationPosition');
 if (departmentSelect && positionSelect) {
   const loadDepartmentChoices = async () => {
+    departmentSelect.disabled = true;
+    positionSelect.disabled = true;
+    departmentSelect.replaceChildren(new Option('Loading departments…', ''));
+    positionSelect.replaceChildren(new Option('Choose a department first', ''));
     try {
       const [{ data: departments, error: departmentError }, { data: positions, error: positionError }] = await Promise.all([
         supabase.from('departments').select('id,name').eq('is_active', true).order('name'),
@@ -146,22 +151,56 @@ if (departmentSelect && positionSelect) {
       ]);
       if (departmentError) throw departmentError;
       if (positionError) throw positionError;
-      departmentSelect.innerHTML = '<option value="">Choose a department</option>' +
-        (departments || []).map(d => '<option value="' + d.id + '">' + d.name.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])) + '</option>').join('');
+      if (!departments?.length) {
+        throw new Error('No active departments were returned. Please contact URWA Administration.');
+      }
+
+      departmentSelect.replaceChildren(new Option('Choose a department', ''));
+      departments.forEach((department) => {
+        departmentSelect.add(new Option(department.name, department.id));
+      });
+      departmentSelect.disabled = false;
+
       const renderApplicantPositions = () => {
         const departmentId = departmentSelect.value;
-        const available = (positions || []).filter(p => p.department_id === departmentId && p.is_open_for_application && !p.is_leadership);
-        positionSelect.disabled = !departmentId;
-        positionSelect.innerHTML = available.length
-          ? '<option value="">Choose a position</option>' + available.map(p => '<option value="' + p.id + '">' + p.title.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])) + '</option>').join('')
-          : '<option value="">No open positions available — contact Administration</option>';
+        const available = (positions || []).filter((position) =>
+          position.department_id === departmentId &&
+          position.is_open_for_application &&
+          !position.is_leadership
+        );
+
+        positionSelect.replaceChildren();
+        if (!departmentId) {
+          positionSelect.add(new Option('Choose a department first', ''));
+          positionSelect.disabled = true;
+          return;
+        }
+
+        if (!available.length) {
+          positionSelect.add(new Option('No open positions available — contact Administration', ''));
+          positionSelect.disabled = true;
+          return;
+        }
+
+        positionSelect.add(new Option('Choose a position', ''));
+        available.forEach((position) => {
+          positionSelect.add(new Option(position.title, position.id));
+        });
+        positionSelect.disabled = false;
       };
+
       departmentSelect.addEventListener('change', renderApplicantPositions);
       renderApplicantPositions();
     } catch (error) {
-      departmentSelect.innerHTML = '<option value="">Unable to load departments</option>';
-      positionSelect.innerHTML = '<option value="">Please refresh or contact URWA Administration</option>';
-      showMessage(departmentSelect.closest('form'), 'Department choices could not be loaded. Please refresh the page or contact URWA Administration.');
+      console.error('Unable to load the URWA department directory:', error);
+      departmentSelect.replaceChildren(new Option('Unable to load departments', ''));
+      departmentSelect.disabled = true;
+      positionSelect.replaceChildren(new Option('Please refresh or contact URWA Administration', ''));
+      positionSelect.disabled = true;
+      showMessage(
+        departmentSelect.closest('form'),
+        error.message || 'Department choices could not be loaded. Please refresh the page or contact URWA Administration.'
+      );
     }
   };
   loadDepartmentChoices();
