@@ -108,6 +108,51 @@ async function adminLoad(user) {
     if (stats[3]) stats[3].textContent = halaqas.filter(h => h.is_active).length;
     if (stats[4]) stats[4].textContent = attendance.length
       ? Math.round(attendance.filter(a => ['present', 'late'].includes(a.status)).length / attendance.length * 100) + '%' : '—';
+    // Populate the detailed admin dashboard from the same live Supabase records.
+    const approvedEnrollments = enroll.filter(e => e.status === 'approved');
+    const programmeCounts = new Map();
+    approvedEnrollments.forEach(e => {
+      const name = (e.programme || 'Programme not specified').trim();
+      programmeCounts.set(name, (programmeCounts.get(name) || 0) + 1);
+    });
+    const programmeEntries = [...programmeCounts.entries()].sort((a,b) => b[1]-a[1]).slice(0,6);
+    const maxProgramme = Math.max(1, ...programmeEntries.map(x => x[1]));
+    put('#admin-programme-chart', programmeEntries.length ? programmeEntries.map(([name,count]) =>
+      '<div class="admin-bar-item"><strong>' + count + '</strong><div class="admin-bar-track"><i class="admin-bar-fill" style="height:' +
+      Math.max(5, Math.round(count/maxProgramme*100)) + '%"></i></div><small title="' + esc(name) + '">' + esc(name) + '</small></div>'
+    ).join('') : '<p class="admin-empty">No approved programme enrolments to chart yet.</p>');
+    const halaqaRows = halaqas.slice(0,7).map(h => {
+      const assigned = assignments.filter(a => a.halaqa_id === h.id);
+      const studentCount = approvedEnrollments.filter(e => e.halaqa_id === h.id).length;
+      const teacherNames = assigned.map(a => byId.get(a.teacher_id)?.full_name).filter(Boolean);
+      return '<tr><td><b>' + esc(h.name) + '</b></td><td>' + esc(teacherNames.join(', ') || 'Unassigned') +
+        '</td><td>' + studentCount + '</td><td><span class="admin-mini-status">' + (h.is_active ? 'Active' : 'Inactive') + '</span></td></tr>';
+    }).join('');
+    put('#admin-halaqa-overview', halaqaRows, '<tr><td colspan="4">No halaqas configured yet.</td></tr>');
+    const recentPeople = [...people].sort((a,b) => new Date(b.created_at || 0)-new Date(a.created_at || 0)).slice(0,5);
+    put('#admin-recent-activity', recentPeople.map(p => {
+      const role = p.role === 'teacher' ? 'Abla / Teacher' : p.role === 'admin' ? 'Administrator' : 'Student';
+      const initials = (p.full_name || 'U').split(/\\s+/).slice(0,2).map(x => x[0]).join('').toUpperCase();
+      return '<div class="admin-activity-row"><span class="admin-activity-avatar">' + esc(initials) +
+        '</span><div><b>' + esc(p.full_name || 'New account') + '</b><small>' + role + ' · ' +
+        (p.created_at ? date(p.created_at) : 'Registration date unavailable') + '</small></div></div>';
+    }).join(''), '<p class="admin-empty">No registrations to show yet.</p>');
+    const presentCount = attendance.filter(a => ['present','late'].includes(a.status)).length;
+    const absentCount = attendance.filter(a => a.status === 'absent').length;
+    const otherCount = attendance.length - presentCount - absentCount;
+    const attendanceRate = attendance.length ? Math.round(presentCount / attendance.length * 100) : 0;
+    const donut = $('#admin-attendance-donut');
+    if (donut) donut.style.background = 'conic-gradient(#2676dd 0 ' + attendanceRate + '%,#e16a72 ' +
+      attendanceRate + '% ' + (attendance.length ? Math.round((presentCount+absentCount)/attendance.length*100) : 0) + '%,#edf1f6 0 100%)';
+    const textValue = (selector,value) => { const node = $(selector); if (node) node.textContent = value; };
+    textValue('#admin-attendance-percent', attendance.length ? attendanceRate + '%' : '—');
+    textValue('#admin-attendance-present', presentCount);
+    textValue('#admin-attendance-absent', absentCount);
+    textValue('#admin-attendance-other', otherCount);
+    textValue('#admin-pending-count', pending.length);
+    textValue('#admin-teacher-pending', teachers.filter(p => p.status === 'pending').length);
+    textValue('#admin-unassigned-count', approvedEnrollments.filter(e => !e.halaqa_id).length);
+
     const adminAccounts = people.filter(p => p.role === 'admin');
     const currentProfile = people.find(p => p.id === user.id);
     const isSuperAdmin = currentProfile?.admin_level === 'super_admin';
