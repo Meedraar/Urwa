@@ -60,3 +60,27 @@ The Supabase migration history is the applied database record. Do not rerun thes
 
 ## Deployment boundary
 This work is being prepared on GitHub branch `feature/department-management`. Do not deploy or merge to `main` until the user explicitly approves.
+
+
+## Workspace completion update
+
+The review branch now includes the extended department operations UI in `js/departments-extended.js`:
+
+- Confidential student welfare case submission, triage, resolution and escalation to Administration (visibility is still enforced by Supabase RLS).
+- Department transfer requests and Administration decisions. An approved transfer moves the member to an available non-leadership position in the destination department.
+- Annual member evaluations with five 0–5 scoring dimensions, outcome and notes.
+- Report review queue for department leadership and Administration.
+- Department/all-department announcements and an upcoming-events list with event creation.
+
+The extension is loaded from `portal/departments/index.html` and styled in `css/departments-portal.css`.
+
+## Validation and limitations
+
+- JavaScript syntax parsing passed for both department portal modules after the final edits.
+- The live database contains six active departments, 26 positions and the 15 `department_*` tables plus `student_welfare_cases`.
+- RLS policies for the department and welfare tables are scoped to the `authenticated` role. Supabase advisor warnings remain and should be reviewed before production sign-off; this work does not claim a clean security audit.
+- No browser end-to-end tests have been run with separate student, department-head and administrator accounts.
+- Messaging currently refreshes when a message is sent or a conversation is opened; push/realtime delivery and notification preferences are not yet verified.
+- Storage attachments are not enabled.
+- Database migration SQL source files still need to be added to version control for a fully reproducible fresh-project setup.
+- No Vercel deployment or merge to `main` was performed as part of this update.
