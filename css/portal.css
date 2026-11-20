@@ -1047,3 +1047,332 @@ img {
         min-width: 150px;
     }
 }
+
+/* =====================================================
+   URWA AUTHENTICATION PAGES — STUDENT / ABLA / ADMIN
+   ===================================================== */
+
+.sys-header {
+    width: 100%;
+    min-height: 82px;
+    padding: 12px clamp(18px, 5vw, 64px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    background: rgba(251, 246, 233, .96);
+    border-bottom: 1px solid #e7dfd1;
+    box-shadow: 0 3px 18px rgba(14, 74, 64, .06);
+}
+
+.sys-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    color: #0e4a40;
+    font-weight: 800;
+    letter-spacing: .12em;
+    line-height: 1.2;
+}
+
+.sys-brand img {
+    display: block;
+    width: 58px;
+    height: 58px;
+    max-width: 58px;
+    object-fit: contain;
+    flex: 0 0 58px;
+}
+
+.sys-brand small {
+    display: block;
+    margin-top: 5px;
+    color: #8c6b2c;
+    font-size: .62rem;
+    letter-spacing: .13em;
+    font-weight: 700;
+}
+
+.sys-header > a:last-child {
+    color: #0e4a40;
+    font-size: .9rem;
+    font-weight: 650;
+}
+
+.sys-header > a:last-child:hover,
+.sys-login-links a:hover,
+.sys-login-form > p a:hover {
+    color: #a17a2e;
+    text-decoration: underline;
+}
+
+.sys-login-wrap {
+    min-height: calc(100vh - 150px);
+    padding: clamp(34px, 6vw, 76px) 20px;
+    display: grid;
+    place-items: center;
+    background:
+        radial-gradient(circle at 12% 18%, rgba(224, 165, 38, .10), transparent 26%),
+        radial-gradient(circle at 88% 82%, rgba(14, 74, 64, .09), transparent 30%),
+        #fbf6e9;
+}
+
+.sys-login-card {
+    width: min(100%, 980px);
+    min-height: 500px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #e7dfd1;
+    border-radius: 24px;
+    box-shadow: 0 22px 65px rgba(14, 74, 64, .12);
+}
+
+.sys-login-intro {
+    padding: clamp(32px, 5vw, 58px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #fbf6e9;
+    background:
+        radial-gradient(circle at 90% 10%, rgba(224, 165, 38, .20), transparent 35%),
+        linear-gradient(145deg, #0e4a40, #082f29);
+}
+
+.sys-eyebrow {
+    margin-bottom: 18px;
+    color: #f2c94c;
+    font-size: .75rem;
+    font-weight: 800;
+    letter-spacing: .17em;
+}
+
+.sys-login-intro h1 {
+    margin: 0 0 16px;
+    color: #fff;
+    font-family: "DM Sans", "Segoe UI", sans-serif;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 750;
+    line-height: 1.12;
+    letter-spacing: -.04em;
+}
+
+.sys-login-intro p {
+    max-width: 410px;
+    color: rgba(251, 246, 233, .86);
+    font-size: 1rem;
+    line-height: 1.75;
+}
+
+.sys-login-form {
+    padding: clamp(30px, 5vw, 58px);
+    align-self: center;
+    min-width: 0;
+}
+
+.sys-login-form h2 {
+    margin: 0 0 8px;
+    color: #0e4a40;
+    font-family: "DM Sans", "Segoe UI", sans-serif;
+    font-size: 1.8rem;
+    font-weight: 750;
+}
+
+.sys-muted {
+    color: #64756d;
+    font-size: .88rem;
+    line-height: 1.6;
+}
+
+.sys-login-form form {
+    margin-top: 26px;
+}
+
+.sys-field {
+    margin-bottom: 18px;
+}
+
+.sys-field label {
+    display: block;
+    margin-bottom: 7px;
+    color: #18342d;
+    font-size: .86rem;
+    font-weight: 700;
+}
+
+.sys-field input {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    min-height: 48px;
+    padding: 11px 13px;
+    border: 1px solid #dcded6;
+    border-radius: 10px;
+    outline: none;
+    background: #fff;
+    color: #18342d;
+    font: inherit;
+    font-size: .94rem;
+    transition: border-color .2s, box-shadow .2s;
+}
+
+.sys-field input:focus {
+    border-color: #0e4a40;
+    box-shadow: 0 0 0 3px rgba(14, 74, 64, .10);
+}
+
+.sys-field > div {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+}
+
+.sys-btn {
+    min-height: 47px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 19px;
+    border: 1px solid #0e4a40;
+    border-radius: 10px;
+    background: #0e4a40;
+    color: #fff;
+    font: inherit;
+    font-size: .9rem;
+    font-weight: 750;
+    cursor: pointer;
+    transition: background .2s, transform .2s, border-color .2s;
+}
+
+.sys-btn:hover {
+    background: #08372f;
+    border-color: #08372f;
+    transform: translateY(-1px);
+}
+
+.sys-btn.light {
+    border-color: #dcded6;
+    background: #fff;
+    color: #0e4a40;
+}
+
+.sys-btn.light:hover {
+    background: #e3f0ea;
+    border-color: #0e4a40;
+}
+
+.sys-btn.small {
+    min-height: 44px;
+    padding: 9px 13px;
+    font-size: .82rem;
+}
+
+.sys-login-form form > .sys-btn {
+    width: 100%;
+    margin-top: 3px;
+}
+
+.sys-notice {
+    margin-top: 14px;
+    padding: 11px 13px;
+    border-radius: 9px;
+    background: #e3f0ea;
+    color: #0e4a40;
+    font-size: .86rem;
+}
+
+.sys-hidden {
+    display: none !important;
+}
+
+.sys-login-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    margin-top: 10px;
+    font-size: .83rem;
+}
+
+.sys-login-links a,
+.sys-login-form > p a {
+    color: #8c6b2c;
+    font-weight: 650;
+}
+
+.sys-footer {
+    padding: 18px 20px;
+    background: #082f29;
+    color: rgba(251, 246, 233, .8);
+    text-align: center;
+    font-size: .8rem;
+}
+
+@media (max-width: 720px) {
+    .sys-header {
+        min-height: 72px;
+        padding: 10px 16px;
+    }
+
+    .sys-brand img {
+        width: 48px;
+        height: 48px;
+        max-width: 48px;
+        flex-basis: 48px;
+    }
+
+    .sys-brand {
+        font-size: .88rem;
+    }
+
+    .sys-brand small {
+        font-size: .55rem;
+    }
+
+    .sys-header > a:last-child {
+        font-size: .8rem;
+        white-space: nowrap;
+    }
+
+    .sys-login-wrap {
+        min-height: auto;
+        padding: 24px 14px 36px;
+    }
+
+    .sys-login-card {
+        grid-template-columns: 1fr;
+        min-height: 0;
+        border-radius: 18px;
+    }
+
+    .sys-login-intro {
+        padding: 30px 25px;
+    }
+
+    .sys-login-intro h1 {
+        font-size: 2rem;
+    }
+
+    .sys-login-intro [lang="ar"] {
+        font-size: 25px !important;
+    }
+
+    .sys-login-form {
+        padding: 28px 24px 32px;
+    }
+}
+
+@media (max-width: 380px) {
+    .sys-brand small {
+        letter-spacing: .06em;
+    }
+
+    .sys-header > a:last-child {
+        font-size: .74rem;
+    }
+
+    .sys-field > div {
+        gap: 6px;
+    }
+}
+
