@@ -1,0 +1,3 @@
+@import url('./dashboard.css');
+/* Administrator portal */
+.admin-dashboard .sidebar{background:#102f2a}.admin-dashboard .stat-card{border-top:3px solid var(--gold)}.admin-actions{display:flex;flex-wrap:wrap;gap:10px}
