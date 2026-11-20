@@ -38,6 +38,7 @@
                 <a href="#students"><span class="urwa-nav-icon">♙</span>Students</a>
                 <a href="#teachers"><span class="urwa-nav-icon">♧</span>Ablas / Teachers</a>
                 <a href="#account-status"><span class="urwa-nav-icon">◉</span>Account Status</a>
+                <a href="#super-admin-management" data-super-admin-only hidden><span class="urwa-nav-icon">♙</span>Admin Management</a>
                 <a href="#halaqas"><span class="urwa-nav-icon">◎</span>Halaqas</a>
                 <a href="#programmes"><span class="urwa-nav-icon">◇</span>Programmes</a>
                 <a href="#attendance"><span class="urwa-nav-icon">✓</span>Attendance</a>
@@ -76,7 +77,7 @@
                         <div class="urwa-avatar">A</div>
                         <div>
                             <div class="urwa-user-name" data-profile-name>Administrator</div>
-                            <div class="urwa-user-role">Super Admin</div>
+                            <div class="urwa-user-role" data-admin-level-label>Administrator</div>
                         </div>
                     </div>
                 </div>
@@ -288,7 +289,12 @@
                     </div>
                 </section>
 
-                <section id="account-status">
+                <section id="super-admin-management" hidden>
+<h3 class="urwa-section-title">Administrator Management</h3>
+<div class="urwa-card"><p class="urwa-card-subtitle">Only the Super Admin can change administrator privilege levels. Standard Admins cannot promote themselves or other accounts.</p>
+<div class="urwa-table-wrap"><table class="urwa-table"><thead><tr><th>Administrator</th><th>Email</th><th>Access level</th><th>Status</th><th>Action</th></tr></thead><tbody id="super-admin-list"><tr><td colspan="5">Loading administrator accounts…</td></tr></tbody></table></div></div>
+</section>
+<section id="account-status">
 <h3 class="urwa-section-title">Account Status Register</h3>
 <div class="urwa-card"><p class="urwa-card-subtitle">Live account records from Supabase. Pending, approved and cancelled statuses are shown for students, Ablas and administrators.</p>
 <div class="urwa-table-wrap"><table class="urwa-table"><thead><tr><th>Name</th><th>Email</th><th>Account type</th><th>Status</th><th>Registered</th></tr></thead><tbody id="admin-account-status-body"><tr><td colspan="5">Loading account records from Supabase…</td></tr></tbody></table></div></div></section><section id="halaqas">
