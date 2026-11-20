@@ -143,19 +143,15 @@ if (teacherRegistration) teacherRegistration.addEventListener('submit', async (e
         data: {
           account_type: 'teacher',
           full_name: fullName,
-          phone
+          phone,
+          area_of_interest: $('area')?.value || '',
+          teaching_background: $('background')?.value.trim() || '',
+          availability: $('availability')?.value.trim() || ''
         }
       }
     });
     if (error) throw error;
     if (!data.user) throw new Error('Registration could not be completed. Please try again.');
-    const { error: applicationError } = await supabase.from('teacher_applications').insert({
-      id: data.user.id,
-      area_of_interest: $('area')?.value || null,
-      teaching_background: $('background')?.value.trim() || null,
-      availability: $('availability')?.value.trim() || null
-    });
-    if (applicationError) throw applicationError;
     if (data.session) await supabase.auth.signOut();
     showMessage(teacherRegistration,
       'Your Abla application has been received. Please verify your email, then wait for URWA administration approval.',
