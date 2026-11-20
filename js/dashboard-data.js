@@ -44,6 +44,8 @@ async function adminLoad(user) {
     const byStudent = new Map(enroll.map(e => [e.student_id, e]));
     const byId = new Map(people.map(p => [p.id, p]));
     const byHalaqa = new Map(halaqas.map(h => [h.id, h]));
+    const announcementTarget = $('#announcement-halaqa');
+    if (announcementTarget) announcementTarget.innerHTML = '<option value="">All selected audiences</option>' + halaqas.filter(h => h.is_active).map(h => '<option value="' + h.id + '">' + esc(h.name) + '</option>').join('');
     const options = (selected) => '<option value="">Choose halaqa</option>' +
       halaqas.filter(h => h.is_active).map(h => '<option value="' + h.id + '" ' +
       (h.id === selected ? 'selected' : '') + '>' + esc(h.name) + '</option>').join('');
@@ -195,6 +197,7 @@ async function initAdmin(user) {
         title: $('#announcement-title').value.trim(),
         message: $('#announcement-message').value.trim(),
         audience: $('#announcement-audience').value,
+        halaqa_id: $('#announcement-halaqa')?.value || null,
         published_by: user.id
       });
       if (error) fail(error);
@@ -221,6 +224,12 @@ async function studentLoad(user) {
     if (error) fail(error);
     if (data) halaqaName = data.name;
   }
+  const announcementsQ = await supabase.from('announcements').select('id,title,message,audience,halaqa_id,published_at').or('audience.eq.all,audience.eq.students').order('published_at', { ascending: false });
+  if (announcementsQ.error) fail(announcementsQ.error);
+  const visibleAnnouncements = (announcementsQ.data || []).filter(x => !x.halaqa_id || x.halaqa_id === enrollment.halaqa_id);
+  const renderFeed = items => items.length ? items.map(x => '<article class="urwa-announcement-item"><div class="urwa-announcement-meta">' + date(x.published_at) + (x.halaqa_id ? ' · Your level' : ' · URWA') + '</div><h4>' + esc(x.title) + '</h4><p>' + esc(x.message) + '</p></article>').join('') : '<div class="urwa-empty"><strong>No updates yet</strong>New messages from URWA will appear here.</div>';
+  const communityFeed = $('#student-community-feed'); if (communityFeed) communityFeed.innerHTML = renderFeed(visibleAnnouncements.filter(x => x.halaqa_id));
+  const announcementFeed = $('#student-announcements-feed'); if (announcementFeed) announcementFeed.innerHTML = renderFeed(visibleAnnouncements);
   const panel = $('#student-assignments-list');
   if (panel) panel.innerHTML = assignments.length ? assignments.map(a =>
     '<article><b>' + esc(a.title) + '</b><p>' + esc(a.assignment_type || 'Learning task') +
@@ -275,6 +284,12 @@ async function teacherLoad(user) {
   const select = $('#assignment-students');
   if (select) select.innerHTML = '<option value="">Choose your halaqa</option>' +
     halaqas.map(h => '<option value="' + h.id + '">' + esc(h.name) + '</option>').join('');
+  const teacherAnnouncementsQ = await supabase.from('announcements').select('id,title,message,audience,halaqa_id,published_at').or('audience.eq.all,audience.eq.teachers').order('published_at', { ascending: false });
+  if (teacherAnnouncementsQ.error) fail(teacherAnnouncementsQ.error);
+  const teacherFeedItems = (teacherAnnouncementsQ.data || []).filter(x => !x.halaqa_id || halaqaIds.includes(x.halaqa_id));
+  const renderTeacherFeed = items => items.length ? items.map(x => '<article class="urwa-announcement-item"><div class="urwa-announcement-meta">' + date(x.published_at) + (x.halaqa_id ? ' · Assigned halaqa' : ' · URWA') + '</div><h4>' + esc(x.title) + '</h4><p>' + esc(x.message) + '</p></article>').join('') : '<div class="urwa-empty"><strong>No updates yet</strong>New messages from URWA will appear here.</div>';
+  const communityFeed = $('#teacher-community-feed'); if (communityFeed) communityFeed.innerHTML = renderTeacherFeed(teacherFeedItems.filter(x => x.halaqa_id));
+  const announcementFeed = $('#teacher-announcements-feed'); if (announcementFeed) announcementFeed.innerHTML = renderTeacherFeed(teacherFeedItems);
   status('teacher-live-overview', 'Your teaching workspace is connected',
     halaqas.length + ' halaqas · ' + enrollments.length + ' approved students · ' +
     attendance.length + ' attendance records · ' + assignmentsQ.data.length + ' assignments.');
