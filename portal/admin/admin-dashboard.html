@@ -108,7 +108,42 @@
                     <a href="#announcements"><i class="rose">♧</i><b>Publish Notice</b></a>
                   </div>
                 </section>
-                <div class="urwa-grid urwa-grid-2" style="margin-top:20px">
+                <section class="admin-command-grid" aria-label="Academy operations overview">
+                  <div class="admin-command-main">
+                    <section class="admin-panel admin-chart-panel">
+                      <header><div><span class="admin-eyebrow">ACADEMY OVERVIEW</span><h2>Student enrolment by programme</h2><p>Approved enrolments grouped by programme</p></div><a href="#reports">View reports ↗</a></header>
+                      <div id="admin-programme-chart" class="admin-bars"><p class="admin-empty">Programme data will appear when records load.</p></div>
+                    </section>
+                    <section class="admin-panel admin-course-panel">
+                      <header><div><span class="admin-eyebrow">LEARNING OPERATIONS</span><h2>Halaqa management</h2><p>Current halaqa allocation and student coverage</p></div><a href="#halaqas">Manage all ↗</a></header>
+                      <div class="admin-table-scroll"><table class="admin-mini-table"><thead><tr><th>Halaqa</th><th>Abla</th><th>Students</th><th>Status</th></tr></thead><tbody id="admin-halaqa-overview"><tr><td colspan="4">Loading halaqas…</td></tr></tbody></table></div>
+                    </section>
+                    <section class="admin-panel admin-activity-panel">
+                      <header><div><span class="admin-eyebrow">LATEST UPDATES</span><h2>Recent registrations</h2><p>Latest accounts registered with URWA</p></div><a href="#account-status">All activity ↗</a></header>
+                      <div id="admin-recent-activity" class="admin-activity-list"><p class="admin-empty">Recent registrations will appear here.</p></div>
+                    </section>
+                  </div>
+                  <aside class="admin-command-side">
+                    <section class="admin-panel admin-attendance-panel">
+                      <header><div><span class="admin-eyebrow">ATTENDANCE</span><h2>Staff & student attendance</h2></div><a href="#attendance">Details</a></header>
+                      <div class="admin-attendance-visual"><div class="admin-donut" id="admin-attendance-donut"><strong id="admin-attendance-percent">—</strong></div><div class="admin-legend"><span><i class="present"></i>Present / late <b id="admin-attendance-present">—</b></span><span><i class="absent"></i>Absent <b id="admin-attendance-absent">—</b></span><span><i class="other"></i>Other <b id="admin-attendance-other">—</b></span></div></div>
+                    </section>
+                    <section class="admin-panel admin-attention-panel">
+                      <header><div><span class="admin-eyebrow">NEEDS ATTENTION</span><h2>Admin action centre</h2></div></header>
+                      <a href="#admissions"><span class="admin-attention-icon violet">✧</span><span><b>Pending admissions</b><small>Review new student applications</small></span><strong id="admin-pending-count">—</strong></a>
+                      <a href="#teachers"><span class="admin-attention-icon green">♧</span><span><b>Abla applications</b><small>Review teaching team accounts</small></span><strong id="admin-teacher-pending">—</strong></a>
+                      <a href="#halaqas"><span class="admin-attention-icon amber">◎</span><span><b>Unassigned students</b><small>Students awaiting halaqa allocation</small></span><strong id="admin-unassigned-count">—</strong></a>
+                    </section>
+                    <section class="admin-panel admin-schedule-panel">
+                      <header><div><span class="admin-eyebrow">QUICK ACCESS</span><h2>Academy workspace</h2></div></header>
+                      <a href="#programmes">Programme management <span>↗</span></a>
+                      <a href="#attendance">Attendance records <span>↗</span></a>
+                      <a href="#announcements">Publish announcement <span>↗</span></a>
+                      <a href="#reports">Reports & analytics <span>↗</span></a>
+                    </section>
+                  </aside>
+                </section>
+                <div class="urwa-grid urwa-grid-2 admin-legacy-overview" style="margin-top:20px">
                     <section class="urwa-card" id="attendance">
                         <div class="urwa-card-header">
                             <div>
