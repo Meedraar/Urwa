@@ -29,7 +29,7 @@ async function currentUser() {
 async function adminLoad(user) {
   try {
     const [peopleQ, enrollQ, halaqaQ, assignmentQ, attendanceQ, teacherAppsQ] = await Promise.all([
-      supabase.from('profiles').select('id,full_name,email,role,status'),
+      supabase.from('profiles').select('id,full_name,email,role,status,admin_level,created_at'),
       supabase.from('student_enrollments').select('*'),
       supabase.from('halaqas').select('*').order('name'),
       supabase.from('teacher_assignments').select('*'),
@@ -48,6 +48,8 @@ async function adminLoad(user) {
       halaqas.filter(h => h.is_active).map(h => '<option value="' + h.id + '" ' +
       (h.id === selected ? 'selected' : '') + '>' + esc(h.name) + '</option>').join('');
     
+    const put = (selector, html, empty) => { const node = $(selector); if (node) node.innerHTML = html || empty; };
+
     const accountRows = people.map(p => {
       const enrollment = byStudent.get(p.id);
       const accountStatus = enrollment?.status || p.status || 'pending';
@@ -59,7 +61,6 @@ async function adminLoad(user) {
     put('#admin-account-status-body', accountRows, '<tr><td colspan="5">No accounts found.</td></tr>');
 
     const pending = students.filter(p => (byStudent.get(p.id)?.status || p.status) === 'pending');
-    const put = (selector, html, empty) => { const node = $(selector); if (node) node.innerHTML = html || empty; };
 
     put('#admin-admissions-body', pending.map(p => {
       const e = byStudent.get(p.id) || {};
@@ -101,7 +102,28 @@ async function adminLoad(user) {
     if (stats[1]) stats[1].textContent = attendance.length
       ? Math.round(attendance.filter(a => ['present', 'late'].includes(a.status)).length / attendance.length * 100) + '%' : '—';
     if (stats[2]) stats[2].textContent = teachers.filter(p => p.status === 'approved').length;
+    const adminAccounts = people.filter(p => p.role === 'admin');
+    const currentProfile = people.find(p => p.id === user.id);
+    const isSuperAdmin = currentProfile?.admin_level === 'super_admin';
+    const adminPanel = $('#super-admin-management');
+    if (adminPanel) adminPanel.hidden = !isSuperAdmin;
+    const adminRows = adminAccounts.map(p => {
+      const level = p.admin_level || 'standard';
+      const action = p.id === user.id
+        ? '<span class="urwa-badge info">Current account</span>'
+        : '<button class="urwa-btn urwa-btn-outline urwa-btn-small" data-admin-level="' + p.id +
+          '" data-next-level="' + (level === 'super_admin' ? 'standard' : 'super_admin') + '">' +
+          (level === 'super_admin' ? 'Make Standard Admin' : 'Grant Super Admin') + '</button>';
+      return '<tr><td><b>' + esc(p.full_name || '—') + '</b></td><td>' + esc(p.email || '—') +
+        '</td><td>' + (level === 'super_admin' ? 'Super Admin' : 'Standard Admin') +
+        '</td><td>' + esc(p.status) + '</td><td>' + action + '</td></tr>';
+    }).join('');
+    put('#super-admin-list', adminRows, '<tr><td colspan="5">No administrator accounts found.</td></tr>');
+    document.querySelectorAll('[data-admin-level]').forEach(button => {
+      button.hidden = !isSuperAdmin;
+    });
     status('admin-live-status', 'Supabase connection active',
+      (isSuperAdmin ? 'Super Admin access · ' : 'Standard Admin access · ') +
       students.length + ' students · ' + pending.length + ' pending applications · ' +
       teachers.length + ' Ablas · ' + halaqas.length + ' halaqas.');
   } catch (error) {
@@ -118,6 +140,7 @@ async function initAdmin(user) {
       const approve = event.target.closest('[data-approve-teacher]');
       const cancelTeacher = event.target.closest('[data-cancel-teacher]');
       const assign = event.target.closest('[data-assign]');
+      const adminLevel = event.target.closest('[data-admin-level]');
       if (accept || decline) {
         const id = (accept || decline).dataset[accept ? 'accept' : 'decline'];
         const halaqaId = $('[data-admission-halaqa="' + id + '"]')?.value || null;
@@ -135,6 +158,19 @@ async function initAdmin(user) {
         const teacherId = approve ? approve.dataset.approveTeacher : cancelTeacher.dataset.cancelTeacher;
         const nextStatus = approve ? 'approved' : 'cancelled';
         const { error } = await supabase.from('profiles').update({ status: nextStatus }).eq('id', teacherId);
+        if (error) fail(error);
+        await adminLoad(user);
+      }
+      if (adminLevel) {
+        const targetId = adminLevel.dataset.adminLevel;
+        const nextLevel = adminLevel.dataset.nextLevel;
+        const confirmed = window.confirm('Change this administrator to ' +
+          (nextLevel === 'super_admin' ? 'Super Admin' : 'Standard Admin') + '?');
+        if (!confirmed) return;
+        const { error } = await supabase.rpc('admin_set_admin_level', {
+          target_user_id: targetId,
+          new_level: nextLevel
+        });
         if (error) fail(error);
         await adminLoad(user);
       }
