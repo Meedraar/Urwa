@@ -22,6 +22,7 @@ function showMessage(form, text, isError = true) {
     form.append(node);
   }
   node.hidden = false;
+  node.classList.remove('sys-hidden');
   node.textContent = text;
   node.style.cssText = 'padding:12px;border-radius:8px;background:' +
     (isError ? '#fff0ed' : '#e3f0ea') + ';color:' +
@@ -76,10 +77,13 @@ for (const [selector, role] of [
   if (form) form.addEventListener('submit', async (event) => {
     event.preventDefault();
     const button = form.querySelector('[type="submit"]');
-    if (button) button.disabled = true;
+    const originalLabel = button?.textContent || '';
+    if (button) { button.disabled = true; button.textContent = 'Signing in…'; }
     try { await login(form, role); }
     catch (error) { showMessage(form, error.message || 'Sign in failed.'); }
-    finally { if (button) button.disabled = false; }
+    finally {
+      if (button) { button.disabled = false; button.textContent = originalLabel; }
+    }
   });
 }
 
