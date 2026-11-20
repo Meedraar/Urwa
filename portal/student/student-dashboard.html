@@ -1,256 +1,138 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard | URWA</title>
-    <link rel="stylesheet" href="../../css/portal.css">
-    <link rel="stylesheet" href="../../css/dashboard-live.css">
-    <link rel="stylesheet" href="../../css/dashboard-modern.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Learning Space | URWA</title>
+  <link rel="stylesheet" href="../../css/portal.css">
+  <link rel="stylesheet" href="../../css/dashboard-live.css">
+  <link rel="stylesheet" href="../../css/dashboard-modern.css">
 </head>
-<body data-urwa-role="student">
-<div class="urwa-app">
-    <div class="urwa-layout">
-
-        <aside class="urwa-sidebar" id="sidebar">
-            <div class="urwa-brand">
-                <img src="../../assets/logo.jpg" alt="URWA Logo">
-                <div>
-                    <div class="urwa-brand-name">URWA</div>
-                    <div class="urwa-brand-tagline">THE FIRMEST HANDHOLD</div>
-                </div>
-            </div>
-
-            <div class="urwa-profile">
-                <div class="urwa-avatar">S</div>
-                <div>
-                    <strong data-profile-name>Student Name</strong>
-                    <span>Student</span>
-                </div>
-            </div>
-
-            <nav class="urwa-nav">
-                <div class="urwa-nav-label">Learning</div>
-                <a href="#dashboard" class="active"><span class="urwa-nav-icon">▦</span>Dashboard</a>
-                <a href="#program"><span class="urwa-nav-icon">◇</span>My Programme</a>
-                <a href="#progress"><span class="urwa-nav-icon">▥</span>My Progress</a>
-                <a href="#quran"><span class="urwa-nav-icon">▤</span>Qur'an Reader</a>
-                <a href="#homework"><span class="urwa-nav-icon">▣</span>My Homework</a>
-                <a href="#community"><span class="urwa-nav-icon">◎</span>Level Community</a>
-                <a href="#announcements"><span class="urwa-nav-icon">♧</span>Announcements</a>
-                <a href="#sessions"><span class="urwa-nav-icon">▦</span>Book a Session</a>
-                <a href="#halaqa"><span class="urwa-nav-icon">◎</span>My Halaqa</a>
-
-                <div class="urwa-nav-label">Account</div>
-                <a href="#profile"><span class="urwa-nav-icon">♙</span>My Profile</a>
-                <a href="#profile"><span class="urwa-nav-icon">⚙</span>Settings</a>
-            </nav>
-
-            <div class="urwa-sidebar-bottom">
-                <a href="index.html"><span>⌂</span> Portal Home</a>
-                <a href="student-login.html" data-urwa-logout><span>⇥</span> Logout</a>
-            </div>
-        </aside>
-
-        <main class="urwa-main">
-            <header class="urwa-topbar">
-                <div class="urwa-topbar-left">
-                    <button class="urwa-menu-button" onclick="toggleSidebar()">☰</button>
-                    <div>
-                        <div class="urwa-topbar-title">My Learning Space</div>
-                        <div class="urwa-user-role">URWA Student Portal</div>
-                    </div>
-                </div>
-
-                <div class="urwa-topbar-right">
-                    <button class="urwa-icon-button" aria-label="Notifications">♧</button>
-                    <div class="urwa-user">
-                        <div class="urwa-avatar">S</div>
-                        <div>
-                            <div class="urwa-user-name" data-profile-name>Student Name</div>
-                            <div class="urwa-user-role">Student</div>
-                        </div>
-                    </div>
-                </div>
-            </header>
-
-            <div class="urwa-content" id="dashboard">
-                <section class="urwa-card urwa-live-status" id="student-live-overview" aria-live="polite"><strong>Loading your learning records…</strong><p>Your programme, halaqa and progress will appear here.</p></section>
-                <section class="urwa-welcome">
-                    <div>
-                        <h2>Assalaamu alaykum, <span data-profile-name>Student Name</span></h2>
-                        <p>Welcome to your URWA learning space. Keep learning, revising and growing.</p>
-                    </div>
-                    <div class="arabic">وَقُل رَّبِّ زِدْنِي عِلْمًا</div>
-                </section>
-
-                <div class="urwa-grid urwa-grid-4">
-                    <article class="urwa-stat">
-                        <div class="urwa-stat-top"><span class="urwa-stat-icon">▤</span><span class="urwa-badge success">Learning</span></div>
-                        <span class="urwa-stat-label">Current Programme</span>
-                        <strong class="urwa-stat-value" style="font-size:1.1rem">Qur'an</strong>
-                        <div class="urwa-stat-note">Your assigned programme</div>
-                    </article>
-                    <article class="urwa-stat">
-                        <div class="urwa-stat-top"><span class="urwa-stat-icon">◎</span></div>
-                        <span class="urwa-stat-label">My Halaqa</span>
-                        <strong class="urwa-stat-value" style="font-size:1.1rem">Awaiting assignment</strong>
-                        <div class="urwa-stat-note">Your assigned learning group</div>
-                    </article>
-                    <article class="urwa-stat">
-                        <div class="urwa-stat-top"><span class="urwa-stat-icon">✓</span></div>
-                        <span class="urwa-stat-label">Attendance</span>
-                        <strong class="urwa-stat-value">—</strong>
-                        <div class="urwa-stat-note">Attendance summary</div>
-                    </article>
-                    <article class="urwa-stat">
-                        <div class="urwa-stat-top"><span class="urwa-stat-icon">▣</span></div>
-                        <span class="urwa-stat-label">Pending Homework</span>
-                        <strong class="urwa-stat-value">—</strong>
-                        <div class="urwa-stat-note">Assignments to complete</div>
-                    </article>
-                </div>
-
-                <section id="progress">
-                    <h3 class="urwa-section-title">My Learning Journey</h3>
-                    <div class="urwa-card">
-                        <div class="urwa-card-header">
-                            <div>
-                                <h3 class="urwa-card-title">Learning Progress</h3>
-                                <p class="urwa-card-subtitle">Follow your learning milestones and achievements</p>
-                            </div>
-                            <span class="urwa-badge info">Progress overview</span>
-                        </div>
-
-                        <div class="urwa-progress-row">
-                            <strong>Overall progress</strong>
-                            <span>Updated by your Abla</span>
-                        </div>
-                        <div class="urwa-progress">
-                            <div class="urwa-progress-fill" style="width:0%"></div>
-                        </div>
-
-                        <div class="urwa-learning-track">
-                            <div class="urwa-learning-step completed">
-                                <div class="urwa-step-circle">✓</div>
-                                <div class="urwa-step-name">Foundation</div>
-                            </div>
-                            <div class="urwa-learning-step current">
-                                <div class="urwa-step-circle">2</div>
-                                <div class="urwa-step-name">Current Level</div>
-                            </div>
-                            <div class="urwa-learning-step">
-                                <div class="urwa-step-circle">3</div>
-                                <div class="urwa-step-name">Next Level</div>
-                            </div>
-                            <div class="urwa-learning-step">
-                                <div class="urwa-step-circle">4</div>
-                                <div class="urwa-step-name">Completion</div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="program">
-                    <h3 class="urwa-section-title">My Programme</h3>
-                    <div class="urwa-grid urwa-grid-2">
-                        <article class="urwa-card">
-                            <div class="urwa-card-header">
-                                <div>
-                                    <h3 class="urwa-card-title">My Current Learning</h3>
-                                    <p class="urwa-card-subtitle">Your programme and learning level</p>
-                                </div>
-                                <span class="urwa-badge success">Assigned</span>
-                            </div>
-                            <p><strong>Programme:</strong> To be confirmed</p>
-                            <p><strong>Level:</strong> To be confirmed</p>
-                            <p><strong>Abla:</strong> Awaiting assignment</p>
-                            <p><strong>Halaqa:</strong> Awaiting assignment</p>
-                        </article>
-
-                        <article class="urwa-card" id="halaqa">
-                            <div class="urwa-card-header">
-                                <h3 class="urwa-card-title">My Halaqa</h3>
-                                <span class="urwa-badge pending">Awaiting assignment</span>
-                            </div>
-                            <p class="urwa-card-subtitle">Your halaqa details and class information will appear here after admission and allocation.</p>
-                        </article>
-                    </div>
-                </section>
-
-                <section id="homework">
-                    <h3 class="urwa-section-title">My Homework & Assignments</h3>
-                    <div class="urwa-card">
-                        <div class="urwa-card-header">
-                            <div>
-                                <h3 class="urwa-card-title">Assignments from your Abla</h3>
-                                <p class="urwa-card-subtitle">Complete your work and submit it for review</p>
-                            </div>
-                            <span class="urwa-badge info">My work</span>
-                        </div>
-                        <div class="urwa-empty" id="student-assignments-list">
-                            <strong>No assignments to display</strong>
-                            Your Abla's assignments will appear here.
-                        </div>
-                    </div>
-                </section>
-
-                <section id="community" class="urwa-community-section"><h3 class="urwa-section-title">My Level Community</h3><div class="urwa-card urwa-community-card"><div class="urwa-card-header"><div><h3 class="urwa-card-title">Your learning circle</h3><p class="urwa-card-subtitle">Updates shared by URWA administrators for your assigned level</p></div><span class="urwa-badge success">Read only</span></div><div id="student-community-feed" class="urwa-announcement-feed"><div class="urwa-empty"><strong>Your community will appear here</strong>Once your level is assigned, you will see its updates here.</div></div></div></section>
-                <section id="announcements" class="urwa-community-section"><h3 class="urwa-section-title">URWA Announcements</h3><div class="urwa-card"><div id="student-announcements-feed" class="urwa-announcement-feed"><div class="urwa-empty"><strong>No announcements yet</strong>Official updates from URWA will appear here.</div></div></div></section>
-                <section id="sessions">
-                    <h3 class="urwa-section-title">My Class Schedule</h3>
-                    <div class="urwa-card">
-                        <div class="urwa-empty">
-                            <strong>Your timetable will appear here</strong>
-                            Your assigned class days and session times will be displayed here.
-                        </div>
-                    </div>
-                </section>
-
-                <section id="quran">
-                    <h3 class="urwa-section-title">Qur'an Learning</h3>
-                    <div class="urwa-card">
-                        <div class="urwa-card-header">
-                            <h3 class="urwa-card-title">My Hifdh & Muraja'ah</h3>
-                            <span class="urwa-badge info">Teacher updated</span>
-                        </div>
-                        <div class="urwa-grid urwa-grid-2">
-                            <div>
-                                <p class="urwa-card-subtitle">Hifdh progress</p>
-                                <h2 class="urwa-stat-value">—</h2>
-                                <p class="urwa-card-subtitle">Your memorisation record</p>
-                            </div>
-                            <div>
-                                <p class="urwa-card-subtitle">Muraja'ah progress</p>
-                                <h2 class="urwa-stat-value">—</h2>
-                                <p class="urwa-card-subtitle">Your revision record</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section id="profile">
-                    <h3 class="urwa-section-title">My Profile</h3>
-                    <div class="urwa-card">
-                        <p><strong>Name:</strong> Student Name</p>
-                        <p><strong>Email:</strong> Student email</p>
-                        <p><strong>Account:</strong> Student</p>
-                    </div>
-                </section>
-
-                <footer style="padding:30px 0;text-align:center;color:#687080;font-size:.8rem">
-                    URWA — The Firmest Handhold
-                </footer>
-            </div>
-        </main>
+<body data-urwa-role="student" class="urwa-student-dashboard">
+<div class="student-shell">
+  <aside class="student-sidebar" id="sidebar">
+    <a class="student-brand" href="../../index.html">
+      <img src="../../assets/logo.jpg" alt="URWA">
+      <span><b>URWA</b><small>THE FIRMEST HANDHOLD</small></span>
+    </a>
+    <div class="student-profile">
+      <div class="student-avatar">S</div>
+      <div><strong data-profile-name>Student</strong><small>Student</small></div>
     </div>
-</div>
+    <nav class="student-nav" aria-label="Student navigation">
+      <span class="student-nav-label">MY LEARNING</span>
+      <a class="selected" href="#dashboard"><i>◫</i>Dashboard</a>
+      <a href="#program"><i>▣</i>My Programme</a>
+      <a href="#schedule"><i>◷</i>Schedule</a>
+      <a href="#progress"><i>▥</i>My Progress</a>
+      <a href="#homework"><i>☷</i>Assignments</a>
+      <a href="#quran"><i>۞</i>Qur'an & Hifdh</a>
+      <a href="#resources"><i>▤</i>Learning Resources</a>
+      <a href="#community"><i>◎</i>Discussions</a>
+      <a href="#announcements"><i>♧</i>Announcements</a>
+      <span class="student-nav-label">MY ACCOUNT</span>
+      <a href="#profile"><i>♙</i>My Profile</a>
+    </nav>
+    <div class="student-sidebar-footer">
+      <div class="student-help"><span class="help-mark">?</span><b>Need a hand?</b><p>Reach out to the URWA team if you need help with your learning.</p><a href="#profile">Get support →</a></div>
+      <a href="student-login.html" data-urwa-logout class="student-logout">↪ &nbsp; Log out</a>
+    </div>
+  </aside>
 
+  <main class="student-main" id="dashboard">
+    <header class="student-topbar">
+      <button class="student-mobile-menu" onclick="toggleSidebar()" aria-label="Open menu">☰</button>
+      <label class="student-search"><span>⌕</span><input type="search" placeholder="Search classes, assignments, resources..." aria-label="Search learning space"><kbd>⌘ K</kbd></label>
+      <div class="student-top-actions"><button class="student-notification" aria-label="Notifications">♧</button><div class="student-top-user"><div class="student-avatar small">S</div><span><b data-profile-name>Student</b><small>Student</small></span></div></div>
+    </header>
+
+    <div class="student-dashboard-content">
+      <div class="student-page-title"><div><h1>My Learning Dashboard</h1><p>Your space to learn, reflect and grow with URWA.</p></div><span class="student-date-chip" id="student-current-date">My learning space</span></div>
+
+      <section class="student-welcome">
+        <div class="welcome-copy"><span class="welcome-eyebrow">YOUR JOURNEY OF ILM</span><h2>Assalaamu alaykum, <span data-profile-name>Student</span> <span class="wave">✦</span></h2><p>Every ayah learned, every lesson attended and every effort made is a step forward.</p><a href="#program" class="student-primary-link">Continue learning <span>→</span></a></div>
+        <div class="welcome-arabic" lang="ar" dir="rtl">وَقُل رَّبِّ زِدْنِي عِلْمًا</div>
+        <div class="welcome-orbit"></div>
+      </section>
+
+      <section class="student-overview" id="student-live-overview" aria-live="polite"><strong>Your learning overview is loading…</strong><p>Your programme, halaqa and learning records will appear here.</p></section>
+
+      <div class="student-dashboard-grid">
+        <div class="student-center-column">
+          <section class="student-course-row" id="program">
+            <article class="student-panel current-course">
+              <div class="panel-heading"><div><span class="panel-kicker">YOUR STUDIES</span><h2>My Programme</h2></div><span class="panel-icon">▣</span></div>
+              <div class="course-tile"><div class="course-symbol">۞</div><div class="course-info"><b>Qur'an Studies</b><small>Your enrolled programme</small><div class="course-progress"><span></span></div></div><span class="course-state">Enrolled</span></div>
+              <a class="student-text-link" href="#progress">View learning progress →</a>
+            </article>
+            <article class="student-panel halaqa-panel" id="halaqa">
+              <div class="panel-heading"><div><span class="panel-kicker">YOUR LEARNING CIRCLE</span><h2>My Halaqa</h2></div><span class="panel-icon mint">◎</span></div>
+              <div class="halaqa-placeholder"><span class="halaqa-emblem">◎</span><b>Your halaqa details</b><p>Your assigned halaqa and Abla information will appear here.</p></div>
+            </article>
+          </section>
+
+          <section class="student-panel progress-panel" id="progress">
+            <div class="panel-heading"><div><span class="panel-kicker">YOUR GROWTH</span><h2>Learning Progress</h2><p>Celebrate the steps you take along your learning journey.</p></div><span class="panel-icon violet">↗</span></div>
+            <div class="progress-metrics"><div><span class="metric-dot green"></span><b>Hifdh & Muraja'ah</b><small>Updated by your Abla</small></div><div class="progress-empty-state">Your progress records will appear here as your Abla updates them.</div></div>
+            <div class="student-progress-track"><span></span></div>
+          </section>
+
+          <section class="student-panel" id="homework">
+            <div class="panel-heading"><div><span class="panel-kicker">STAY ON TRACK</span><h2>Assignments & Homework</h2><p>Work shared with you by your Abla.</p></div><a class="student-text-link" href="#homework">View all →</a></div>
+            <div id="student-assignments-list" class="student-assignment-list"><div class="student-empty"><b>No assignments yet</b><span>Your Abla's tasks will appear here.</span></div></div>
+          </section>
+
+          <section class="student-panel" id="resources">
+            <div class="panel-heading"><div><span class="panel-kicker">YOUR STUDY MATERIAL</span><h2>Learning Resources</h2></div><span class="panel-icon gold">▤</span></div>
+            <div class="resource-placeholder"><span>▧</span><div><b>Your learning library</b><small>Study notes, lesson materials and resources shared by URWA will be available here.</small></div></div>
+          </section>
+
+          <section class="student-panel" id="community">
+            <div class="panel-heading"><div><span class="panel-kicker">LEARN TOGETHER</span><h2>My Level Community</h2><p>Updates for your assigned learning level.</p></div><span class="read-only-tag">ADMIN UPDATES</span></div>
+            <div id="student-community-feed" class="student-feed"><div class="student-empty"><b>Your community will appear here</b><span>Once your level is assigned, its updates will show here.</span></div></div>
+          </section>
+
+          <section class="student-panel" id="announcements">
+            <div class="panel-heading"><div><span class="panel-kicker">FROM URWA</span><h2>Announcements</h2></div></div>
+            <div id="student-announcements-feed" class="student-feed"><div class="student-empty"><b>No announcements yet</b><span>Official updates from URWA will appear here.</span></div></div>
+          </section>
+        </div>
+
+        <aside class="student-right-column">
+          <section class="student-panel student-calendar">
+            <div class="panel-heading"><div><span class="panel-kicker">PLAN YOUR TIME</span><h2>Calendar</h2></div><span class="panel-icon">▦</span></div>
+            <div class="calendar-month"><button type="button" aria-label="Previous month">‹</button><b id="student-calendar-month">Your calendar</b><button type="button" aria-label="Next month">›</button></div>
+            <div class="calendar-grid" aria-label="Calendar"><span>SU</span><span>MO</span><span>TU</span><span>WE</span><span>TH</span><span>FR</span><span>SA</span><div class="calendar-empty">Your class dates and upcoming events will appear here.</div></div>
+            <a href="#schedule" class="student-text-link">View schedule →</a>
+          </section>
+
+          <section class="student-panel" id="schedule">
+            <div class="panel-heading"><div><span class="panel-kicker">WHAT'S NEXT</span><h2>Upcoming Lessons</h2></div></div>
+            <div class="student-empty"><b>Your timetable is coming here</b><span>Your assigned class days, lesson times and joining details will be displayed here.</span></div>
+          </section>
+
+          <section class="student-panel student-todo">
+            <div class="panel-heading"><div><span class="panel-kicker">A LITTLE AT A TIME</span><h2>My Learning Checklist</h2></div><span class="panel-icon mint">✓</span></div>
+            <div class="todo-row"><span class="todo-check">01</span><span><b>Attend your lesson</b><small>Keep up with your halaqa</small></span></div>
+            <div class="todo-row"><span class="todo-check">02</span><span><b>Revise what you learned</b><small>Make time for Muraja'ah</small></span></div>
+            <div class="todo-row"><span class="todo-check">03</span><span><b>Complete your assignments</b><small>Check tasks from your Abla</small></span></div>
+          </section>
+
+          <section class="student-panel student-quran-card" id="quran">
+            <span class="quran-star">۞</span><span class="panel-kicker">A DAILY REMINDER</span>
+            <p lang="ar" dir="rtl">إِنَّ مَعَ الْعُسْرِ يُسْرًا</p><b>Indeed, with hardship comes ease.</b><small>Surah Ash-Sharh · 94:6</small>
+          </section>
+        </aside>
+      </div>
+
+      <section class="student-panel profile-panel" id="profile"><div class="panel-heading"><div><span class="panel-kicker">YOUR ACCOUNT</span><h2>My Profile</h2></div></div><p><b>Name:</b> <span data-profile-name>Student</span></p><p><b>Account type:</b> Student</p></section>
+      <footer class="student-footer">URWA · The Firmest Handhold <span>Learn with purpose. Grow with ihsan.</span></footer>
+    </div>
+  </main>
+</div>
+<script>function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');}</script>
 <script>
-function toggleSidebar() {
-    document.getElementById("sidebar").classList.toggle("open");
-}
+(()=>{const d=new Date();const el=document.getElementById('student-current-date');if(el)el.textContent=d.toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'});})();
 </script>
 <script type="module" src="../../js/supabase-auth.js"></script>
 <script type="module" src="../../js/dashboard-data.js"></script>
