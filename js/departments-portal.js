@@ -232,13 +232,13 @@ async function appointLeader(e){
   }catch(err){notify(err.message,true);}finally{button.disabled=false;}
 }
 async function init(){
-  const {data,error}=await supabase.auth.getUser();if(error||!data.user){location.replace('/portal/student/student-login.html?next='+encodeURIComponent('/portal/departments/index.html'));return;}
+  const {data,error}=await supabase.auth.getUser();if(error||!data.user){location.replace('/portal/departments/department-login.html');return;}
   state.user=data.user;
   const {data:profile,error:profileError}=await supabase.from('profiles').select('id,full_name,email,role,status').eq('id',state.user.id).maybeSingle();
   if(profileError)throw profileError;if(!profile||profile.status!=='approved'){notify('Your URWA account is not approved for portal access.',true);return;}
   state.profile=profile;state.admin=profile.role==='admin';
   $('userName').textContent=profile.full_name||profile.email;$('userRole').textContent=state.admin?'URWA Administration':'URWA member';$('userInitials').textContent=(profile.full_name||'U').split(' ').map(x=>x[0]).slice(0,2).join('').toUpperCase();
-  $('signOut').addEventListener('click',async()=>{await supabase.auth.signOut();location.replace('/portal/student/student-login.html');});
+  $('signOut').addEventListener('click',async()=>{await supabase.auth.signOut();location.replace('/portal/departments/department-login.html');});
   $('applicationForm').addEventListener('submit',submitApplication);$('renewalForm').addEventListener('submit',submitRenewal);$('taskForm').addEventListener('submit',createTask);$('reportForm').addEventListener('submit',submitReport);$('messageForm').addEventListener('submit',sendMessage);$('conversationForm').addEventListener('submit',createConversation);$('appointmentForm').addEventListener('submit',appointLeader);
   $('newConversationBtn').addEventListener('click',()=>showNewConversation().catch(e=>notify(e.message,true)));$('cancelConversation').addEventListener('click',()=>$('newConversationPanel').hidden=true);
   $('approveApplicationBtn').addEventListener('click',()=>reviewApplication('approved').catch(e=>notify(e.message,true)));

@@ -62,8 +62,9 @@ async function login(form, role) {
       throw new Error('This account is not approved for this portal. Contact URWA administration.');
     }
     const requestedNext = new URLSearchParams(location.search).get('next');
-    const safeNext = role === 'student' && requestedNext === '/portal/departments/index.html'
-      ? requestedNext
+    const isDepartmentLogin = form?.id === 'departmentLoginForm';
+    const safeNext = role === 'student' && (isDepartmentLogin || requestedNext === '/portal/departments/index.html')
+      ? '/portal/departments/index.html'
       : roleHome[role];
     location.replace(safeNext);
   } catch (err) {
@@ -74,6 +75,7 @@ async function login(form, role) {
 
 for (const [selector, role] of [
   ['#studentLoginForm', 'student'],
+  ['#departmentLoginForm', 'student'],
   ['[data-staff-login="teacher"]', 'teacher'],
   ['#adminLoginForm', 'admin']
 ]) {
@@ -128,6 +130,81 @@ if (registration) registration.addEventListener('submit', async (event) => {
     registration.reset();
   } catch (error) {
     showMessage(registration, error.message || 'Registration could not be completed.');
+  } finally { if (button) button.disabled = false; }
+});
+
+
+// Populate the dedicated department applicant form from the live department directory.
+const departmentSelect = $('applicationDepartment');
+const positionSelect = $('applicationPosition');
+if (departmentSelect && positionSelect) {
+  const loadDepartmentChoices = async () => {
+    try {
+      const [{ data: departments, error: departmentError }, { data: positions, error: positionError }] = await Promise.all([
+        supabase.from('departments').select('id,name').eq('is_active', true).order('name'),
+        supabase.from('department_positions').select('id,department_id,title,is_leadership,is_open_for_application').eq('is_active', true).order('title')
+      ]);
+      if (departmentError) throw departmentError;
+      if (positionError) throw positionError;
+      departmentSelect.innerHTML = '<option value="">Choose a department</option>' +
+        (departments || []).map(d => '<option value="' + d.id + '">' + d.name.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])) + '</option>').join('');
+      const renderApplicantPositions = () => {
+        const departmentId = departmentSelect.value;
+        const available = (positions || []).filter(p => p.department_id === departmentId && p.is_open_for_application && !p.is_leadership);
+        positionSelect.disabled = !departmentId;
+        positionSelect.innerHTML = available.length
+          ? '<option value="">Choose a position</option>' + available.map(p => '<option value="' + p.id + '">' + p.title.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])) + '</option>').join('')
+          : '<option value="">No open positions available — contact Administration</option>';
+      };
+      departmentSelect.addEventListener('change', renderApplicantPositions);
+      renderApplicantPositions();
+    } catch (error) {
+      departmentSelect.innerHTML = '<option value="">Unable to load departments</option>';
+      positionSelect.innerHTML = '<option value="">Please refresh or contact URWA Administration</option>';
+      showMessage(departmentSelect.closest('form'), 'Department choices could not be loaded. Please refresh the page or contact URWA Administration.');
+    }
+  };
+  loadDepartmentChoices();
+}
+
+
+const departmentRegistration = $('departmentRegistrationForm');
+if (departmentRegistration) departmentRegistration.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const button = departmentRegistration.querySelector('[type="submit"]');
+  const password = $('password')?.value || '';
+  if (password.length < 8) return showMessage(departmentRegistration, 'Use a password with at least 8 characters.');
+  if (password !== $('confirmPassword')?.value) return showMessage(departmentRegistration, 'Your passwords do not match.');
+  if (button) button.disabled = true;
+  try {
+    const fullName = $('fullName')?.value.trim() || '';
+    const email = $('email')?.value.trim().toLowerCase() || '';
+    const phone = $('phone')?.value.trim() || '';
+    const departmentId = $('applicationDepartment')?.value || '';
+    const positionId = $('applicationPosition')?.value || '';
+    const departmentName = $('applicationDepartment')?.selectedOptions?.[0]?.textContent || '';
+    const positionTitle = $('applicationPosition')?.selectedOptions?.[0]?.textContent || '';
+    if (!fullName || !email || !phone) throw new Error('Enter your name, email and phone number.');
+    if (!departmentId || !positionId) throw new Error('Choose the department and position you are applying for.');
+    const next = '/portal/departments/index.html';
+    const { data, error } = await supabase.auth.signUp({
+      email, password,
+      options: {
+        emailRedirectTo: location.origin + '/portal/departments/department-login.html?next=' + encodeURIComponent(next),
+        data: { full_name: fullName, phone, account_type: 'department_applicant', requested_department_id: departmentId, requested_department_name: departmentName, requested_position_id: positionId, requested_position_title: positionTitle }
+      }
+    });
+    if (error) throw error;
+    if (!data.user) throw new Error('Registration could not be completed. Please try again.');
+    if (data.session) await supabase.auth.signOut();
+    showMessage(departmentRegistration,
+      data.session
+        ? 'Your URWA Department Applicant account has been created and is awaiting Administration approval. Once approved, sign in here to continue your department application.'
+        : 'Your URWA Department Applicant registration has been received. Verify your email, then wait for Administration approval. After approval, sign in here to continue your department application.',
+      false);
+    departmentRegistration.reset();
+  } catch (error) {
+    showMessage(departmentRegistration, error.message || 'Registration could not be completed.');
   } finally { if (button) button.disabled = false; }
 });
 

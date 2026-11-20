@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0e4a40">
+<title>URWA Department Sign In</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--green:#0e4a40;--deep:#082f2a;--gold:#e0a526;--cream:#fbf6e9;--mint:#e3f0ea;--ink:#202923;--muted:#66736d;--line:#e6e8df}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:var(--cream);color:var(--ink);font-family:"DM Sans",sans-serif}
+a{color:inherit;text-decoration:none}.shell{min-height:100vh;display:grid;grid-template-columns:1fr 1fr}
+.story{padding:54px clamp(28px,7vw,100px);background:radial-gradient(circle at 90% 10%,#e0a52630,transparent 28%),linear-gradient(145deg,var(--green),var(--deep));color:white;display:flex;flex-direction:column;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:12px;font-weight:700;letter-spacing:2px}.brand img{width:52px;height:52px;object-fit:contain;background:#fff;border-radius:9px}.brand small{display:block;font-size:10px;letter-spacing:1.7px;opacity:.75}
+.story-copy{max-width:520px;padding:60px 0}.eyebrow{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold)}h1,h2{font-family:Georgia,serif;font-weight:400}h1{font-size:clamp(42px,5vw,68px);line-height:1.08;margin:20px 0} .story-copy p{color:#ffffffc9;line-height:1.9}.verse{border-top:1px solid #ffffff30;padding-top:20px;color:#ffffffb8;font-size:13px}.verse strong{display:block;color:var(--gold);font:28px Amiri,serif;margin-bottom:6px}
+.panel{display:flex;align-items:center;justify-content:center;padding:42px 24px}.card{width:min(100%,430px)}.mobile-brand{display:none;color:var(--green);margin-bottom:30px}.card h2{font-size:40px;color:var(--green);margin:12px 0}.intro{color:var(--muted);line-height:1.75;margin-bottom:28px}.field{margin:17px 0}.field label{display:block;font-size:13px;font-weight:700;margin-bottom:8px}.field input{width:100%;height:52px;border:1px solid var(--line);border-radius:10px;padding:0 14px;font:inherit;background:white}.field input:focus{outline:3px solid #0e4a4018;border-color:var(--green)}.submit{width:100%;height:54px;border:0;border-radius:10px;background:var(--green);color:white;font:700 15px "DM Sans";cursor:pointer;margin-top:8px}.submit:hover{background:var(--deep)}.register{text-align:center;color:var(--muted);font-size:14px;margin:25px 0}.register a,.back{color:var(--green);font-weight:700}.note{padding:14px;border-radius:10px;background:var(--mint);color:var(--green);font-size:13px;line-height:1.7}.back{display:inline-block;margin-top:24px;font-size:13px}.foot{font-size:11px;color:var(--muted);margin-top:32px}
+@media(max-width:800px){.shell{grid-template-columns:1fr}.story{display:none}.panel{min-height:100vh;padding:32px 22px}.mobile-brand{display:flex;align-items:center;gap:10px}.mobile-brand img{width:42px;height:42px}.card h2{font-size:34px}}
+</style></head>
+<body><main class="shell">
+<section class="story"><a class="brand" href="../../index.html"><img src="../../assets/logo.jpg" alt="URWA"><span>URWA<small>THE FIRMEST HANDHOLD</small></span></a>
+<div class="story-copy"><div class="eyebrow">URWA · DEPARTMENT APPLICATIONS</div><h1>Bring your skills into service.</h1><p>Join the people helping URWA grow through organisation, care, communication and meaningful service. Sign in to continue your department application and team work.</p></div>
+<div class="verse"><strong lang="ar" dir="rtl">وَتَعَاوَنُوا عَلَى الْبِرِّ وَالتَّقْوَىٰ</strong>“Cooperate in righteousness and piety.” · Qur’an 5:2</div></section>
+<section class="panel"><div class="card"><a class="brand mobile-brand" href="../../index.html"><img src="../../assets/logo.jpg" alt="URWA"><span>URWA<small>DEPARTMENT PORTAL</small></span></a>
+<div class="eyebrow">URWA DEPARTMENT PORTAL</div><h2>Department sign in</h2><p class="intro">Sign in with your URWA account to continue to department applications, your team workspace and department activities.</p>
+<form id="departmentLoginForm"><div class="field"><label for="email">Email address</label><input id="email" type="email" autocomplete="username" placeholder="Your registered email" required></div>
+<div class="field"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" placeholder="Your password" required></div>
+<button class="submit" type="submit">Sign in to URWA Departments</button></form>
+<p class="register">New to URWA Departments? <a href="department-register.html">Create a department applicant account</a></p>
+<div class="note"><b>New applicant?</b> Register here using the department applicant form. Your account must be verified and approved by URWA Administration before you can submit a department application.</div>
+<a class="back" href="../../index.html">← Back to URWA website</a><div class="foot">© <span id="year"></span> Urwatul Wuthqaa · The Firmest Handhold</div></div></section></main>
+<script>document.getElementById('year').textContent=new Date().getFullYear();</script><script type="module" src="../../js/supabase-auth.js"></script></body></html>
