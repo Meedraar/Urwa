@@ -7,6 +7,7 @@
     <title>Abla Dashboard | URWA</title>
     <link rel="stylesheet" href="../../css/portal.css">
     <link rel="stylesheet" href="../../css/dashboard-live.css">
+    <link rel="stylesheet" href="../../css/dashboard-modern.css">
 </head>
 <body data-urwa-role="teacher">
 <div class="urwa-app">
@@ -41,6 +42,7 @@
                 <a href="#timetable"><span class="urwa-nav-icon">▦</span>Class Timetable</a>
 
                 <div class="urwa-nav-label">Communication</div>
+                <a href="#community"><span class="urwa-nav-icon">◎</span>Level Communities</a>
                 <a href="#announcements"><span class="urwa-nav-icon">♧</span>Announcements</a>
                 <a href="#profile"><span class="urwa-nav-icon">♙</span>My Profile</a>
             </nav>
@@ -276,13 +278,11 @@
                     </div>
                 </section>
 
+                <section id="community" class="urwa-community-section"><h3 class="urwa-section-title">My Level Communities</h3><div class="urwa-card urwa-community-card"><div class="urwa-card-header"><div><h3 class="urwa-card-title">Teaching communities</h3><p class="urwa-card-subtitle">Read updates for the halaqas assigned to you</p></div><span class="urwa-badge success">Read only</span></div><div id="teacher-community-feed" class="urwa-announcement-feed"><div class="urwa-empty"><strong>Your communities will appear here</strong>Assigned halaqa updates will be shown here.</div></div></div></section>
                 <section id="announcements">
                     <h3 class="urwa-section-title">Announcements</h3>
                     <div class="urwa-card">
-                        <div class="urwa-empty">
-                            <strong>No announcements yet</strong>
-                            URWA announcements relevant to your teaching role will appear here.
-                        </div>
+                        <div id="teacher-announcements-feed" class="urwa-announcement-feed"><div class="urwa-empty"><strong>No announcements yet</strong>URWA announcements relevant to your teaching role will appear here.</div></div>
                     </div>
                 </section>
 
