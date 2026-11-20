@@ -132,7 +132,7 @@ async function adminLoad(user) {
     const recentPeople = [...people].sort((a,b) => new Date(b.created_at || 0)-new Date(a.created_at || 0)).slice(0,5);
     put('#admin-recent-activity', recentPeople.map(p => {
       const role = p.role === 'teacher' ? 'Abla / Teacher' : p.role === 'admin' ? 'Administrator' : 'Student';
-      const initials = (p.full_name || 'U').split(/\\s+/).slice(0,2).map(x => x[0]).join('').toUpperCase();
+      const initials = (p.full_name || 'U').split(/\s+/).slice(0,2).map(x => x[0]).join('').toUpperCase();
       return '<div class="admin-activity-row"><span class="admin-activity-avatar">' + esc(initials) +
         '</span><div><b>' + esc(p.full_name || 'New account') + '</b><small>' + role + ' · ' +
         (p.created_at ? date(p.created_at) : 'Registration date unavailable') + '</small></div></div>';
