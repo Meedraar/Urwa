@@ -28,16 +28,17 @@ async function currentUser() {
 
 async function adminLoad(user) {
   try {
-    const [peopleQ, enrollQ, halaqaQ, assignmentQ, attendanceQ] = await Promise.all([
+    const [peopleQ, enrollQ, halaqaQ, assignmentQ, attendanceQ, teacherAppsQ] = await Promise.all([
       supabase.from('profiles').select('id,full_name,email,role,status'),
       supabase.from('student_enrollments').select('*'),
       supabase.from('halaqas').select('*').order('name'),
       supabase.from('teacher_assignments').select('*'),
-      supabase.from('attendance').select('id,status')
+      supabase.from('attendance').select('id,status'),
+      supabase.from('teacher_applications').select('id,area_of_interest,teaching_background,availability')
     ]);
-    [peopleQ, enrollQ, halaqaQ, assignmentQ, attendanceQ].forEach(q => { if (q.error) fail(q.error); });
+    [peopleQ, enrollQ, halaqaQ, assignmentQ, attendanceQ, teacherAppsQ].forEach(q => { if (q.error) fail(q.error); });
     const people = peopleQ.data || [], enroll = enrollQ.data || [], halaqas = halaqaQ.data || [];
-    const assignments = assignmentQ.data || [], attendance = attendanceQ.data || [];
+    const assignments = assignmentQ.data || [], attendance = attendanceQ.data || [], teacherApps = teacherAppsQ.data || [];
     const students = people.filter(p => p.role === 'student');
     const teachers = people.filter(p => p.role === 'teacher');
     const byStudent = new Map(enroll.map(e => [e.student_id, e]));
@@ -46,6 +47,17 @@ async function adminLoad(user) {
     const options = (selected) => '<option value="">Choose halaqa</option>' +
       halaqas.filter(h => h.is_active).map(h => '<option value="' + h.id + '" ' +
       (h.id === selected ? 'selected' : '') + '>' + esc(h.name) + '</option>').join('');
+    
+    const accountRows = people.map(p => {
+      const enrollment = byStudent.get(p.id);
+      const accountStatus = enrollment?.status || p.status || 'pending';
+      const roleLabel = p.role === 'teacher' ? 'Abla / Teacher' : p.role === 'admin' ? 'Administrator' : 'Student';
+      return '<tr><td><b>' + esc(p.full_name || '—') + '</b></td><td>' + esc(p.email || '—') +
+        '</td><td>' + roleLabel + '</td><td>' + esc(accountStatus.charAt(0).toUpperCase() + accountStatus.slice(1)) +
+        '</td><td>' + date(p.created_at) + '</td></tr>';
+    }).join('');
+    put('#admin-account-status-body', accountRows, '<tr><td colspan="5">No accounts found.</td></tr>');
+
     const pending = students.filter(p => (byStudent.get(p.id)?.status || p.status) === 'pending');
     const put = (selector, html, empty) => { const node = $(selector); if (node) node.innerHTML = html || empty; };
 
@@ -70,6 +82,7 @@ async function adminLoad(user) {
     }).join(''), '<tr><td colspan="5">No student accounts yet.</td></tr>');
 
     put('#admin-teachers-body', teachers.map(p => {
+      const application = teacherApps.find(a => a.id === p.id) || {};
       const assigned = assignments.filter(a => a.teacher_id === p.id);
       const names = assigned.map(a => byHalaqa.get(a.halaqa_id)?.name).filter(Boolean);
       const learnerCount = enroll.filter(e => e.status === 'approved' &&
@@ -77,7 +90,7 @@ async function adminLoad(user) {
       return '<tr><td><b>' + esc(p.full_name) + '</b><small>' + esc(p.email) +
         '</small></td><td>Qur’an / Islamic Studies</td><td>' + esc(names.join(', ') || 'Not assigned') +
         '</td><td>' + learnerCount + '</td><td>' + esc(p.status) +
-        (p.status === 'pending' ? ' <button class="urwa-btn urwa-btn-primary urwa-btn-small" data-approve-teacher="' + p.id + '">Approve</button>' : '') +
+        (p.status === 'pending' ? ' <button class="urwa-btn urwa-btn-primary urwa-btn-small" data-approve-teacher="' + p.id + '">Approve</button><button class="urwa-btn urwa-btn-outline urwa-btn-small" data-cancel-teacher="' + p.id + '">Cancel</button>' : '') +
         '<div class="urwa-admin-actions"><select data-teacher-halaqa="' + p.id + '">' +
         options('') + '</select><button class="urwa-btn urwa-btn-outline urwa-btn-small" data-assign="' +
         p.id + '">Assign</button></div></td></tr>';
@@ -103,6 +116,7 @@ async function initAdmin(user) {
       const accept = event.target.closest('[data-accept]');
       const decline = event.target.closest('[data-decline]');
       const approve = event.target.closest('[data-approve-teacher]');
+      const cancelTeacher = event.target.closest('[data-cancel-teacher]');
       const assign = event.target.closest('[data-assign]');
       if (accept || decline) {
         const id = (accept || decline).dataset[accept ? 'accept' : 'decline'];
@@ -117,8 +131,10 @@ async function initAdmin(user) {
         if (profileUpdate.error) fail(profileUpdate.error);
         await adminLoad(user);
       }
-      if (approve) {
-        const { error } = await supabase.from('profiles').update({ status: 'approved' }).eq('id', approve.dataset.approveTeacher);
+      if (approve || cancelTeacher) {
+        const teacherId = approve ? approve.dataset.approveTeacher : cancelTeacher.dataset.cancelTeacher;
+        const nextStatus = approve ? 'approved' : 'cancelled';
+        const { error } = await supabase.from('profiles').update({ status: nextStatus }).eq('id', teacherId);
         if (error) fail(error);
         await adminLoad(user);
       }
