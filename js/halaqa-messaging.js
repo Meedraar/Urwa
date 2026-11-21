@@ -24,6 +24,10 @@ async function boot() {
       ? document.querySelector('.student-center-column')
       : document.querySelector('.abla-primary-column');
   if (!target) return;
+  if (role === 'teacher') {
+    const oldPlaceholder = target.querySelector('.empty');
+    if (oldPlaceholder) oldPlaceholder.remove();
+  }
   target.append(mount);
 
   if (role === 'admin') return loadAdmin(mount);
