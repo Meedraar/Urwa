@@ -192,7 +192,50 @@ body{background:var(--canvas);color:var(--ink)}
   background: #e0a526;
   color: #fff;
 }
-</style>
+
+/* URWA SHARED RESPONSIVE LAYOUT — preserve each dashboard's existing design */
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{min-width:320px;overflow-x:hidden}
+.app,.ur-dashboard,.main,.content,.center-column,.right-column,.dashboard-grid,.top-grid,.middle-grid,.bottom-grid,.lower-grid,.mid-grid,.footer-grid{min-width:0}
+img,svg,canvas,video{max-width:100%}
+input,select,textarea,button{max-width:100%}
+.table-wrap{width:100%;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{min-width:560px}
+.panel,.card,.kpi,.stat,.quick,.welcome,.greeting{min-width:0;overflow-wrap:anywhere}
+@media(max-width:1100px){.quick-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.actions{grid-template-columns:repeat(3,minmax(0,1fr))}.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:900px){.dashboard-grid{grid-template-columns:minmax(0,1fr)}.right-column{grid-template-columns:repeat(2,minmax(0,1fr))}.lower-grid,.bottom-grid,.mid-grid,.footer-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.lower-grid>*:last-child,.bottom-grid>*:last-child{grid-column:1/-1}}
+@media(max-width:760px){
+ body{overflow-x:hidden}.app{display:block!important;grid-template-columns:minmax(0,1fr)!important}
+ .sidebar{position:fixed!important;left:0;top:0;bottom:0;height:100dvh;max-height:100dvh;overflow-y:auto;overscroll-behavior:contain;z-index:40!important;transform:translateX(-105%);transition:transform .25s ease;box-shadow:8px 0 28px rgba(15,40,30,.12)}
+ body.menu-open .sidebar{transform:translateX(0)!important;display:flex!important}
+ body.menu-open::after{content:"";position:fixed;inset:0;background:rgba(10,25,20,.38);z-index:35}
+ .main{margin-left:0!important;width:100%;min-width:0}
+ .topbar{position:sticky;top:0;z-index:30;width:100%;height:62px;padding:0 12px;gap:10px}
+ .content,.main{padding-left:13px;padding-right:13px}
+ .search{width:auto;max-width:none;flex:1;min-width:0}.search kbd,.search>span:last-child{display:none}
+ .top-actions{gap:10px}.user div:last-child,.profile span:not(:last-child){display:none}
+ .dashboard-grid,.top-grid,.middle-grid,.bottom-grid,.lower-grid,.mid-grid,.footer-grid,.welcome-row{grid-template-columns:minmax(0,1fr)!important}
+ .right-column{grid-template-columns:minmax(0,1fr)!important}
+ .top-grid .calendar-card,.middle-grid .todo-card,.lower-grid .performance-panel,.mid-grid>.panel:last-child{grid-column:auto!important}
+ .stats,.kpis{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .quick-grid,.actions{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+ .form-grid,.discussion-layout{grid-template-columns:minmax(0,1fr)!important}
+ .discussion-people{border-right:0!important;border-bottom:1px solid var(--border)}
+ .discussion-people-list{display:flex;overflow-x:auto;gap:6px}.chat-person{min-width:140px}
+ .calendar{gap:6px 2px}.welcome{min-height:0}
+ .welcome h1,.greeting h1{font-size:clamp(21px,5vw,29px)}
+ .panel{padding:12px}.schedule-item,.activity,.notice-row,.risk{min-width:0}
+ .chat-compose{gap:7px;padding:10px}.chat-compose input{min-width:0}.chat-compose button,.send-message{padding:10px}
+}
+@media(max-width:420px){
+ .topbar{gap:7px;padding:0 9px}.search input{font-size:12px}
+ .quick-grid,.actions{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .content,.main{padding-left:10px;padding-right:10px}
+ .profile,.user{gap:5px}.avatar{width:30px;height:30px}
+ .calendar{gap:4px 0}.calendar span{font-size:9px}
+ .chat-compose{flex-wrap:wrap}.chat-compose input{flex-basis:100%}
+}
+.menu-btn{display:none}@media(max-width:760px){.menu-btn{display:block!important}.sidebar{width:250px!important;background:#fff!important}}\n</style>
 </head>
 <body data-urwa-role="admin">
 <div class="app">
@@ -219,6 +262,7 @@ body{background:var(--canvas);color:var(--ink)}
 
   <main class="main">
     <header class="topbar">
+      <button class="menu-btn" type="button" aria-label="Open navigation" onclick="document.body.classList.toggle(&quot;menu-open&quot;)" style="display:none;border:0;background:#e3f0ea;color:#0e4a40;border-radius:7px;padding:8px 10px">☰</button>
       <div class="search"><span>⌕</span><input placeholder="Search students, Ablas, halaqas, applications..."><span>⌘ K</span></div>
       <div class="top-spacer"></div>
       <button class="icon-btn" aria-label="Notifications">♧<span class="notif-dot">6</span></button>
@@ -336,5 +380,12 @@ body{background:var(--canvas);color:var(--ink)}
 })();
 </script>
 \n<script type="module" src="../../js/dashboard-data.js"></script>
+<script>
+document.addEventListener('keydown',function(event){if(event.key==='Escape')document.body.classList.remove('menu-open')});
+document.addEventListener('click',function(event){
+ const link=event.target.closest('.sidebar a');
+ if(link && window.matchMedia('(max-width:760px)').matches)document.body.classList.remove('menu-open');
+});
+</script>
 </body>
 </html>
