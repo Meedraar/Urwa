@@ -523,3 +523,176 @@ body[data-urwa-role="admin"] .admin-kpi .urwa-stat-icon{
 
 /* Preserve the homepage's intentionally coloured hero/welcome bands,
    buttons, form fields, status alerts, tables, and conversation bubbles. */
+
+
+/* ==========================================================
+   URWA SHARED DASHBOARD SYSTEM — visibility + brand consistency
+   Applied after each role stylesheet so older navy/blue rules
+   cannot override the shared emerald, cream and gold palette.
+   ========================================================== */
+:root{
+  --urwa-emerald:#0e4a40;
+  --urwa-emerald-deep:#08372f;
+  --urwa-cream:#fbf6e9;
+  --urwa-gold:#c6a75e;
+  --urwa-mint:#e3f0ea;
+  --urwa-ink:#18342d;
+  --urwa-muted:#52675d;
+}
+body[data-urwa-role="admin"],
+body[data-urwa-role="student"],
+body[data-urwa-role="teacher"],
+body.urwa-abla-dashboard,
+body.urwa-student-dashboard{
+  background:var(--urwa-cream)!important;
+  color:var(--urwa-ink)!important;
+}
+/* Remove the stray navy and blue palette from dashboard chrome. */
+body[data-urwa-role="admin"] .urwa-nav a.active,
+body[data-urwa-role="admin"] .urwa-nav a:hover{
+  background:var(--urwa-mint)!important;color:var(--urwa-emerald)!important;
+  box-shadow:inset 3px 0 var(--urwa-gold)!important;
+}
+body[data-urwa-role="admin"] .urwa-nav a,
+body[data-urwa-role="admin"] .urwa-nav-label{color:#29483e!important;opacity:1!important}
+body[data-urwa-role="admin"] .urwa-nav-label{color:#52675d!important}
+body[data-urwa-role="admin"] .urwa-topbar-title,
+body[data-urwa-role="admin"] .urwa-page-heading h1{color:var(--urwa-emerald)!important}
+body[data-urwa-role="admin"] .urwa-page-heading p{color:var(--urwa-muted)!important}
+
+/* Admin metrics: emerald cards need cream labels and legible values. */
+body[data-urwa-role="admin"] .admin-kpi{
+  background:var(--urwa-emerald)!important;border:1px solid var(--urwa-gold)!important;
+  color:var(--urwa-cream)!important;
+}
+body[data-urwa-role="admin"] .admin-kpi .urwa-stat-label,
+body[data-urwa-role="admin"] .admin-kpi .urwa-stat-note{color:#f5efdf!important;opacity:1!important}
+body[data-urwa-role="admin"] .admin-kpi .urwa-stat-value{color:#fff!important}
+body[data-urwa-role="admin"] .admin-kpi .urwa-stat-icon{
+  background:rgba(255,255,255,.13)!important;color:#f2d68d!important
+}
+/* Quick actions: remove pale text on white buttons and blue links/icons. */
+body[data-urwa-role="admin"] .admin-quick-actions{
+  background:var(--urwa-emerald)!important;border-color:var(--urwa-gold)!important
+}
+body[data-urwa-role="admin"] .admin-section-head span{color:#f2d68d!important}
+body[data-urwa-role="admin"] .admin-section-head h2{color:#fff!important}
+body[data-urwa-role="admin"] .admin-section-head>a{color:#f2d68d!important}
+body[data-urwa-role="admin"] .admin-action-grid a{
+  background:var(--urwa-mint)!important;color:var(--urwa-emerald)!important
+}
+body[data-urwa-role="admin"] .admin-action-grid a:hover{background:#fff!important}
+body[data-urwa-role="admin"] .admin-action-grid b{color:var(--urwa-emerald)!important}
+body[data-urwa-role="admin"] .admin-action-grid i,
+body[data-urwa-role="admin"] .admin-action-grid i.blue,
+body[data-urwa-role="admin"] .admin-action-grid i.green,
+body[data-urwa-role="admin"] .admin-action-grid i.violet,
+body[data-urwa-role="admin"] .admin-action-grid i.amber,
+body[data-urwa-role="admin"] .admin-action-grid i.rose{color:var(--urwa-emerald)!important}
+
+/* Admin charts and insight panels: no blue links, bars, legends or chart accents. */
+body[data-urwa-role="admin"] .admin-panel,
+body[data-urwa-role="admin"] .urwa-card{
+  background:var(--urwa-emerald)!important;border-color:var(--urwa-gold)!important;color:var(--urwa-cream)!important
+}
+body[data-urwa-role="admin"] .admin-panel h1,
+body[data-urwa-role="admin"] .admin-panel h2,
+body[data-urwa-role="admin"] .admin-panel h3,
+body[data-urwa-role="admin"] .admin-panel h4,
+body[data-urwa-role="admin"] .urwa-card-title{color:#f2d68d!important}
+body[data-urwa-role="admin"] .admin-panel p,
+body[data-urwa-role="admin"] .admin-panel small,
+body[data-urwa-role="admin"] .admin-panel span,
+body[data-urwa-role="admin"] .admin-panel label,
+body[data-urwa-role="admin"] .admin-panel td,
+body[data-urwa-role="admin"] .admin-panel th,
+body[data-urwa-role="admin"] .urwa-card-subtitle{color:#f5efdf!important}
+body[data-urwa-role="admin"] .admin-panel a,
+body[data-urwa-role="admin"] .admin-panel>header>a{color:#f2d68d!important}
+body[data-urwa-role="admin"] .admin-bar-track{background:rgba(255,255,255,.16)!important}
+body[data-urwa-role="admin"] .admin-bar-fill{background:linear-gradient(180deg,#e5c77d,#c6a75e)!important}
+body[data-urwa-role="admin"] .admin-bar-item strong,
+body[data-urwa-role="admin"] .admin-bar-item small{color:#f5efdf!important}
+body[data-urwa-role="admin"] .admin-donut{background:conic-gradient(#c6a75e 0 0%,rgba(255,255,255,.2) 0 100%)!important}
+body[data-urwa-role="admin"] .admin-donut:before{background:var(--urwa-emerald)!important}
+body[data-urwa-role="admin"] .admin-donut strong{color:#fff!important}
+body[data-urwa-role="admin"] .admin-legend span,
+body[data-urwa-role="admin"] .admin-legend b{color:#f5efdf!important}
+body[data-urwa-role="admin"] .admin-legend i.present{background:#c6a75e!important}
+body[data-urwa-role="admin"] .admin-legend i.absent{background:#e8a19a!important}
+body[data-urwa-role="admin"] .admin-legend i.other{background:#e3f0ea!important}
+body[data-urwa-role="admin"] .admin-activity-avatar,
+body[data-urwa-role="admin"] .admin-attention-icon{background:rgba(255,255,255,.14)!important;color:#f2d68d!important}
+body[data-urwa-role="admin"] .admin-activity-row b,
+body[data-urwa-role="admin"] .admin-attention-panel b,
+body[data-urwa-role="admin"] .admin-attention-panel>a,
+body[data-urwa-role="admin"] .admin-attention-panel>a>strong,
+body[data-urwa-role="admin"] .admin-schedule-panel>a{color:#fff!important}
+body[data-urwa-role="admin"] .admin-activity-row small,
+body[data-urwa-role="admin"] .admin-attention-panel small{color:#e8e0cf!important}
+
+/* Abla and student dashboards share the same dark welcome treatment. */
+.abla-hero,.student-welcome,.urwa-welcome{
+  background:linear-gradient(112deg,#08372f,#0e4a40 62%,#176657)!important;
+  border:1px solid rgba(198,167,94,.5)!important;
+}
+.abla-hero h1,.abla-hero h2,.abla-hero h3,.abla-hero p,
+.abla-hero .abla-hero-label{color:#fff!important}
+.abla-hero .abla-hero-label{color:#f2d68d!important}
+.abla-hero-calligraphy,.student-welcome .arabic,.urwa-welcome .arabic{color:#f2d68d!important}
+.student-welcome h1,.student-welcome h2,.student-welcome h3,
+.student-welcome p{color:#fff!important}
+
+/* Public homepage hero: keep the headline readable on the dark gradient. */
+.hero h1,.hero h2,.hero .hero-title{color:#fff!important}
+.hero p,.hero .lead{color:rgba(255,255,255,.94)!important}
+.hero .kicker,.hero .eyebrow{color:#f2d68d!important}
+
+/* Legacy Department Tracker uses an inline hero and dashboard navigation. */
+.dt-hero h1,.dt-hero h2{color:#fff!important}
+.dt-hero p{color:#f5efdf!important}
+.dt-hero{background:linear-gradient(112deg,#08372f,#0e4a40 62%,#176657)!important}
+.dt-stat,.dt-panel,.dt-card{border-color:#d8c18a!important}
+.dt-stat small,.dt-muted,.dt-meta{color:#52675d!important}
+.dt-stat strong,.dt-panel h2,.dt-card h3{color:var(--urwa-emerald)!important}
+.urwa-sidebar .urwa-brand-name,
+.urwa-sidebar .urwa-brand-tagline,
+.urwa-sidebar .urwa-profile strong,
+.urwa-sidebar .urwa-profile span,
+.urwa-sidebar .urwa-nav-label,
+.urwa-sidebar .urwa-nav a,
+.urwa-sidebar .urwa-sidebar-bottom a{color:#fff!important;opacity:1!important}
+.urwa-sidebar .urwa-nav-label{color:#f2d68d!important}
+.urwa-sidebar .urwa-nav a.active,
+.urwa-sidebar .urwa-nav a:hover{background:rgba(255,255,255,.15)!important;color:#fff!important}
+
+/* Common dashboard sizing, focus and small-screen layout. */
+.urwa-stat-label,.urwa-stat-note,.admin-action-grid b,
+.abla-stat-card span,.student-stat-card span{font-size:max(.72rem, .72rem)!important;line-height:1.45}
+.urwa-stat-note{opacity:1!important}
+.urwa-card p,.admin-panel p,.abla-panel p,.student-panel p{line-height:1.6}
+.urwa-app,.abla-app,.student-shell,.staff-shell{min-width:0}
+@media(max-width:850px){
+  .admin-action-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .admin-command-grid{grid-template-columns:minmax(0,1fr)!important}
+}
+@media(max-width:600px){
+  .admin-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .admin-action-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .dt-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .dt-grid{grid-template-columns:minmax(0,1fr)!important}
+}
+
+/* Legacy staff landing pages also use the shared emerald welcome banner. */
+.staff-shell .welcome,
+.staff-shell .login-art,
+.staff-shell .login-visual{
+  background:linear-gradient(112deg,#08372f,#0e4a40 62%,#176657)!important;
+  color:#fff!important;
+}
+.staff-shell .welcome h1,.staff-shell .welcome h2,.staff-shell .welcome h3,
+.staff-shell .login-art h1,.staff-shell .login-art h2{color:#fff!important}
+.staff-shell .welcome p,.staff-shell .login-art p{color:#f5efdf!important}
+.staff-shell .welcome .arabic,.staff-shell .login-art blockquote{color:#f2d68d!important}
+.staff-shell .page-heading h1,.staff-shell .section-title{color:#0e4a40!important}
+.staff-shell .page-heading p,.staff-shell .panel p{color:#52675d!important}
