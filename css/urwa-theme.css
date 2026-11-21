@@ -682,3 +682,17 @@ body[data-urwa-role="admin"] .admin-attention-panel small{color:#e8e0cf!importan
   .dt-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}
   .dt-grid{grid-template-columns:minmax(0,1fr)!important}
 }
+
+/* Legacy staff landing pages also use the shared emerald welcome banner. */
+.staff-shell .welcome,
+.staff-shell .login-art,
+.staff-shell .login-visual{
+  background:linear-gradient(112deg,#08372f,#0e4a40 62%,#176657)!important;
+  color:#fff!important;
+}
+.staff-shell .welcome h1,.staff-shell .welcome h2,.staff-shell .welcome h3,
+.staff-shell .login-art h1,.staff-shell .login-art h2{color:#fff!important}
+.staff-shell .welcome p,.staff-shell .login-art p{color:#f5efdf!important}
+.staff-shell .welcome .arabic,.staff-shell .login-art blockquote{color:#f2d68d!important}
+.staff-shell .page-heading h1,.staff-shell .section-title{color:#0e4a40!important}
+.staff-shell .page-heading p,.staff-shell .panel p{color:#52675d!important}
