@@ -69,3 +69,5 @@ Additional live migration:
 ## Verification boundary
 
 JavaScript syntax parsing passed for `js/urwa-operations.js`. The new workflow screens have not been browser-tested with separate authenticated role accounts, and the new RLS flows have not been exercised end-to-end. Email delivery depends on the configured Supabase Auth email provider. This branch is not merged and no website deployment was performed. Review the existing Supabase Security Advisor findings before production use.
+
+- `20261121123000_fix_staff_invitation_department_scope_policy` tightens the staff-invitation insert policy so the selected position must belong to the same department as the invitation.
