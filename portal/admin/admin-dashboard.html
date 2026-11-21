@@ -242,7 +242,7 @@
                         <div class="urwa-card-header">
                             <h3 class="urwa-card-title">Halaqa Management</h3>
                         </div>
-                        <p class="urwa-card-subtitle">Manage the 22 halaqas, their teachers and enrolled students.</p>
+                        <p class="urwa-card-subtitle">Manage all active halaqas, their assigned Ablas and enrolled students.</p>
                         <a href="#halaqas" class="urwa-btn urwa-btn-outline" style="margin-top:18px">Manage halaqas</a>
                     </section>
                 </div>
@@ -325,21 +325,16 @@
                         <div class="urwa-card-header">
                             <div>
                                 <h3 class="urwa-card-title">URWA Halaqas</h3>
-                                <p class="urwa-card-subtitle">Manage all 22 halaqas and their allocations.</p>
+                                <p class="urwa-card-subtitle" id="admin-halaqa-summary">Loading active halaqas…</p>
                             </div>
-                            <span class="urwa-badge info">22 halaqas planned</span>
+                            <span class="urwa-badge info" id="admin-halaqa-badge">Loading halaqas…</span>
                         </div>
                         <div class="urwa-table-wrap">
                             <table class="urwa-table">
                                 <thead>
                                     <tr><th>Halaqa</th><th>Assigned Abla</th><th>Students</th><th>Status</th><th>Action</th></tr>
                                 </thead>
-                                <tbody>
-                                    <tr><td>Halaqa 01</td><td>Not assigned</td><td>—</td><td><span class="urwa-badge pending">Setup pending</span></td><td><button class="urwa-btn urwa-btn-outline urwa-btn-small" type="button">Manage</button></td></tr>
-                                    <tr><td>Halaqa 02</td><td>Not assigned</td><td>—</td><td><span class="urwa-badge pending">Setup pending</span></td><td><button class="urwa-btn urwa-btn-outline urwa-btn-small" type="button">Manage</button></td></tr>
-                                    <tr><td>Halaqa 03</td><td>Not assigned</td><td>—</td><td><span class="urwa-badge pending">Setup pending</span></td><td><button class="urwa-btn urwa-btn-outline urwa-btn-small" type="button">Manage</button></td></tr>
-                                    <tr><td>Halaqa 04–22</td><td>Not assigned</td><td>—</td><td><span class="urwa-badge neutral">Not configured</span></td><td><button class="urwa-btn urwa-btn-outline urwa-btn-small" type="button">Manage</button></td></tr>
-                                </tbody>
+                                <tbody id="admin-halaqa-management-body"><tr><td colspan="5">Loading halaqas from URWA records…</td></tr></tbody>
                             </table>
                         </div>
                     </div>
