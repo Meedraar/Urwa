@@ -19,11 +19,14 @@ async function boot() {
   mount.id='halaqa-messages';
   mount.innerHTML = role === 'admin' ? adminMarkup() : memberMarkup();
   const target = role === 'admin'
-    ? document.querySelector('.urwa-content')
+    ? (document.querySelector('.content') || document.querySelector('.urwa-content'))
     : role === 'student'
-      ? document.querySelector('.student-center-column')
-      : document.querySelector('.abla-primary-column');
+      ? document.querySelector('.discussion-section')
+      : document.querySelector('.center-column');
   if (!target) return;
+  if (role === 'student') {
+    target.querySelector('.discussion-layout')?.remove();
+  }
   if (role === 'teacher') {
     const oldPlaceholder = target.querySelector('.empty');
     if (oldPlaceholder) oldPlaceholder.remove();
