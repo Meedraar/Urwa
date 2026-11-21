@@ -1095,3 +1095,220 @@ body[data-urwa-role="admin"] .urwa-badge{color:#18342d!important}
 body[data-urwa-role="admin"] .urwa-badge.pending{background:#fff3df!important;color:#805b20!important}
 body[data-urwa-role="admin"] .urwa-badge.info{background:#e3f0ea!important;color:#0e4a40!important}
 body[data-urwa-role="admin"] .admin-mini-status{background:#e3f0ea!important;color:#0e4a40!important}
+
+
+/* ==========================================================
+   FINAL SIGNED-IN DASHBOARD READABILITY OVERRIDE
+   Reading surfaces stay white with dark ink. Emerald is used
+   for navigation and intentional welcome banners only.
+   ========================================================== */
+body[data-urwa-role="admin"],
+body[data-urwa-role="student"],
+body[data-urwa-role="teacher"],
+body.urwa-abla-dashboard,
+body.urwa-student-dashboard{
+  background:#fbf6e9!important;
+  color:#18342d!important;
+}
+
+/* Admin content: do not put cream text on white cards. */
+body[data-urwa-role="admin"] .admin-panel,
+body[data-urwa-role="admin"] .admin-quick-actions,
+body[data-urwa-role="admin"] .urwa-card,
+body[data-urwa-role="admin"] .admin-kpi,
+body[data-urwa-role="admin"] .admin-kpi-card,
+body[data-urwa-role="admin"] .admin-stat-card,
+body[data-urwa-role="admin"] .admin-live-status,
+body[data-urwa-role="admin"] .urwa-live-status{
+  background:#fff!important;
+  color:#18342d!important;
+  border:1px solid #e3d9c7!important;
+}
+body[data-urwa-role="admin"] .admin-panel :is(h1,h2,h3,h4,h5,h6),
+body[data-urwa-role="admin"] .admin-quick-actions :is(h1,h2,h3,h4,h5,h6),
+body[data-urwa-role="admin"] .urwa-card :is(h1,h2,h3,h4,h5,h6),
+body[data-urwa-role="admin"] .admin-kpi :is(h1,h2,h3,h4,h5,h6),
+body[data-urwa-role="admin"] .admin-kpi-card :is(h1,h2,h3,h4,h5,h6),
+body[data-urwa-role="admin"] .admin-stat-card :is(h1,h2,h3,h4,h5,h6){
+  color:#0e4a40!important;
+  opacity:1!important;
+}
+body[data-urwa-role="admin"] .admin-panel :is(p,span,small,strong,b,li,td,th,label,div),
+body[data-urwa-role="admin"] .admin-quick-actions :is(p,span,small,strong,b,li,label),
+body[data-urwa-role="admin"] .urwa-card :is(p,span,small,strong,b,li,td,th,label,div),
+body[data-urwa-role="admin"] .admin-kpi :is(p,span,small,strong,b),
+body[data-urwa-role="admin"] .admin-kpi-card :is(p,span,small,strong,b),
+body[data-urwa-role="admin"] .admin-stat-card :is(p,span,small,strong,b){
+  color:#344b42!important;
+  opacity:1!important;
+}
+body[data-urwa-role="admin"] .admin-panel a,
+body[data-urwa-role="admin"] .admin-quick-actions a,
+body[data-urwa-role="admin"] .urwa-card a{
+  color:#0e4a40!important;
+  opacity:1!important;
+}
+body[data-urwa-role="admin"] .admin-action-grid a{
+  background:#e3f0ea!important;
+  border:1px solid #d2e4da!important;
+  color:#0e4a40!important;
+}
+body[data-urwa-role="admin"] .admin-action-grid a :is(b,strong,i,span){
+  color:#0e4a40!important;
+}
+body[data-urwa-role="admin"] .admin-panel th,
+body[data-urwa-role="admin"] .urwa-card th,
+body[data-urwa-role="admin"] .urwa-table th{
+  background:#e3f0ea!important;
+  color:#0e4a40!important;
+}
+body[data-urwa-role="admin"] .admin-panel td,
+body[data-urwa-role="admin"] .urwa-card td,
+body[data-urwa-role="admin"] .urwa-table td{
+  background:#fff!important;
+  color:#18342d!important;
+}
+body[data-urwa-role="admin"] .admin-eyebrow,
+body[data-urwa-role="admin"] .admin-section-head>div>span{
+  color:#8c6b2c!important;
+}
+body[data-urwa-role="admin"] .admin-donut:before{background:#fff!important}
+body[data-urwa-role="admin"] .admin-donut strong{color:#0e4a40!important}
+body[data-urwa-role="admin"] .admin-legend span,
+body[data-urwa-role="admin"] .admin-legend b,
+body[data-urwa-role="admin"] .admin-bar-item strong,
+body[data-urwa-role="admin"] .admin-bar-item small,
+body[data-urwa-role="admin"] .admin-activity-row b,
+body[data-urwa-role="admin"] .admin-activity-row small,
+body[data-urwa-role="admin"] .admin-attention-panel :is(b,small,strong),
+body[data-urwa-role="admin"] .admin-schedule-panel a{
+  color:#344b42!important;
+}
+
+/* Student reading surfaces: white cards, dark readable copy. */
+body[data-urwa-role="student"] :is(
+  .student-panel,.student-stat-card,.student-quick-card,
+  .student-overview,.student-course-row article,.student-assignment-card,
+  .student-resource-card,.student-feed,.student-empty,.student-help
+){
+  background:#fff!important;
+  color:#18342d!important;
+  border-color:#e3d9c7!important;
+}
+body[data-urwa-role="student"] :is(
+  .student-panel,.student-stat-card,.student-quick-card,
+  .student-overview,.student-course-row article
+) :is(h1,h2,h3,h4,h5,h6,b,strong){
+  color:#0e4a40!important;opacity:1!important;
+}
+body[data-urwa-role="student"] :is(
+  .student-panel,.student-stat-card,.student-quick-card,
+  .student-overview,.student-course-row article,
+  .student-assignment-list,.student-feed,.student-empty
+) :is(p,span,small,li,label,div){
+  color:#40584e!important;opacity:1!important;
+}
+body[data-urwa-role="student"] .student-panel a,
+body[data-urwa-role="student"] .student-dashboard-content a{color:#0e4a40!important}
+body[data-urwa-role="student"] .student-sidebar{
+  background:#0e4a40!important;color:#fff!important;
+}
+body[data-urwa-role="student"] .student-sidebar :is(a,b,strong,small,span,p,.student-nav-label){
+  color:#fff!important;opacity:1!important;
+}
+body[data-urwa-role="student"] .student-sidebar .student-nav-label{color:#f2d68d!important}
+body[data-urwa-role="student"] .student-sidebar a.active,
+body[data-urwa-role="student"] .student-sidebar a:hover{background:rgba(255,255,255,.16)!important;color:#fff!important}
+
+/* Abla/teacher reading surfaces. */
+body[data-urwa-role="teacher"] :is(
+  .abla-panel,.abla-stat-card,.abla-connection,.abla-halaqa-card,
+  .abla-roster,.abla-empty,.abla-reminder,.abla-progress-placeholder>div,
+  .abla-quote
+){
+  background:#fff!important;color:#18342d!important;border-color:#e3d9c7!important;
+}
+body[data-urwa-role="teacher"] :is(
+  .abla-panel,.abla-stat-card,.abla-connection,.abla-halaqa-card,
+  .abla-roster,.abla-empty,.abla-reminder,.abla-progress-placeholder>div,
+  .abla-quote
+) :is(h1,h2,h3,h4,h5,h6,b,strong){
+  color:#0e4a40!important;opacity:1!important;
+}
+body[data-urwa-role="teacher"] :is(
+  .abla-panel,.abla-stat-card,.abla-connection,.abla-halaqa-card,
+  .abla-roster,.abla-empty,.abla-reminder,.abla-progress-placeholder>div,
+  .abla-quote
+) :is(p,span,small,li,label,div){
+  color:#40584e!important;opacity:1!important;
+}
+body[data-urwa-role="teacher"] .abla-sidebar,
+body.urwa-abla-dashboard .abla-sidebar{
+  background:#0e4a40!important;color:#fff!important;
+}
+body[data-urwa-role="teacher"] .abla-sidebar :is(a,b,strong,small,span,.abla-nav-label),
+body.urwa-abla-dashboard .abla-sidebar :is(a,b,strong,small,span,.abla-nav-label){
+  color:#fff!important;opacity:1!important;
+}
+body[data-urwa-role="teacher"] .abla-sidebar .abla-nav-label,
+body.urwa-abla-dashboard .abla-sidebar .abla-nav-label{color:#f2d68d!important}
+
+/* Department Tracker: white cards with dark content, emerald sidebar/banner. */
+body[data-urwa-role="department"] :is(.dt-panel,.dt-card,.dt-stat,.dt-table-wrap,.dt-content-card){
+  background:#fff!important;color:#18342d!important;border-color:#e3d9c7!important;
+}
+body[data-urwa-role="department"] :is(.dt-panel,.dt-card,.dt-stat) :is(h1,h2,h3,h4,b,strong){
+  color:#0e4a40!important;opacity:1!important;
+}
+body[data-urwa-role="department"] :is(.dt-panel,.dt-card,.dt-stat) :is(p,span,small,li,label,div,td,th){
+  color:#40584e!important;opacity:1!important;
+}
+body[data-urwa-role="department"] .dt-sidebar{background:#0e4a40!important;color:#fff!important}
+body[data-urwa-role="department"] .dt-sidebar :is(a,b,strong,small,span,.dt-nav-label){color:#fff!important;opacity:1!important}
+body[data-urwa-role="department"] .dt-sidebar .dt-nav-label{color:#f2d68d!important}
+
+/* Keep welcome banners intentionally dark with readable white/gold text. */
+body[data-urwa-role="student"] .student-welcome,
+body[data-urwa-role="teacher"] .abla-hero,
+body.urwa-abla-dashboard .abla-hero,
+body[data-urwa-role="department"] .dt-hero{
+  background:linear-gradient(112deg,#08372f,#0e4a40 62%,#176657)!important;
+  color:#fbf6e9!important;
+}
+body[data-urwa-role="student"] .student-welcome :is(h1,h2,h3,p,a),
+body[data-urwa-role="teacher"] .abla-hero :is(h1,h2,h3,p),
+body.urwa-abla-dashboard .abla-hero :is(h1,h2,h3,p),
+body[data-urwa-role="department"] .dt-hero :is(h1,h2,h3,p){
+  color:#fbf6e9!important;opacity:1!important;
+}
+body[data-urwa-role="student"] .student-welcome .welcome-eyebrow,
+body[data-urwa-role="teacher"] .abla-hero .abla-hero-label,
+body.urwa-abla-dashboard .abla-hero .abla-hero-label,
+body[data-urwa-role="department"] .dt-hero .dt-eyebrow{color:#f2d68d!important}
+
+/* Top bars and page headings are always readable on their light surfaces. */
+body[data-urwa-role="student"] .student-topbar,
+body[data-urwa-role="teacher"] .abla-topbar,
+body.urwa-abla-dashboard .abla-topbar,
+body[data-urwa-role="admin"] .urwa-topbar{
+  background:#fff!important;color:#18342d!important;border-bottom:1px solid #e3d9c7!important;
+}
+body[data-urwa-role="student"] .student-topbar :is(b,span,label),
+body[data-urwa-role="teacher"] .abla-topbar :is(b,span),
+body.urwa-abla-dashboard .abla-topbar :is(b,span),
+body[data-urwa-role="admin"] .urwa-topbar :is(div,span){
+  color:#18342d!important;opacity:1!important;
+}
+body[data-urwa-role="student"] .student-page-title :is(h1,h2,p),
+body[data-urwa-role="teacher"] .abla-title-row :is(h1,h2,p),
+body.urwa-abla-dashboard .abla-title-row :is(h1,h2,p),
+body[data-urwa-role="admin"] .urwa-page-heading :is(h1,p){
+  color:#18342d!important;opacity:1!important;
+}
+
+/* Form controls and placeholder/help text across all signed-in dashboards. */
+body[data-urwa-role] :is(input,select,textarea){
+  background:#fff!important;color:#18342d!important;border-color:#d9e3dc!important;
+}
+body[data-urwa-role] :is(input,textarea)::placeholder{color:#64756d!important;opacity:1!important}
+body[data-urwa-role] :is(label,.form-label,.helper-text,.form-note){color:#40584e!important;opacity:1!important}
