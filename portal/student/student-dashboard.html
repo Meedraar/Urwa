@@ -762,7 +762,7 @@ button { font: inherit; cursor: pointer; border: 0; }
 </style>
 </head>
 
-<body>
+<body data-urwa-role="student">
 <div class="app">
 
 <aside class="sidebar">
@@ -805,6 +805,7 @@ button { font: inherit; cursor: pointer; border: 0; }
 <main class="main">
 
   <section class="greeting">
+    <div id="student-live-overview" role="status" aria-live="polite" style="font-size:12px;color:var(--green);margin-top:10px">Connecting to your URWA learning records…</div>
     <h1>Assalaamu Alaykum 👋🏻</h1>
     <p>Let's continue your journey of seeking knowledge!</p>
   </section>
@@ -1177,107 +1178,9 @@ function changeMonth(direction) {
 renderCalendar();
 
 
-/* CLASS DISCUSSION INTERFACE */
-let activeChat = "class";
-
-const chatMessages = document.getElementById("chatMessages");
-const chatTitle = document.getElementById("chatTitle");
-const chatSubtitle = document.getElementById("chatSubtitle");
-const chatAvatar = document.getElementById("chatAvatar");
-
-const demoMessages = {
-  class: [
-    {
-      author: "Abla",
-      message: "Assalaamu alaykunna everyone. Please remember to prepare your revision before our next class.",
-      time: "Today",
-      mine: false
-    },
-    {
-      author: "Student",
-      message: "Wa alaykum salaam. In shaa Allah, we will prepare.",
-      time: "Today",
-      mine: false
-    }
-  ],
-
-  abla: [
-    {
-      author: "Abla",
-      message: "Assalaamu alayki. How is your revision progressing?",
-      time: "Today",
-      mine: false
-    }
-  ]
-};
-
-function selectChat(type) {
-  activeChat = type;
-
-  document.querySelectorAll(".chat-person").forEach(person => {
-    person.classList.remove("active");
-  });
-
-  event.currentTarget.classList.add("active");
-
-  if(type === "class") {
-    chatTitle.textContent = "Class Group";
-    chatSubtitle.textContent = "Qur'an Memorisation · Group discussion";
-    chatAvatar.textContent = "📖";
-  } else {
-    chatTitle.textContent = "My Abla";
-    chatSubtitle.textContent = "Class teacher";
-    chatAvatar.textContent = "A";
-  }
-
-  renderMessages();
-}
-
-function renderMessages() {
-  chatMessages.innerHTML = "";
-
-  demoMessages[activeChat].forEach(message => {
-    const messageElement = document.createElement("div");
-    messageElement.className = message.mine ? "message mine" : "message";
-
-    const author = document.createElement("div");
-    author.className = "message-author";
-    author.textContent = message.author;
-
-    const bubble = document.createElement("div");
-    bubble.className = "message-bubble";
-    bubble.textContent = message.message;
-
-    const time = document.createElement("div");
-    time.className = "message-time";
-    time.textContent = message.time;
-
-    messageElement.append(author, bubble, time);
-    chatMessages.appendChild(messageElement);
-  });
-
-  chatMessages.scrollTop = chatMessages.scrollHeight;
-}
-
-document.getElementById("messageForm").addEventListener("submit", function(e) {
-  e.preventDefault();
-
-  const input = document.getElementById("messageInput");
-  const message = input.value.trim();
-
-  if(!message) return;
-
-  demoMessages[activeChat].push({
-    author: "You",
-    message: message,
-    time: "Just now",
-    mine: true
-  });
-
-  input.value = "";
-  renderMessages();
-});
 </script>
 
+<script type="module" src="../../js/supabase-auth.js"></script>
+<script type="module" src="../../js/dashboard-data.js"></script>
 </body>
 </html>
