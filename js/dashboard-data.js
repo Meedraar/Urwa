@@ -181,6 +181,17 @@ async function adminLoad(user) {
     textValue('#admin-attendance-present', presentCount);
     textValue('#admin-attendance-absent', absentCount);
     textValue('#admin-attendance-other', otherCount);
+    textValue('#admin-attendance-present-module', presentCount);
+    textValue('#admin-attendance-absent-module', absentCount);
+    textValue('#admin-attendance-other-module', otherCount);
+    textValue('#admin-attendance-rate-module', attendance.length ? attendanceRate + '%' : '—');
+    textValue('#admin-report-students', students.filter(p => (byStudent.get(p.id)?.status || p.status) === 'approved').length);
+    textValue('#admin-report-ablas', teachers.filter(p => p.status === 'approved').length);
+    textValue('#admin-report-pending', pending.length + pendingTeachers.length);
+    textValue('#admin-report-halaqas', halaqas.length);
+    put('#admin-programmes-module-body', [...programmeCounts.entries()].sort((a,b) => a[0].localeCompare(b[0])).map(([name,count]) =>
+      '<tr><td>' + esc(name) + '</td><td>' + count + '</td></tr>'
+    ).join(''), '<tr><td colspan="2">No approved programme enrolments recorded.</td></tr>');
     textValue('#admin-pending-count', pending.length);
     textValue('#admin-teacher-pending', teachers.filter(p => p.status === 'pending').length);
     textValue('#admin-unassigned-count', approvedEnrollments.filter(e => !e.halaqa_id).length);
