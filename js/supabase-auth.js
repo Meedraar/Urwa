@@ -4,11 +4,13 @@ const $ = (id) => document.getElementById(id);
 const roleHome = {
   student: '/portal/student/student-dashboard.html',
   teacher: '/portal/abla/teacher-dashboard.html',
+  department_member: '/portal/departments/index.html',
   admin: '/portal/admin/admin-dashboard.html'
 };
 const roleLogin = {
   student: '/portal/student/student-login.html',
   teacher: '/portal/abla/teacher-login.html',
+  department_member: '/portal/departments/department-login.html',
   admin: '/portal/admin/login.html'
 };
 
@@ -75,7 +77,7 @@ async function login(form, role) {
 
 for (const [selector, role] of [
   ['#studentLoginForm', 'student'],
-  ['#departmentLoginForm', 'student'],
+  ['#departmentLoginForm', 'department_member'],
   ['[data-staff-login="teacher"]', 'teacher'],
   ['#adminLoginForm', 'admin']
 ]) {
