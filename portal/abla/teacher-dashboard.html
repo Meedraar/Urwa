@@ -1,62 +1,587 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Abla Teaching Space | URWA</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abla Dashboard | URWA</title>
 <link rel="stylesheet" href="../../css/portal.css">
-<link rel="stylesheet" href="../../css/dashboard-live.css">
-<link rel="stylesheet" href="../../css/dashboard-modern.css">
-<link rel="stylesheet" href="../../css/dashboard-abla.css">
-  <link rel="stylesheet" href="/css/urwa-theme.css?v=7">
-  <link rel="stylesheet" href="../../css/edunova-role-dashboards.css?v=1">
-  <link rel="stylesheet" href="../../css/dashboard-reference-layouts.css?v=1">
+<link rel="stylesheet" href="../../css/auth.css">
+
+<style>
+:root {
+  --green:#0e4a40;
+  --green-dark:#093b33;
+  --gold:#e0a526;
+  --cream:#fbf6e9;
+  --mint:#e3f0ea;
+  --blue:#2675d8;
+  --purple:#8063b8;
+  --text:#25332f;
+  --muted:#84908b;
+  --border:#e9eeeb;
+  --white:#fff;
+  --sidebar:218px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#f7f9f8;color:var(--text);font-family:Inter,Arial,sans-serif;font-size:13px}
+button,input,select{font:inherit}
+button,a{cursor:pointer}
+a{text-decoration:none;color:inherit}
+.ur-dashboard{min-height:100vh}
+.sidebar{
+ position:fixed;inset:0 auto 0 0;width:var(--sidebar);
+ background:#fff;border-right:1px solid var(--border);
+ padding:17px 13px;display:flex;flex-direction:column;
+ z-index:20;overflow-y:auto
+}
+.brand{display:flex;align-items:center;gap:9px;padding:3px 7px 20px}
+.brand img{width:39px;height:39px;object-fit:contain}
+.brand strong{display:block;font-size:19px;letter-spacing:1px;color:var(--green)}
+.brand small{display:block;font-size:8px;letter-spacing:1px;color:#89938e;margin-top:3px}
+.academy-tag{
+ background:#eaf2ff;color:#2366bb;border-radius:9px;
+ padding:12px;margin:8px 0 14px;font-weight:700;line-height:1.5
+}
+.academy-tag small{display:block;font-size:10px;font-weight:500}
+.nav{display:grid;gap:3px}
+.nav a{
+ display:flex;align-items:center;gap:11px;padding:10px 9px;
+ min-height:37px;border-radius:7px;color:#5d6964;font-size:12px;
+ border-left:3px solid transparent
+}
+.nav a:hover,.nav a.active{
+ background:#eef4f1;color:var(--green);border-left-color:var(--green);
+ font-weight:700
+}
+.nav-icon{width:18px;text-align:center;font-size:16px}
+.nav-label{font-size:9px;color:#a0aaa5;font-weight:700;letter-spacing:1px;padding:14px 10px 5px}
+.sidebar-bottom{
+ margin-top:auto;background:#eef5f2;border:1px solid #dce9e2;
+ border-radius:10px;padding:12px;margin-top:20px
+}
+.sidebar-bottom strong{display:block;color:var(--green);font-size:12px}
+.sidebar-bottom p{font-size:10px;line-height:1.6;color:#78847e}
+.sidebar-bottom a{display:inline-block;background:var(--green);color:#fff;padding:8px 10px;border-radius:6px;font-size:10px}
+.main{margin-left:var(--sidebar);min-width:0}
+.topbar{
+ height:68px;background:#fff;border-bottom:1px solid var(--border);
+ display:flex;align-items:center;padding:0 25px;gap:20px;
+ position:sticky;top:0;z-index:10
+}
+.menu-btn{display:none;border:0;background:#eef4f1;padding:8px;border-radius:6px}
+.search{height:40px;width:min(490px,55%);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;padding:0 12px;gap:10px;color:#89938e}
+.search input{border:0;outline:0;flex:1;min-width:0}
+.search kbd{background:#f3f5f4;padding:4px 6px;border-radius:4px;font-size:10px}
+.top-actions{margin-left:auto;display:flex;align-items:center;gap:18px}
+.icon-button{border:0;background:transparent;font-size:19px;color:#65736d;position:relative}
+.notification-count{position:absolute;top:-5px;right:-6px;background:#e45e5e;color:#fff;border-radius:50%;font-size:9px;padding:3px 5px}
+.user{display:flex;align-items:center;gap:9px}
+.avatar{width:35px;height:35px;border-radius:50%;background:var(--mint);display:grid;place-items:center;color:var(--green);font-weight:700}
+.user strong{display:block;font-size:11px}
+.user small{color:var(--muted);font-size:10px}
+.content{padding:20px 20px 35px;max-width:1800px;margin:auto}
+.page-title{font-size:17px;margin:0 0 14px}
+.dashboard-grid{display:grid;grid-template-columns:minmax(0,1fr) 278px;gap:15px}
+.center-column{min-width:0}
+.welcome-row{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(190px,.7fr);gap:10px;margin-bottom:13px}
+.welcome{
+ min-height:190px;border:1px solid #e0eafa;border-radius:13px;
+ background:linear-gradient(115deg,#eff5ff,#f8fbff 65%,#eaf5f3);
+ padding:25px;display:flex;align-items:center;justify-content:space-between;
+ overflow:hidden;position:relative
+}
+.welcome:after{content:"✦";position:absolute;right:20px;top:15px;color:#d4e3f7;font-size:26px}
+.welcome-copy{max-width:450px;position:relative;z-index:1}
+.welcome h1{font-size:23px;margin:0 0 8px;color:#202d39}
+.welcome p{line-height:1.7;color:#53636f;margin:5px 0}
+.welcome .welcome-note{color:#2868bd;font-weight:700}
+.welcome .welcome-arabic{font-size:30px;color:var(--green);margin-left:10px}
+.welcome-button{
+ display:inline-block;margin-top:13px;background:var(--green);color:#fff;
+ border-radius:7px;padding:10px 15px;font-size:11px;font-weight:700
+}
+.ai-cards{display:grid;gap:9px}
+.ai-card{
+ border:1px solid var(--border);border-radius:11px;padding:14px;
+ background:#fff;display:flex;flex-direction:column;justify-content:space-between;
+ min-height:90px
+}
+.ai-card h3{font-size:12px;margin:0 0 6px}
+.ai-card p{font-size:10px;color:#77847e;line-height:1.5;margin:0}
+.ai-card a{display:inline-block;margin-top:9px;border:1px solid #dce7e2;color:var(--green);padding:6px 9px;border-radius:6px;font-size:10px;width:max-content}
+.ai-card.purple{background:#faf8ff}
+.ai-card.gold{background:#fffdf6}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:13px}
+.stat{
+ background:#fff;border:1px solid var(--border);border-radius:11px;
+ padding:13px;min-height:115px;position:relative;overflow:hidden
+}
+.stat-top{display:flex;align-items:center;justify-content:space-between}
+.stat h3{font-size:10px;margin:0;color:#64716b}
+.stat-icon{width:34px;height:34px;border-radius:10px;background:#eaf2ff;color:#2873cc;display:grid;place-items:center;font-size:18px}
+.stat.green .stat-icon{background:#e7f5ed;color:#29945f}
+.stat.purple .stat-icon{background:#f1ebfa;color:#8460b7}
+.stat.gold .stat-icon{background:#fff5dd;color:#b88b26}
+.stat strong{display:block;font-size:23px;margin:5px 0}
+.stat small{font-size:9px;color:#7d8983}
+.sparkline{height:20px;margin-top:5px;display:flex;align-items:end;gap:4px}
+.sparkline i{display:block;width:13%;border-top:2px solid #5b9c83;transform:skewY(-18deg)}
+.panel{
+ background:#fff;border:1px solid var(--border);border-radius:11px;
+ padding:14px;min-width:0
+}
+.panel-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
+.panel-heading h2{font-size:13px;margin:0}
+.panel-heading a,.panel-heading button{font-size:10px;color:#3975bd;background:none;border:0}
+.quick-links{margin-bottom:13px}
+.quick-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
+.quick-link{
+ border:1px solid #edf0ee;border-radius:8px;padding:12px 4px;
+ text-align:center;color:#52605a;min-width:0
+}
+.quick-link:hover{background:#f2f7f4;border-color:#d8e7de}
+.quick-link span{display:block;font-size:21px;margin-bottom:7px;color:var(--green)}
+.quick-link small{font-size:9px;white-space:normal}
+.lower-grid{display:grid;grid-template-columns:1fr 1fr 1.25fr;gap:10px;margin-bottom:12px}
+.activity{display:flex;gap:9px;padding:9px 0;border-bottom:1px solid #f0f2f0}
+.activity:last-child{border:0}
+.date-box{width:30px;flex-shrink:0;background:#eef4ff;color:#276fc4;border-radius:5px;text-align:center;padding:5px 2px;font-size:9px;font-weight:700}
+.activity strong{display:block;font-size:10px;margin:1px 0 4px}
+.activity small{font-size:9px;color:#87918c}
+.submission-content{display:flex;align-items:center;gap:13px}
+.donut{
+ width:90px;height:90px;flex-shrink:0;border-radius:50%;
+ background:conic-gradient(#2878d8 0 76%,#e8eef5 76% 100%);
+ display:grid;place-items:center;position:relative
+}
+.donut:after{content:"";position:absolute;width:68px;height:68px;border-radius:50%;background:#fff}
+.donut strong{z-index:1;font-size:18px}
+.submission-stats{flex:1}
+.submission-stats div{display:flex;justify-content:space-between;padding:5px 0;font-size:10px}
+.submission-stats span:last-child{font-weight:700}
+.performance-chart{height:135px;display:flex;align-items:end;justify-content:space-around;border-bottom:1px solid #e9eeeb;padding:0 5px}
+.performance-pair{display:flex;align-items:end;gap:4px;height:100%}
+.performance-pair i{width:10px;background:#2878d8;border-radius:3px 3px 0 0}
+.performance-pair i:last-child{background:#9dbde8}
+.performance-labels{display:flex;justify-content:space-around;color:#89938e;font-size:9px;padding-top:7px}
+.bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.student-risk,.notice-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #f0f2f0}
+.student-risk:last-child,.notice-row:last-child{border:0}
+.risk-avatar{width:31px;height:31px;border-radius:50%;background:#edf3ef;display:grid;place-items:center;font-size:13px}
+.risk-info{flex:1;min-width:0}
+.risk-info strong,.notice-row strong{display:block;font-size:10px}
+.risk-info small,.notice-row small{display:block;color:#87918c;font-size:9px;margin-top:4px}
+.risk-level{font-size:9px;font-weight:700}
+.high{color:#d45c55}.medium{color:#c28a29}.low{color:#29946b}
+.notice-icon{width:26px;height:26px;background:#edf4ff;color:#3975bd;border-radius:7px;display:grid;place-items:center}
+.right-column{display:grid;align-content:start;gap:12px}
+.calendar-panel{padding:17px}
+.calendar-head{display:flex;justify-content:space-between;align-items:center;margin:4px 0 16px}
+.calendar-head button{background:none;border:0;font-size:17px;color:#75817b}
+.calendar-head strong{font-size:12px}
+.calendar{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;gap:10px 2px}
+.calendar span{font-size:10px;padding:5px 0}
+.calendar .weekday{font-size:9px;color:#89938e;font-weight:700}
+.calendar .today{background:#2675d8;color:#fff;border-radius:50%}
+.calendar .has-event:after{content:"";display:block;width:4px;height:4px;background:#3e9b70;border-radius:50%;margin:3px auto 0}
+.schedule-item{display:flex;gap:9px;padding:10px 0;border-bottom:1px solid #f0f2f0}
+.schedule-item:last-child{border:0}
+.schedule-time{width:54px;flex-shrink:0;border-left:3px solid #2878d8;padding-left:7px;font-size:9px;line-height:1.6;color:#69756f}
+.schedule-info{min-width:0}
+.schedule-info strong{display:block;font-size:10px}
+.schedule-info small{display:block;font-size:9px;color:#87918c;margin-top:4px}
+.reminder{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #f0f2f0}
+.reminder:last-child{border:0}
+.reminder-icon{width:32px;height:32px;border-radius:9px;background:#f2edfa;color:#8063b8;display:grid;place-items:center;font-size:16px}
+.reminder strong{display:block;font-size:10px}
+.reminder small{display:block;font-size:9px;color:#87918c;margin-top:4px}
+.full-calendar{display:block;text-align:center;margin-top:12px;color:#3975bd;font-size:10px}
+.hidden-section{display:none}
+.portal-section{margin-top:16px;scroll-margin-top:85px}
+.portal-section .panel{margin-bottom:12px}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:11px}
+th,td{text-align:left;padding:12px;border-bottom:1px solid #edf0ee}
+th{color:#75817b;font-size:10px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.form-group{display:grid;gap:6px;margin-bottom:12px}
+.form-group label{font-size:11px;font-weight:600}
+.form-group input,.form-group select,.form-group textarea{
+ width:100%;border:1px solid var(--border);border-radius:7px;padding:10px;outline:none
+}
+.form-group textarea{min-height:90px;resize:vertical}
+.primary-btn{border:0;background:var(--green);color:#fff;padding:10px 15px;border-radius:7px}
+.empty{padding:28px;text-align:center;color:#87918c;font-size:11px}
+.empty strong{display:block;color:var(--green);font-size:13px;margin-bottom:7px}
+@media(max-width:1200px){
+ .dashboard-grid{grid-template-columns:minmax(0,1fr) 250px}
+ .lower-grid{grid-template-columns:1fr 1fr}
+ .lower-grid .performance-panel{grid-column:span 2}
+ .quick-grid{grid-template-columns:repeat(4,1fr)}
+}
+@media(max-width:900px){
+ :root{--sidebar:0px}
+ .sidebar{transform:translateX(-100%);width:235px;transition:.25s}
+ body.menu-open .sidebar{transform:translateX(0)}
+ .menu-btn{display:block}
+ .dashboard-grid{grid-template-columns:1fr}
+ .right-column{grid-template-columns:1fr 1fr}
+ .right-column .calendar-panel{grid-row:span 2}
+}
+@media(max-width:650px){
+ .topbar{padding:0 12px;gap:10px}
+ .search{width:auto;flex:1}
+ .search kbd{display:none}
+ .user div:last-child{display:none}
+ .content{padding:14px 11px}
+ .welcome-row{grid-template-columns:1fr}
+ .welcome{min-height:170px;padding:18px}
+ .welcome h1{font-size:19px}
+ .welcome .welcome-arabic{font-size:23px}
+ .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .quick-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .lower-grid,.bottom-grid{grid-template-columns:1fr}
+ .lower-grid .performance-panel{grid-column:auto}
+ .right-column{grid-template-columns:1fr}
+ .right-column .calendar-panel{grid-row:auto}
+ .form-grid{grid-template-columns:1fr}
+}
+</style>
 </head>
-<body data-urwa-role="teacher" class="urwa-abla-dashboard">
-<div class="abla-app">
-<aside class="abla-sidebar" id="sidebar">
-  <a class="abla-brand" href="../../index.html"><img src="../../assets/logo.jpg" alt="URWA"><span><b>URWA</b><small>ABLA TEACHING SPACE</small></span></a>
-  <div class="abla-profile"><div class="abla-avatar">A</div><span><b data-profile-name>Abla Name</b><small>Qur'an Teacher</small></span></div>
-  <nav class="abla-nav">
-    <span class="abla-nav-label">TEACHING WORKSPACE</span>
-    <a class="active" href="#overview">▦ <span>Dashboard</span></a><a href="#halaqa">◎ <span>My Halaqas</span></a><a href="#students">♙ <span>Students</span></a><a href="#attendance">✓ <span>Attendance</span></a><a href="#assignments">▣ <span>Lesson Plans & Assignments</span></a><a href="#submissions">⇧ <span>Submissions & Reviews</span></a><a href="#progress">▥ <span>Hifdh & Muraja'ah</span></a><a href="#timetable">◷ <span>Timetable</span></a>
-    <span class="abla-nav-label">COMMUNITY</span><a href="#community">◎ <span>Level Communities</span></a><a href="#announcements">♧ <span>Announcements</span></a><a href="#halaqa-messages">▤ <span>Messages</span></a><a href="../../departments.html">◎ <span>URWA Teams</span></a>
-    <span class="abla-nav-label">ACCOUNT</span><a href="#profile">⚙ <span>My Profile</span></a>
+
+<body data-urwa-role="teacher">
+<div class="ur-dashboard">
+
+<aside class="sidebar" id="sidebar">
+  <a class="brand" href="../../index.html">
+    <img src="../../assets/logo.jpg" alt="URWA logo">
+    <span><strong>URWA</strong><small>THE FIRMEST HANDHOLD</small></span>
+  </a>
+
+  <div class="academy-tag">URWA TEACHER PORTAL<small>Abla Teaching Space</small></div>
+
+  <nav class="nav">
+    <a href="#overview" class="active"><span class="nav-icon">▦</span>Dashboard</a>
+    <div class="nav-label">TEACHING</div>
+    <a href="#halaqa"><span class="nav-icon">◎</span>My Halaqa</a>
+    <a href="#students"><span class="nav-icon">♙</span>My Students</a>
+    <a href="#attendance"><span class="nav-icon">✓</span>Attendance</a>
+    <a href="#assignments"><span class="nav-icon">▤</span>Assignments</a>
+    <a href="#submissions"><span class="nav-icon">⇧</span>Student Submissions</a>
+    <a href="#progress"><span class="nav-icon">◷</span>Hifdh &amp; Muraja'ah</a>
+    <a href="#timetable"><span class="nav-icon">▦</span>Timetable</a>
+    <div class="nav-label">COMMUNICATION</div>
+    <a href="#communication"><span class="nav-icon">☏</span>Class Messages</a>
+    <a href="#announcements"><span class="nav-icon">♧</span>Announcements</a>
+    <a href="#profile"><span class="nav-icon">⚙</span>My Profile</a>
   </nav>
-  <div class="abla-sidebar-bottom"><div class="abla-support"><b>Teaching with ihsan</b><p>Every lesson is an amanah. May Allah place barakah in your efforts.</p></div><a href="../../index.html">⌂ &nbsp; Portal Home</a><a href="teacher-login.html" data-urwa-logout>↪ &nbsp; Log out</a></div>
+
+  <div class="sidebar-bottom">
+    <strong>URWA Support</strong>
+    <p>Keep your halaqa organised and connected.</p>
+    <a href="../../index.html">Portal Home</a>
+  </div>
 </aside>
-<main class="abla-main" id="overview">
-<header class="abla-topbar"><button class="abla-menu" onclick="toggleSidebar()" aria-label="Open navigation">☰</button><label class="abla-search">⌕ <input type="search" placeholder="Search students, halaqas, assignments..."><kbd>⌘ K</kbd></label><div class="abla-top-user"><button class="abla-bell" aria-label="Notifications">♧</button><div class="abla-avatar mini">A</div><span><b data-profile-name>Abla Name</b><small>Teacher</small></span></div></header>
-<div class="abla-workspace">
-<div class="abla-title-row"><div><div class="abla-eyebrow">YOUR TEACHING WORKSPACE</div><h1>Assalaamu alaykum, <span data-profile-name>Abla</span> <span class="abla-wave">✦</span></h1><p>Inspire your students. Nurture their Qur'an journey. Lead with ihsan.</p></div><div class="abla-date-chip" id="abla-date">Today</div></div>
-<section class="abla-hero"><div><span class="abla-hero-label">URWA · TEACHER PORTAL</span><h2>Your Halaqa. Your Amanah.</h2><p>Guide every student with care, consistency and barakah.</p><div class="abla-hero-actions"><a href="#students">View my students <b>→</b></a><a href="#attendance">Record attendance</a></div></div><div class="abla-hero-calligraphy" lang="ar" dir="rtl">رَبِّ زِدْنِي عِلْمًا</div><div class="abla-hero-orb"></div></section>
-<section id="teacher-live-overview" class="abla-connection" aria-live="polite"><strong>Connecting your teaching workspace…</strong><p>Your assigned halaqas and student records will appear here.</p></section>
-<div class="abla-stat-grid">
-<article class="abla-stat-card"><span class="abla-stat-icon green">♙</span><small>MY STUDENTS</small><strong class="urwa-stat-value">—</strong><span>Students in your assigned halaqas</span></article>
-<article class="abla-stat-card"><span class="abla-stat-icon teal">✓</span><small>ATTENDANCE</small><strong class="urwa-stat-value">—</strong><span>Attendance records submitted</span></article>
-<article class="abla-stat-card"><span class="abla-stat-icon gold">▣</span><small>ACTIVE ASSIGNMENTS</small><strong class="urwa-stat-value">—</strong><span>Learning tasks you've created</span></article>
-<article class="abla-stat-card"><span class="abla-stat-icon violet">⇧</span><small>PENDING REVIEWS</small><strong class="urwa-stat-value">—</strong><span>Student work awaiting feedback</span></article>
+
+<main class="main">
+<header class="topbar">
+  <button class="menu-btn" onclick="document.body.classList.toggle('menu-open')">☰</button>
+  <label class="search">
+    ⌕ <input type="search" placeholder="Search students, halaqas, assignments...">
+    <kbd>Ctrl K</kbd>
+  </label>
+  <div class="top-actions">
+    <button class="icon-button" aria-label="Notifications">♧<span class="notification-count">!</span></button>
+    <button class="icon-button" aria-label="Messages" onclick="location.hash='communication'">▢</button>
+    <div class="user">
+      <div class="avatar" data-profile-avatar>A</div>
+      <div><strong data-profile-name>Abla Name</strong><small>Abla · Teacher</small></div>
+    </div>
+  </div>
+</header>
+
+<div class="content" id="overview">
+  <h1 class="page-title">Abla Dashboard</h1>
+
+  <div class="dashboard-grid">
+    <div class="center-column">
+
+      <div class="welcome-row">
+        <section class="welcome">
+          <div class="welcome-copy">
+            <h1>Assalaamu alaykum, <span data-profile-name>Abla</span>! 🌿</h1>
+            <p>Empower hearts. Nurture knowledge.</p>
+            <p>You are guiding your students on their journey with the Qur'an.</p>
+            <p class="welcome-note">Your teaching is an amanah.</p>
+            <a href="#students" class="welcome-button">View My Students →</a>
+          </div>
+          <div class="welcome-arabic" lang="ar" dir="rtl">رَبِّ زِدْنِي عِلْمًا</div>
+        </section>
+
+        <div class="ai-cards">
+          <article class="ai-card">
+            <div><h3>✧ Teaching Planner</h3><p>Organise your halaqa lessons and prepare your teaching schedule.</p></div>
+            <a href="#timetable">View Timetable →</a>
+          </article>
+          <article class="ai-card purple">
+            <div><h3>▤ Learning Materials</h3><p>Prepare learning resources and share them with your students.</p></div>
+            <a href="#assignments">Create Assignment →</a>
+          </article>
+        </div>
+      </div>
+
+      <section class="stats">
+        <article class="stat">
+          <div class="stat-top"><h3>My Students</h3><span class="stat-icon">♙</span></div>
+          <strong>—</strong><small>Students assigned to your halaqa</small>
+          <div class="sparkline"><i></i><i></i><i></i><i></i><i></i></div>
+        </article>
+        <article class="stat green">
+          <div class="stat-top"><h3>Attendance</h3><span class="stat-icon">✓</span></div>
+          <strong>—</strong><small>Attendance records submitted</small>
+          <div class="sparkline"><i></i><i></i><i></i><i></i><i></i></div>
+        </article>
+        <article class="stat purple">
+          <div class="stat-top"><h3>Assignments</h3><span class="stat-icon">▤</span></div>
+          <strong>—</strong><small>Active assignments</small>
+          <div class="sparkline"><i></i><i></i><i></i><i></i><i></i></div>
+        </article>
+        <article class="stat gold">
+          <div class="stat-top"><h3>Pending Reviews</h3><span class="stat-icon">⇧</span></div>
+          <strong>—</strong><small>Student work awaiting feedback</small>
+          <div class="sparkline"><i></i><i></i><i></i><i></i><i></i></div>
+        </article>
+      </section>
+
+      <section class="panel quick-links">
+        <div class="panel-heading"><h2>Quick Links</h2><a href="#profile">Customise ⚙</a></div>
+        <div class="quick-grid">
+          <a class="quick-link" href="#students"><span>♙</span><small>My Students</small></a>
+          <a class="quick-link" href="#timetable"><span>▦</span><small>Timetable</small></a>
+          <a class="quick-link" href="#assignments"><span>▤</span><small>Assignments</small></a>
+          <a class="quick-link" href="#attendance"><span>✓</span><small>Attendance</small></a>
+          <a class="quick-link" href="#submissions"><span>⇧</span><small>Submissions</small></a>
+          <a class="quick-link" href="#progress"><span>◷</span><small>Hifdh Progress</small></a>
+          <a class="quick-link" href="#communication"><span>☏</span><small>Messages</small></a>
+        </div>
+      </section>
+
+      <div class="lower-grid">
+        <section class="panel">
+          <div class="panel-heading"><h2>Upcoming Activities</h2><a href="#timetable">View All</a></div>
+          <div class="activity"><div class="date-box">MAY<br>21</div><div><strong>Halaqa Session</strong><small>Qur'an memorisation · Class session</small></div></div>
+          <div class="activity"><div class="date-box">MAY<br>22</div><div><strong>Review Student Hifdh</strong><small>Student progress review</small></div></div>
+          <div class="activity"><div class="date-box">MAY<br>23</div><div><strong>Muraja'ah Assessment</strong><small>Revision and feedback</small></div></div>
+          <div class="activity"><div class="date-box">MAY<br>24</div><div><strong>Prepare Class Materials</strong><small>Upcoming halaqa lesson</small></div></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-heading"><h2>Student Submissions</h2><a href="#submissions">View All</a></div>
+          <div class="submission-content">
+            <div class="donut"><strong>—</strong></div>
+            <div class="submission-stats">
+              <div><span>Total assigned</span><span>—</span></div>
+              <div><span>Submitted</span><span>—</span></div>
+              <div><span>Pending</span><span>—</span></div>
+              <div><span>Overdue</span><span>—</span></div>
+            </div>
+          </div>
+          <p style="font-size:9px;color:#87918c;text-align:center;margin-top:12px">Submission overview will appear when records are connected.</p>
+        </section>
+
+        <section class="panel performance-panel">
+          <div class="panel-heading"><h2>Student Performance Overview</h2><select style="border:0;background:#f4f6f5;padding:5px;border-radius:5px;font-size:9px"><option>This Month</option><option>This Week</option></select></div>
+          <div class="performance-chart">
+            <div class="performance-pair"><i style="height:65%"></i><i style="height:53%"></i></div>
+            <div class="performance-pair"><i style="height:52%"></i><i style="height:43%"></i></div>
+            <div class="performance-pair"><i style="height:75%"></i><i style="height:64%"></i></div>
+            <div class="performance-pair"><i style="height:67%"></i><i style="height:70%"></i></div>
+            <div class="performance-pair"><i style="height:78%"></i><i style="height:61%"></i></div>
+          </div>
+          <div class="performance-labels"><span>Hifdh</span><span>Revision</span><span>Tajweed</span><span>Fiqh</span><span>Other</span></div>
+          <p style="font-size:9px;color:#87918c;margin-top:10px">Illustrative chart layout. Live performance data is not yet connected.</p>
+        </section>
+      </div>
+
+      <div class="bottom-grid">
+        <section class="panel">
+          <div class="panel-heading"><h2>Student Progress &amp; Attention</h2><a href="#progress">View All</a></div>
+          <div class="empty"><strong>Student progress will appear here</strong>Review Hifdh, Muraja'ah and learning progress for your assigned students.</div>
+        </section>
+        <section class="panel">
+          <div class="panel-heading"><h2>Notifications</h2><a href="#announcements">View All</a></div>
+          <div class="notice-row"><span class="notice-icon">▤</span><div><strong>New assignment submissions</strong><small>Student work will appear here</small></div></div>
+          <div class="notice-row"><span class="notice-icon">♙</span><div><strong>Student messages</strong><small>Class messages and questions</small></div></div>
+          <div class="notice-row"><span class="notice-icon">✓</span><div><strong>Attendance reminders</strong><small>Remember to submit class attendance</small></div></div>
+        </section>
+      </div>
+
+    </div>
+
+    <aside class="right-column">
+      <section class="panel calendar-panel">
+        <div class="panel-heading"><h2>Calendar</h2></div>
+        <div class="calendar-head">
+          <button onclick="moveMonth(-1)">‹</button>
+          <strong id="monthTitle"></strong>
+          <button onclick="moveMonth(1)">›</button>
+        </div>
+        <div class="calendar" id="calendar"></div>
+        <div style="border-top:1px solid #edf0ee;margin-top:15px;padding-top:15px">
+          <div class="panel-heading"><h2>Today's Schedule</h2><a href="#timetable">View Timetable</a></div>
+          <div class="empty"><strong>Your class timetable</strong>Your assigned class sessions and times will appear here.</div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-heading"><h2>Teaching Reminders</h2></div>
+        <div class="reminder"><span class="reminder-icon">◷</span><div><strong>Upcoming Halaqa</strong><small>Check your next scheduled class</small></div></div>
+        <div class="reminder"><span class="reminder-icon" style="background:#fff5df;color:#b88b26">▤</span><div><strong>Pending Evaluations</strong><small>Review student submissions</small></div></div>
+        <div class="reminder"><span class="reminder-icon" style="background:#eaf5ed;color:#29945f">✓</span><div><strong>Attendance Records</strong><small>Keep your records updated</small></div></div>
+        <a class="full-calendar" href="#timetable">View All Reminders</a>
+      </section>
+    </aside>
+  </div>
+
+  <!-- EXISTING TEACHER WORKSPACES -->
+  <section class="portal-section" id="halaqa">
+    <div class="panel">
+      <div class="panel-heading"><h2>My Halaqa</h2></div>
+      <div class="empty"><strong>Halaqa Information</strong>Your assigned halaqa, programme, session and class details will appear here.</div>
+    </div>
+  </section>
+
+  <section class="portal-section" id="students">
+    <div class="panel">
+      <div class="panel-heading"><h2>My Students</h2></div>
+      <div class="table-wrap">
+        <table><thead><tr><th>Student</th><th>Programme</th><th>Attendance</th><th>Progress</th><th>Status</th></tr></thead>
+        <tbody><tr><td colspan="5">Your assigned student records will appear here.</td></tr></tbody></table>
+      </div>
+    </div>
+  </section>
+
+  <section class="portal-section" id="attendance">
+    <div class="panel">
+      <div class="panel-heading"><h2>Track Attendance</h2></div>
+      <div class="form-group"><label for="attendance-date">Class date</label><input type="date" id="attendance-date"></div>
+      <div class="empty"><strong>Your assigned students will appear here</strong>Attendance records will be available when your class list is loaded.</div>
+    </div>
+  </section>
+
+  <section class="portal-section" id="assignments">
+    <div class="panel">
+      <div class="panel-heading"><h2>Create an Assignment</h2></div>
+      <form>
+        <div class="form-grid">
+          <div class="form-group"><label for="assignment-title">Assignment title</label><input id="assignment-title" placeholder="Enter assignment title"></div>
+          <div class="form-group"><label for="assignment-type">Assignment type</label><select id="assignment-type"><option>Hifdh</option><option>Muraja'ah</option><option>Tajweed</option><option>Tafseer</option><option>Other</option></select></div>
+          <div class="form-group"><label for="assignment-due">Due date</label><input id="assignment-due" type="date"></div>
+          <div class="form-group"><label for="assignment-target">Assign to</label><select id="assignment-target"><option>All students in my halaqa</option><option>Selected students</option></select></div>
+        </div>
+        <div class="form-group"><label for="assignment-instructions">Instructions</label><textarea id="assignment-instructions" placeholder="Write the work students should complete..."></textarea></div>
+        <button class="primary-btn" type="button">Create Assignment</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="portal-section" id="submissions">
+    <div class="panel"><div class="panel-heading"><h2>Student Submissions</h2></div><div class="empty"><strong>No submissions to display</strong>Student submissions will appear here for your review and feedback.</div></div>
+  </section>
+
+  <section class="portal-section" id="progress">
+    <div class="panel"><div class="panel-heading"><h2>Hifdh &amp; Muraja'ah</h2></div><div class="empty"><strong>Student progress records</strong>Record memorisation, revision, assessments and feedback for your halaqa students.</div></div>
+  </section>
+
+  <section class="portal-section" id="timetable">
+    <div class="panel"><div class="panel-heading"><h2>Class Timetable</h2></div><div class="empty"><strong>Your timetable will appear here</strong>Your assigned class schedule will be displayed here.</div></div>
+  </section>
+
+  <section class="portal-section" id="communication">
+    <div class="panel">
+      <div class="panel-heading"><h2>Class Communication</h2></div>
+      <div class="empty"><strong>Your class conversations</strong>Use the existing URWA class messaging feature to communicate with your students.</div>
+    </div>
+  </section>
+
+  <section class="portal-section" id="announcements">
+    <div class="panel"><div class="panel-heading"><h2>Announcements</h2></div><div class="empty"><strong>No announcements yet</strong>URWA announcements relevant to your teaching role will appear here.</div></div>
+  </section>
+
+  <section class="portal-section" id="profile">
+    <div class="panel"><div class="panel-heading"><h2>My Profile</h2></div><p><strong>Name:</strong> <span data-profile-name>Abla Name</span></p><p><strong>Role:</strong> Approved Teacher</p><p><strong>Halaqa:</strong> To be assigned</p></div>
+  </section>
+
+  <footer style="padding:25px 0;color:#89938e;font-size:10px;text-align:center">
+    URWA — The Firmest Handhold
+  </footer>
 </div>
-<div class="abla-dashboard-columns"><div class="abla-primary-column">
-<section class="abla-panel" id="halaqa"><div class="abla-panel-head"><div><small>YOUR CLASSES</small><h2>My Halaqas</h2></div><a href="#timetable">View timetable →</a></div><div class="abla-halaqa-grid"><article class="abla-halaqa-card"><span class="abla-round-icon">◎</span><div><b>Assigned halaqa overview</b><p>Your halaqa names, programme and class details will appear here.</p></div><span class="abla-chip">My classes</span></article><article class="abla-halaqa-card pale"><span class="abla-round-icon gold">✧</span><div><b>Teaching checklist</b><p>Prepare lesson · Take attendance · Review student progress</p></div></article></div></section>
-<section class="abla-panel" id="students"><div class="abla-panel-head"><div><small>YOUR LEARNERS</small><h2>Student Roster</h2></div><span class="abla-chip">Assigned halaqas only</span></div><div class="urwa-table-wrap"><table class="urwa-table"><thead><tr><th>Student</th><th>Halaqa</th><th>Attendance</th><th>Progress</th><th>Status</th></tr></thead><tbody><tr><td colspan="5">Your assigned students will appear here.</td></tr></tbody></table></div></section>
-<section class="abla-panel" id="attendance"><div class="abla-panel-head"><div><small>CLASS RECORDS</small><h2>Attendance & Class Register</h2><p>Record attendance for students in your assigned halaqas.</p></div><span class="abla-chip">Teacher access</span></div><div class="abla-attendance-tools"><label>Class date <input id="teacher-attendance-date" type="date"></label><div class="abla-attendance-key"><span>● Present</span><span>● Late</span><span>● Absent</span><span>● Excused</span></div></div><div id="teacher-attendance-roster" class="abla-roster"><b>Loading your class register…</b><p>Your assigned student list will appear here.</p></div></section>
-<section class="abla-panel" id="assignments"><div class="abla-panel-head"><div><small>PLAN & TEACH</small><h2>Lesson Plans & Assignments</h2><p>Create work for your assigned halaqas.</p></div><span class="abla-round-icon">✎</span></div><form id="teacher-assignment-form" class="abla-assignment-form"><div class="abla-form-grid"><label>Assignment title<input id="assignment-title" type="text" placeholder="e.g. Surah revision: Al-Mulk" required></label><label>Work category<select id="assignment-type"><option>Hifdh</option><option>Muraja'ah</option><option>Tajweed</option><option>Tafseer</option><option>Other</option></select></label><label>Due date<input id="assignment-due" type="date"></label><label>Assign to<select id="assignment-students" required><option value="">Loading your halaqas…</option></select></label></div><label class="abla-full-label">Instructions<textarea id="assignment-instructions" placeholder="Write the learning task and guidance for your students..." required></textarea></label><div class="abla-form-footer"><p id="teacher-assignment-message" role="status" aria-live="polite"></p><button type="submit" class="abla-button">Publish assignment <b>→</b></button></div></form></section>
-<section class="abla-panel" id="submissions"><div class="abla-panel-head"><div><small>STUDENT WORK</small><h2>Submissions & Reviews</h2></div><span class="abla-chip">Feedback space</span></div><div class="abla-empty"><span>⇧</span><b>Student submissions</b><p>Submitted work and feedback tools will appear here when available.</p></div></section>
-<section class="abla-panel" id="progress"><div class="abla-panel-head"><div><small>QUR'AN JOURNEY</small><h2>Hifdh & Muraja'ah Progress</h2></div><span class="abla-round-icon gold">۞</span></div><div class="abla-progress-placeholder"><div><b>Memorisation</b><span>Student progress records</span></div><div><b>Revision</b><span>Muraja'ah records</span></div><div><b>Assessments</b><span>Teacher feedback</span></div></div></section>
-<section class="abla-panel" id="community"><div class="abla-panel-head"><div><small>LEARN TOGETHER</small><h2>My Level Communities</h2><p>Read updates for the halaqas assigned to you.</p></div><span class="abla-chip">Read only</span></div><div id="teacher-community-feed" class="urwa-announcement-feed"><div class="abla-empty"><b>Your teaching communities</b><p>Updates for your assigned levels will appear here.</p></div></div></section>
-<section class="abla-panel" id="announcements"><div class="abla-panel-head"><div><small>FROM URWA ADMIN</small><h2>Announcements</h2></div></div><div id="teacher-announcements-feed" class="urwa-announcement-feed"><div class="abla-empty"><b>No announcements yet</b><p>Official URWA updates will appear here.</p></div></div></section>
-<section class="abla-panel" id="timetable"><div class="abla-panel-head"><div><small>YOUR WEEK</small><h2>Class Timetable</h2></div></div><div class="abla-empty"><b>Your teaching schedule</b><p>Your assigned class days and session times will appear here.</p></div></section>
-<section class="abla-panel" id="profile"><div class="abla-panel-head"><div><small>ACCOUNT</small><h2>My Profile</h2></div></div><p class="abla-profile-line"><b>Role</b> Approved Abla / Teacher</p></section>
+</main>
 </div>
-<aside class="abla-side-column">
-<section class="abla-panel abla-calendar"><div class="abla-panel-head"><div><small>PLAN AHEAD</small><h2>Calendar</h2></div><span class="abla-round-icon">▦</span></div><div class="abla-month"><button type="button" aria-label="Previous month">‹</button><b id="abla-month-label">Month</b><button type="button" aria-label="Next month">›</button></div><div class="abla-calendar-grid" id="abla-calendar-grid"></div><div class="abla-calendar-note">Your classes and important dates at a glance.</div></section>
-<section class="abla-panel"><div class="abla-panel-head"><div><small>TEACHING DAY</small><h2>Today's Schedule</h2></div><a href="#timetable">Full timetable</a></div><div class="abla-empty compact"><b>Nothing scheduled yet</b><p>Your upcoming halaqa sessions will appear here.</p></div></section>
-<section class="abla-panel"><div class="abla-panel-head"><div><small>STAY ON TOP OF IT</small><h2>Teaching Reminders</h2></div></div><div class="abla-reminder"><span>◷</span><div><b>Before your lesson</b><small>Prepare today's dars</small></div></div><div class="abla-reminder"><span>✓</span><div><b>After your lesson</b><small>Submit the class attendance</small></div></div><div class="abla-reminder"><span>✧</span><div><b>Student growth</b><small>Keep Hifdh feedback updated</small></div></div></section>
-<section class="abla-quote"><span>✧ A REMINDER</span><p lang="ar" dir="rtl">وَقُل رَّبِّ زِدْنِي عِلْمًا</p><b>And say: My Lord, increase me in knowledge.</b><small>Surah Taha · 20:114</small></section>
-</aside></div>
-<footer class="abla-footer">URWA · The Firmest Handhold <span>Teach with purpose. Lead with ihsan.</span></footer>
-</div></main></div>
-<script>function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');}</script>
-<script>(function(){const now=new Date();const d=document.getElementById('abla-date');if(d)d.textContent=now.toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'});const label=document.getElementById('abla-month-label');const grid=document.getElementById('abla-calendar-grid');let view=new Date(now.getFullYear(),now.getMonth(),1);function draw(){label.textContent=view.toLocaleDateString(undefined,{month:'long',year:'numeric'});grid.innerHTML='';['S','M','T','W','T','F','S'].forEach(x=>{const e=document.createElement('span');e.className='day-name';e.textContent=x;grid.append(e)});const start=view.getDay(),count=new Date(view.getFullYear(),view.getMonth()+1,0).getDate();for(let i=0;i<start;i++){const e=document.createElement('i');grid.append(e)}for(let n=1;n<=count;n++){const e=document.createElement('span');e.className='day-number'+(n===now.getDate()&&view.getMonth()===now.getMonth()?' today':'');e.textContent=n;grid.append(e)}}draw();document.querySelectorAll('.abla-month button').forEach((b,i)=>b.addEventListener('click',()=>{view.setMonth(view.getMonth()+(i?1:-1));draw()}));})();</script>
-<script type="module" src="../../js/supabase-auth.js"></script><script type="module" src="../../js/dashboard-data.js"></script>
-</body></html>
+
+<script>
+/* CALENDAR */
+let calendarDate = new Date();
+
+function renderCalendar(){
+  const year = calendarDate.getFullYear();
+  const month = calendarDate.getMonth();
+  const title = document.getElementById("monthTitle");
+  const calendar = document.getElementById("calendar");
+
+  title.textContent = calendarDate.toLocaleDateString("en",{month:"long",year:"numeric"});
+  calendar.innerHTML = "";
+
+  ["SUN","MON","TUE","WED","THU","FRI","SAT"].forEach(day=>{
+    const el=document.createElement("span");
+    el.className="weekday";
+    el.textContent=day;
+    calendar.appendChild(el);
+  });
+
+  const firstDay=new Date(year,month,1).getDay();
+  const totalDays=new Date(year,month+1,0).getDate();
+
+  for(let i=0;i<firstDay;i++) calendar.appendChild(document.createElement("span"));
+
+  for(let day=1;day<=totalDays;day++){
+    const el=document.createElement("span");
+    el.textContent=day;
+    const now=new Date();
+
+    if(day===now.getDate() && month===now.getMonth() && year===now.getFullYear()){
+      el.classList.add("today");
+    }
+    calendar.appendChild(el);
+  }
+}
+
+function moveMonth(direction){
+  calendarDate.setMonth(calendarDate.getMonth()+direction);
+  renderCalendar();
+}
+renderCalendar();
+
+/* SIDEBAR NAVIGATION */
+document.querySelectorAll(".nav a[href^='#']").forEach(link=>{
+  link.addEventListener("click",()=>{
+    document.querySelectorAll(".nav a").forEach(item=>item.classList.remove("active"));
+    link.classList.add("active");
+    document.body.classList.remove("menu-open");
+  });
+});
+
+/* SEARCH SHORTCUT */
+document.addEventListener("keydown",event=>{
+  if((event.ctrlKey || event.metaKey) && event.key.toLowerCase()==="k"){
+    event.preventDefault();
+    document.querySelector(".search input").focus();
+  }
+});
+</script>
+
+<script src="../../js/auth.js" type="module"></script>
+<script src="../../js/portal-dashboard.js" defer></script>
+</body>
+</html>
