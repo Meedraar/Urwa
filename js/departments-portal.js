@@ -59,7 +59,7 @@ async function loadMemberState() {
   $('statMembership').textContent=state.membership?'Active':state.application?state.application.status.replaceAll('_',' '):'Not joined';
   $('membershipCaption').textContent=state.membership?'One department membership':state.application?'Latest application':'Apply to join a team';
   $('teamTitle').textContent=state.membership?dept(state.membership.department_id)?.name||'Your department':'Department membership';
-  $('teamDescription').textContent=state.membership?'Your position: '+(position(state.membership.position_id)?.title||'Team member')+'. Your workspace is ready.':'Explore the six URWA departments and apply for a position that matches your skills and availability.';
+  $('teamDescription').textContent=state.membership?'Your position: '+(position(state.membership.position_id)?.title||'Team member')+'. Your workspace is ready.':'Explore the ten URWA departments and apply for a position that matches your skills and availability.';
   $('memberStatus').textContent=state.membership?position(state.membership.position_id)?.title||'Active member':state.application?.status?.replaceAll('_',' ')||'Not assigned';
   if(state.membership) { $('applicationPanel').hidden=true; $('renewalPanel').hidden=false; $('renewalYear').value=new Date().getFullYear(); await loadRenewalStatus(); }
   else if(state.application){$('myApplication').hidden=false;$('myApplication').innerHTML='<b>Your latest application:</b> '+esc(dept(state.application.department_id)?.name||'Department')+' · '+esc(position(state.application.position_id)?.title||'Position')+' — <b>'+esc(state.application.status.replaceAll('_',' '))+'</b>'; if(['pending','under_review','more_information_required'].includes(state.application.status)) $('applicationForm').hidden=true;}
@@ -236,6 +236,7 @@ async function init(){
   state.user=data.user;
   const {data:profile,error:profileError}=await supabase.from('profiles').select('id,full_name,email,role,status').eq('id',state.user.id).maybeSingle();
   if(profileError)throw profileError;if(!profile||profile.status!=='approved'){notify('Your URWA account is not approved for portal access.',true);return;}
+  if(!['admin','department_member'].includes(profile.role)){await supabase.auth.signOut();location.replace('/portal/departments/department-login.html');return;}
   state.profile=profile;state.admin=profile.role==='admin';
   $('userName').textContent=profile.full_name||profile.email;$('userRole').textContent=state.admin?'URWA Administration':'URWA member';$('userInitials').textContent=(profile.full_name||'U').split(' ').map(x=>x[0]).slice(0,2).join('').toUpperCase();
   $('signOut').addEventListener('click',async()=>{await supabase.auth.signOut();location.replace('/portal/departments/department-login.html');});
@@ -245,6 +246,6 @@ async function init(){
   $('declineApplicationBtn').addEventListener('click',()=>reviewApplication('declined').catch(e=>notify(e.message,true)));
   $('requestInfoBtn').addEventListener('click',()=>reviewApplication('more_information_required').catch(e=>notify(e.message,true)));
   await loadDirectory();await loadMemberState();if(state.admin){$('adminNav').hidden=false;await loadAdmin();}
-  $('welcomeTitle').textContent='Assalamu alaykum, '+(profile.full_name?.split(' ')[0]||'');$('welcomeText').textContent=state.membership?'Welcome to the '+(myDept()?.name||'department')+' workspace. Your team can coordinate tasks, messages and reports here.':'Browse the six departments and submit an application to join one URWA team.';
+  $('welcomeTitle').textContent='Assalamu alaykum, '+(profile.full_name?.split(' ')[0]||'');$('welcomeText').textContent=state.membership?'Welcome to the '+(myDept()?.name||'department')+' workspace. Your team can coordinate tasks, messages and reports here.':'Browse the ten departments and submit an application to join one URWA team.';
 }
 init().catch(err=>notify(err.message||'Unable to load the department workspace.',true));
