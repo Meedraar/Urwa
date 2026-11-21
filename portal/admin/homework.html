@@ -3,225 +3,1026 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>URWA | Homework</title>
-<style>
-:root{
-  --blue:#1768df;--blue-soft:#edf4ff;--green:#19a875;--green-soft:#eaf7f1;
-  --purple:#8054cf;--purple-soft:#f3edff;--gold:#d89b22;--gold-soft:#fff7e8;
-  --red:#dc5a68;--red-soft:#fff0f1;--ink:#202938;--muted:#7b8795;
-  --line:#e8edf2;--surface:#fff;--canvas:#f8fafc;--radius:12px;
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--canvas);color:var(--ink);font:13px/1.45 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
-button,input{font:inherit}
-button{cursor:pointer}
-.app{min-height:100vh;display:grid;grid-template-columns:205px minmax(0,1fr) 250px;background:#fff}
-.sidebar{background:#fff;border-right:1px solid var(--line);padding:15px 12px 18px;display:flex;flex-direction:column;min-height:100vh}
-.brand{display:flex;gap:10px;align-items:center;padding:2px 5px 18px;border-bottom:1px solid var(--line)}
-.brand-mark{width:39px;height:39px;border-radius:8px;background:linear-gradient(145deg,#1975ef,#0754c4);color:white;display:grid;place-items:center;font-size:22px;font-weight:800;box-shadow:0 3px 8px #1768df33}
-.brand-logo{width:100%;height:100%;display:block;object-fit:contain}.brand-name{font-size:16px;font-weight:800;color:#155fc8;letter-spacing:-.5px;white-space:nowrap}
-.brand-sub{font-size:8px;color:#687789;line-height:1.25;margin-top:2px}
-.school-chip{margin:16px 0 12px;padding:10px 11px;border-radius:10px;background:linear-gradient(110deg,#1768df,#3287f1);color:#fff;display:flex;align-items:center;gap:9px;font-weight:700;font-size:12px;box-shadow:0 4px 10px #1768df25}
-.school-chip .round{width:29px;height:29px;border:1px solid #ffffff55;border-radius:50%;display:grid;place-items:center;font-size:15px}
-.nav{display:flex;flex-direction:column;gap:3px}
-.nav a{display:flex;align-items:center;gap:11px;text-decoration:none;color:#5e6a79;padding:9px 9px;border-radius:7px;font-size:11px;min-height:34px}
-.nav a .ico{width:16px;text-align:center;font-size:15px;color:#6f7d8d}
-.nav a.active{background:#eef5ff;color:#1768df;font-weight:700;box-shadow:inset 3px 0 #1768df}
-.nav a.active .ico{color:#1768df}
-.nav-label{font-size:9px;text-transform:uppercase;letter-spacing:1.1px;color:#9aa4b1;font-weight:800;padding:13px 9px 4px}
-.sidebar-bottom{margin-top:auto;padding-top:15px}
-.ai-mini{border:1px solid #dce8fb;background:#f4f8ff;border-radius:10px;padding:12px}
-.ai-mini strong{display:block;color:#2356a1;font-size:11px;margin-bottom:4px}
-.ai-mini p{font-size:10px;color:#657324;margin:0 0 9px}
-.ai-mini button{border:0;border-radius:6px;background:#1768df;color:white;padding:7px 10px;font-size:10px;font-weight:700}
-.main{min-width:0}
-.topbar{height:72px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:20px;padding:0 22px;background:#fff}
-.search{height:40px;display:flex;align-items:center;gap:10px;border:1px solid #e0e6ed;border-radius:8px;padding:0 13px;flex:1;max-width:500px;color:#91a0ae}
-.search input{border:0;outline:0;flex:1;min-width:0;color:#334155}
-.search input::placeholder{color:#9aa5b1}
-.top-spacer{flex:1}
-.icon-btn{width:34px;height:34px;border:1px solid #e3e8ee;background:white;border-radius:8px;color:#637324;position:relative}
-.notif-dot{position:absolute;right:-3px;top:-4px;background:#e34d5d;color:#fff;border-radius:50%;font-size:9px;width:15px;height:15px;display:grid;place-items:center;border:2px solid white}
-.user{display:flex;align-items:center;gap:9px;white-space:nowrap}
-.avatar{width:36px;height:36px;border-radius:50%;background:#eaf1ff;color:#1768df;display:grid;place-items:center;font-weight:800;font-size:15px}
-.user strong{display:block;font-size:11px}.user small{color:var(--muted);font-size:9px}
-.content{padding:16px 18px 26px;max-width:1500px;margin:0 auto}
-.page-title{font-size:15px;font-weight:750;margin:0 0 12px}
-.kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;margin-bottom:15px}
-.kpi{border:1px solid var(--line);border-radius:10px;padding:11px 11px 8px;min-width:0;background:#fff;position:relative;overflow:hidden}
-.kpi-top{display:flex;justify-content:space-between;gap:5px;align-items:center}
-.kpi-label{font-size:9px;color:#677487;font-weight:650}
-.kpi-icon{width:29px;height:29px;border-radius:9px;display:grid;place-items:center;font-size:15px}
-.kpi-value{font-size:20px;font-weight:800;letter-spacing:-.7px;margin:2px 0 0}
-.kpi-foot{font-size:9px;color:#6e7b89;margin-top:2px}
-.up{color:#159b70;font-weight:700}.down{color:#d64e5b;font-weight:700}
-.spark{width:100%;height:24px;margin-top:1px;display:block}
-.kpi.blue .kpi-icon{background:var(--blue-soft);color:var(--blue)}.kpi.green .kpi-icon{background:var(--green-soft);color:var(--green)}
-.kpi.purple .kpi-icon{background:var(--purple-soft);color:var(--purple)}.kpi.gold .kpi-icon{background:var(--gold-soft);color:var(--gold)}
-.kpi.red .kpi-icon{background:var(--red-soft);color:var(--red)}
-.quick{background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 13px 12px;margin-bottom:14px}
-.section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
-.section-head h2{font-size:12px;margin:0;font-weight:750}
-.section-head a{font-size:9px;color:#4b83d3;text-decoration:none}
-.actions{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
-.action{border:1px solid #edf0f4;background:#fff;border-radius:8px;min-height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;color:#4b5a6b;font-size:9px;font-weight:650}
-.action .action-ico{font-size:20px;color:#1768df}
-.action:nth-child(2) .action-ico{color:#16a36f}.action:nth-child(3) .action-ico{color:#8054cf}.action:nth-child(4) .action-ico{color:#d89b22}
-.action:nth-child(5) .action-ico{color:#2875cf}.action:nth-child(6) .action-ico{color:#7c12c7}
-.mid-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.95fr) minmax(0,.9fr);gap:10px;margin-bottom:12px}
-.panel{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px;min-width:0}
-.panel h3{font-size:11px;margin:0 0 10px;font-weight:750}
-.panel-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.panel-top h3{margin:0}
-.panel-top a{font-size:9px;color:#4d82cf;text-decoration:none}
-.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:9px;color:#788494;margin:0 0 8px}
-.dot{width:7px;height:7px;border-radius:2px;display:inline-block;margin-right:4px}
-.bar-chart{height:140px;display:flex;align-items:flex-end;justify-content:space-around;padding:8px 8px 0;border-bottom:1px solid #edf0f3;gap:8px}
-.bar-group{height:100%;display:flex;align-items:flex-end;gap:4px;position:relative;flex:1;justify-content:center}
-.bar{width:12px;min-height:4px;border-radius:3px 3px 0 0;background:#1768df}
-.bar.light{background:#a8c7f4}
-.bar-label{position:absolute;bottom:-18px;font-size:8px;color:#7c8795;white-space:nowrap}
-.axis{display:flex;justify-content:space-between;font-size:8px;color:#9aa4b1;margin-top:24px}
-.mini-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:12px}
-.mini-stats small{display:block;color:#8994a1;font-size:8px}.mini-stats b{font-size:13px}
-.course-table{width:100%;border-collapse:collapse;font-size:9px}
-.course-table th{text-align:left;color:#85909d;font-weight:650;padding:7px 3px;border-bottom:1px solid #edf0f3}
-.course-table td{padding:8px 3px;border-bottom:1px solid #f0f2f5;white-space:nowrap}
-.status{color:#16966d;background:#eaf7f1;border-radius:10px;padding:3px 7px;font-size:8px}
-.outline-btn{width:100%;border:1px solid #e4eaf0;background:white;border-radius:6px;color:#5681bd;padding:7px;font-size:9px;margin-top:9px}
-.attendance{display:flex;align-items:center;justify-content:space-around;gap:8px;padding:9px 0 15px}
-.donut{width:94px;height:94px;border-radius:50%;background:conic-gradient(#1768df 0 72%,#8ac8f2 72% 92%,#e9eff7 92% 100%);display:grid;place-items:center;position:relative}
-.donut:before{content:"";position:absolute;inset:9px;background:white;border-radius:50%}
-.donut-inner{z-index:1;text-align:center;font-size:18px;font-weight:800}.donut-inner small{display:block;font-size:8px;font-weight:500;color:#768293}
-.legend-list{font-size:9px;display:grid;gap:8px;color:#667487}
-.legend-list span{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.line-chart{width:100%;height:116px;display:block}
-.bottom-grid{display:grid;grid-template-columns:1fr 1fr 1.1fr;gap:10px;margin-bottom:12px}
-.info-list{display:grid;gap:9px}
-.info-row{display:flex;align-items:flex-start;gap:8px;font-size:9px;color:#536174}
-.round-icon{width:22px;height:22px;border-radius:7px;display:grid;place-items:center;flex:none;background:#eef4ff;color:#224cc8}
-.info-row strong{display:block;color:#364354;font-size:9px;font-weight:650}
-.info-row small{display:block;color:#9aa3ae;font-size:8px;margin-top:2px}
-.risk{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #f0f2f5}
-.initial{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:#f2edff;color:#8054cf;font-size:9px;font-weight:800}
-.risk-name{flex:1;font-size:9px}.risk-name small{display:block;color:#8b96a3;font-size:8px}
-.risk-tag{font-size:8px;color:#d05a61}
-.follow-row{display:flex;align-items:center;gap:8px;border-bottom:1px solid #f0f2f5;padding:7px 0;font-size:9px}
-.follow-row .round-icon{width:20px;height:20px}
-.follow-row small{display:block;color:#97a0ab;font-size:8px}
-.pill{margin-left:auto;color:#c28a22;background:#fff7e8;border-radius:8px;padding:3px 6px;font-size:8px}
-.footer-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px}
-.footer-grid .panel{padding:11px}
-.footer-grid .info-list{gap:10px}
-.footer-grid .info-row{align-items:center}
-.footer-grid .info-row .time{margin-left:auto;white-space:nowrap;color:#9aa3ad;font-size:8px}
-.metric-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #f0f2f5;font-size:9px}
-.metric-row b{margin-left:auto;font-size:11px}
-.metric-row .round-icon{background:#eef4ff}
-.automation{display:flex;justify-content:space-between;gap:5px;padding:6px 0;border-bottom:1px solid #f0f2f5;font-size:9px}
-.automation small{display:block;color:#96a0aa;font-size:8px}
-.active{color:#179b70;font-size:8px}
-.rightbar{border-left:1px solid var(--line);background:#fff;padding:16px 13px;min-width:0}
-.right-panel{margin-bottom:15px}
-.schedule-item{display:grid;grid-template-columns:48px 3px 1fr;gap:8px;padding:10px 0;border-bottom:1px solid #f0f2f5;align-items:start}
-.schedule-time{font-size:8px;color:#738091;padding-top:2px}
-.schedule-stripe{height:33px;border-radius:4px;background:#1768df}
-.schedule-item:nth-child(3n) .schedule-stripe{background:#df8c8c}
-.schedule-item:nth-child(4n) .schedule-stripe{background:#8d70d5}
-.schedule-name{font-size:9px;font-weight:700}.schedule-name small{display:block;font-size:8px;color:#98a1ad;font-weight:400;margin-top:3px}
-.insight-box{border:1px solid #e8edf2;border-radius:8px;padding:11px;font-size:9px;color:#687524;line-height:1.6;margin-top:9px}
-.health-row{display:flex;align-items:center;gap:8px;padding:7px 0;font-size:9px}
-.health-row .health-ico{width:22px;height:22px;border-radius:7px;background:#eaf7f1;color:#16966d;display:grid;place-items:center}
-.health-row b{display:block;font-size:9px}.health-row small{display:block;color:#98a2ae;font-size:8px}
-.check{margin-left:auto;color:#16966d;font-size:15px}
-@media(max-width:1200px){.app{grid-template-columns:190px minmax(0,1fr)}.rightbar{display:none}.mid-grid{grid-template-columns:1fr 1fr}.mid-grid>.panel:last-child{grid-column:1/-1}.bottom-grid{grid-template-columns:1fr 1fr}.footer-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:760px){.app{grid-template-columns:1fr}.sidebar{display:none}.topbar{padding:0 12px;height:60px}.content{padding:12px}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.kpis .kpi:last-child{grid-column:1/-1}.actions{grid-template-columns:repeat(3,minmax(0,1fr))}.mid-grid,.bottom-grid,.footer-grid{grid-template-columns:1fr}.mid-grid>.panel:last-child{grid-column:auto}.user div:last-child{display:none}.page-title{margin-bottom:10px}}
+<title>Homework Management | URWA</title>
 
-/* URWA brand adaptation — layout retained from the supplied reference */
-:root{--blue:#0e4a40;--blue-soft:#e3f0ea;--green:#287b63;--green-soft:#e3f0ea;--purple:#7d6842;--purple-soft:#f5efdf;--gold:#c79d43;--gold-soft:#fbf6e9;--red:#c86f67;--red-soft:#fbefeb;--ink:#173c37;--muted:#71817c;--line:#e7dfcf;--surface:#fff;--canvas:#fbf6e9}
-body{background:var(--canvas);color:var(--ink)}
-.sidebar{background:#0e4a40;border-right:1px solid #0b4037;color:#fff}
-.brand{border-bottom-color:#ffffff38}.brand-mark{background:#fbf6e9;color:#0e4a40;box-shadow:none;border-radius:4px}.brand-name{color:#fff;letter-spacing:1px}.brand-sub{color:#e3f0ea}
-.school-chip{background:#176354;box-shadow:none}.school-chip .round{color:#f2c94c}
-.nav a{color:#e3f0ea}.nav a .ico{color:#f2c94c}.nav a.active{background:#e3f0ea;color:#0e4a40;box-shadow:inset 3px 0 #e0a526}.nav a.active .ico{color:#0e4a40}.nav-label{color:#f2c94c}
-.ai-mini{border-color:#ffffff30;background:#176354}.ai-mini strong{color:#f2c94c}.ai-mini p{color:#e3f0ea}.ai-mini button{background:#e0a526;color:#173c37}
-.topbar{border-bottom-color:var(--line)}.avatar{background:#e3f0ea;color:#0e4a40}
-.kpi.blue .kpi-icon,.round-icon,.health-row .health-ico{background:#e3f0ea;color:#0e4a40}
-.kpi.green .kpi-icon{background:#e5f2eb;color:#287b63}.kpi.purple .kpi-icon{background:#f5efdf;color:#7d6842}.kpi.gold .kpi-icon{background:#fbf6e9;color:#b28732}
-.kpi.red .kpi-icon{background:#fbefeb;color:#c86f67}
-.action .action-ico{color:#0e4a40}.action:nth-child(2) .action-ico{color:#287b63}.action:nth-child(3) .action-ico{color:#7d6842}.action:nth-child(4) .action-ico{color:#c79d43}.action:nth-child(5) .action-ico{color:#0e4a40}.action:nth-child(6) .action-ico{color:#7d6842}
-.bar{background:#0e4a40}.bar.light{background:#8bb9a8}.donut{background:conic-gradient(#0e4a40 0 72%,#8bb9a8 72% 92%,#e9e4d9 92% 100%)}
-.up,.active,.check{color:#287b63}.status{color:#176354;background:#e3f0ea}.outline-btn{color:#0e4a40;border-color:#d8e6dd}.section-head a,.panel-top a{color:#98752e}
-.schedule-stripe{background:#0e4a40}.rightbar{border-left-color:var(--line)}
-@media(max-width:760px){.sidebar{display:none}}
-.mini-stats {
-    margin-top: 28px; /* pushes statistics lower */
-    padding-top: 12px;
-    border-top: 1px solid #edf0f3;
+<style>
+:root {
+    --green: #0e4a40;
+    --green-dark: #083b33;
+    --gold: #e0a526;
+    --cream: #fbf6e9;
+    --mint: #e3f0ea;
+    --white: #fff;
+    --text: #263a35;
+    --muted: #788780;
+    --border: #e8eee9;
+    --shadow: 0 4px 18px rgba(14,74,64,.07);
 }
-/* Live Supabase data panels */#admin-live-status{font-size:11px;color:var(--ink)}#admin-live-status p{margin:4px 0 0;color:var(--muted);font-size:10px}#admin-live-status.is-error{border-color:#e6a0a0;background:#fff8f8}.urwa-admin-actions{display:flex;flex-wrap:wrap;gap:5px;align-items:center;min-width:190px}.urwa-admin-actions select{max-width:145px;border:1px solid var(--line);border-radius:5px;padding:5px;background:#fff;color:var(--ink);font:inherit}.urwa-btn{border:1px solid var(--line);border-radius:5px;padding:5px 8px;font:inherit;font-size:9px;background:#fff;color:var(--ink)}.urwa-btn-primary{background:#0e4a40;color:#fff;border-color:#0e4a40}.urwa-btn-small{white-space:nowrap}.course-table td small{display:block;color:var(--muted);font-size:8px;margin-top:2px}
-.admin-bar-item{height:100%;min-width:0;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:3px;font-size:8px;color:var(--muted)}
-.admin-bar-item strong{font-size:9px;color:var(--ink)}
-.admin-bar-track{height:82px;width:18px;display:flex;align-items:flex-end;background:#f0f3ee;border-radius:4px 4px 0 0;overflow:hidden}
-.admin-bar-fill{display:block;width:100%;background:#0e4a40;border-radius:4px 4px 0 0}
-.admin-bar-item small{max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.admin-chart-note{display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:9px;text-align:center;padding:12px;border:1px dashed var(--line);border-radius:6px}
-/* Admin sidebar destinations — retain existing visual system */
-.admin-module{scroll-margin-top:18px}
-.module-note{margin:10px 0 0;color:var(--muted);font-size:10px;line-height:1.6}
-.module-form{display:grid;gap:7px;max-width:620px}
-.module-form label{font-size:10px;font-weight:700;color:var(--ink)}
-.module-form input,.module-form textarea,.module-form select{width:100%;border:1px solid var(--line);border-radius:6px;padding:8px;background:#fff;color:var(--ink);font:inherit}
-.module-form button{justify-self:start;padding:8px 12px}
-.nav a{transition:background .15s ease,color .15s ease}
-.nav a:focus-visible,.nav a:hover{outline:2px solid #f2c94c;outline-offset:1px}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f6f8f6;
+    color: var(--text);
+}
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 250px;
+    background: var(--green-dark);
+    color: white;
+    padding: 25px 16px;
+    position: fixed;
+    inset: 0 auto 0 0;
+    overflow-y: auto;
+}
+
+.brand {
+    padding: 5px 12px 28px;
+    border-bottom: 1px solid rgba(255,255,255,.13);
+    margin-bottom: 25px;
+}
+
+.brand h2 {
+    font-size: 25px;
+    letter-spacing: 2px;
+}
+
+.brand span {
+    color: var(--gold);
+}
+
+.brand small {
+    display: block;
+    color: #c5d7d0;
+    margin-top: 5px;
+    font-size: 11px;
+    letter-spacing: 1px;
+}
+
+.nav-label {
+    color: #9db7ad;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    padding: 12px;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    margin: 4px 0;
+    color: #dce9e3;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 13px;
+    transition: .2s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    background: rgba(255,255,255,.12);
+    color: white;
+}
+
+.nav-link.active {
+    border-left: 3px solid var(--gold);
+}
+
+.nav-icon {
+    width: 20px;
+    text-align: center;
+}
+
+/* MAIN */
+.main {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    padding: 28px 35px;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.breadcrumb {
+    color: var(--muted);
+    font-size: 12px;
+    margin-bottom: 7px;
+}
+
+.topbar h1 {
+    color: var(--green);
+    font-size: 25px;
+}
+
+.admin-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--mint);
+    color: var(--green);
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+}
+
+.admin-profile small {
+    display: block;
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 3px;
+}
+
+/* INTRO */
+.page-intro {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 24px;
+}
+
+.page-intro h2 {
+    color: var(--green);
+    font-size: 20px;
+    margin-bottom: 6px;
+}
+
+.page-intro p {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.primary-btn {
+    background: var(--green);
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.primary-btn:hover {
+    background: var(--green-dark);
+}
+
+/* STATISTICS */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 17px;
+    margin-bottom: 25px;
+}
+
+.stat-card {
+    background: white;
+    padding: 20px;
+    border-radius: 11px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+}
+
+.stat-card small {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.stat-card h2 {
+    color: var(--green);
+    font-size: 27px;
+    margin: 10px 0 5px;
+}
+
+.stat-card span {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.stat-icon {
+    float: right;
+    background: var(--mint);
+    color: var(--green);
+    padding: 9px;
+    border-radius: 8px;
+}
+
+/* CONTENT */
+.panel {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    box-shadow: var(--shadow);
+    padding: 22px;
+    margin-bottom: 24px;
+}
+
+.panel-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 12px;
+}
+
+.panel-heading h3 {
+    color: var(--green);
+    font-size: 16px;
+}
+
+.filters {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+
+.filters input,
+.filters select,
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 11px 12px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    outline: none;
+    background: white;
+    color: var(--text);
+    font: inherit;
+    font-size: 12px;
+}
+
+.filters input {
+    flex: 1;
+    min-width: 180px;
+}
+
+.filters input:focus,
+.filters select:focus,
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: var(--green);
+}
+
+/* TABLE */
+.table-wrap {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 750px;
+}
+
+th {
+    background: #f5f8f5;
+    color: #66766f;
+    font-size: 11px;
+    text-align: left;
+    padding: 13px 12px;
+    font-weight: 700;
+}
+
+td {
+    padding: 15px 12px;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+}
+
+td strong {
+    color: var(--green);
+}
+
+.muted {
+    display: block;
+    color: var(--muted);
+    font-size: 10px;
+    margin-top: 4px;
+}
+
+.status {
+    display: inline-block;
+    padding: 5px 9px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.status.published {
+    background: #e5f4eb;
+    color: #287447;
+}
+
+.status.draft {
+    background: #fff3d9;
+    color: #9b6b12;
+}
+
+.status.closed {
+    background: #fce8e8;
+    color: #a33d3d;
+}
+
+.action-btn {
+    border: 1px solid var(--border);
+    background: white;
+    color: var(--green);
+    padding: 6px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 11px;
+}
+
+.action-btn:hover {
+    background: var(--mint);
+}
+
+/* SUBMISSION PROGRESS */
+.progress {
+    width: 100px;
+    height: 6px;
+    background: #edf1ed;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 6px;
+}
+
+.progress div {
+    height: 100%;
+    background: var(--green);
+    border-radius: 10px;
+}
+
+/* MODAL */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.45);
+    z-index: 10;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background: white;
+    width: 100%;
+    max-width: 520px;
+    border-radius: 12px;
+    padding: 25px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.modal-header h3 {
+    color: var(--green);
+}
+
+.close {
+    border: none;
+    background: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--muted);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 7px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+}
+
+.form-group textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.secondary-btn {
+    border: 1px solid var(--border);
+    background: white;
+    padding: 11px 17px;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+.empty {
+    text-align: center;
+    padding: 30px;
+    color: var(--muted);
+    display: none;
+}
+
+/* RESPONSIVE */
+@media(max-width: 1000px) {
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(max-width: 700px) {
+    .sidebar {
+        width: 65px;
+        padding: 20px 8px;
+    }
+
+    .brand {
+        padding: 5px;
+        text-align: center;
+    }
+
+    .brand h2 {
+        font-size: 15px;
+    }
+
+    .brand small,
+    .nav-label,
+    .nav-link span:not(.nav-icon) {
+        display: none;
+    }
+
+    .nav-link {
+        justify-content: center;
+        padding: 13px 5px;
+    }
+
+    .main {
+        margin-left: 65px;
+        width: calc(100% - 65px);
+        padding: 20px 14px;
+    }
+
+    .topbar {
+        align-items: flex-start;
+    }
+
+    .admin-profile > div:last-child {
+        display: none;
+    }
+
+    .page-intro {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .stats {
+        gap: 10px;
+    }
+
+    .stat-card {
+        padding: 14px;
+    }
+
+    .stat-card h2 {
+        font-size: 22px;
+    }
+}
 </style>
 </head>
-<body data-urwa-role="admin">
-<div class="app">
-  <aside class="sidebar">
-    <div class="brand"><div class="brand-mark"><img class="brand-logo" src="../../assets/logo.jpg" alt="URWA logo"></div><div><div class="brand-name">URWA</div><div class="brand-sub">URWATUL WUTHQA<br>The Firmest Handhold</div></div></div>
-    <nav class="nav" aria-label="Admin dashboard navigation">
-      <a href="admin-dashboard.html" data-admin-nav><span class="ico">▦</span>Dashboard</a>
-      <a href="halaqas.html" data-admin-nav><span class="ico">▤</span>Halaqas</a><a href="students.html" data-admin-nav><span class="ico">♙</span>Students</a><a href="ablas.html" data-admin-nav><span class="ico">♙</span>Ablas / Teachers</a>
-      <a href="attendance.html" data-admin-nav><span class="ico">♧</span>Attendance</a><a href="programmes.html" data-admin-nav><span class="ico">▣</span>Programmes</a>
-      <a href="admissions.html" data-admin-nav><span class="ico">♧</span>Admissions</a><a href="fees.html" data-admin-nav><span class="ico">$</span>Fee Management</a><a href="assignments.html" data-admin-nav><span class="ico">▤</span>Assignments</a>
-      <a href="timetable.html" data-admin-nav><span class="ico">▦</span>Timetable</a><a class="active" href="homework.html" data-admin-nav><span class="ico">▤</span>Homework</a><a href="library.html" data-admin-nav><span class="ico">▱</span>Library</a>
-      <a href="communication.html" data-admin-nav><span class="ico">▢</span>Communication</a><a href="reports.html" data-admin-nav><span class="ico">▧</span>Reports & Analytics</a><a href="settings.html" data-admin-nav><span class="ico">⚙</span>System Settings</a>
-      <a href="users.html" data-admin-nav><span class="ico">♙</span>User Management</a>
-    </nav>
-    <div class="sidebar-bottom"><div class="ai-mini"><strong>URWA Support</strong><p>Keep the academy organised and connected.</p><button onclick="document.getElementById('messages').scrollIntoView({behavior:'smooth'})">Open Messages</button></div></div>
-  </aside>
 
-  <main class="main">
-    <header class="topbar">
-      <div class="search"><span>⌕</span><input placeholder="Search students, Ablas, halaqas, applications..."><span>⌘ K</span></div>
-      <div class="top-spacer"></div>
-      <button class="icon-btn" aria-label="Notifications">♧<span class="notif-dot">6</span></button>
-      <button class="icon-btn" aria-label="Open messages" onclick="document.getElementById('messages').scrollIntoView({behavior:'smooth'})">▢</button>
-      <div class="user"><div class="avatar">U</div><div><strong>URWA Admin</strong><small>Super Administrator</small></div><span>⌄</span></div>
-    </header>
+<body>
 
-    <div class="content">
-      <h1 class="page-title">Homework</h1>
-      <section class="quick admin-module" id="homework">
-        <div class="section-head"><h2>Homework</h2><span>Teacher-managed</span></div>
-        <p class="module-note">Homework and learning tasks are currently published through the Abla assignment workflow. A separate admin homework manager is not connected yet.</p>
-      </section>
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="brand">
+            <h2>UR<span>W</span>A</h2>
+            <small>THE FIRMEST HANDHOLD</small>
+        </div>
+
+        <div class="nav-label">MAIN MENU</div>
+
+        <a href="dashboard.html" class="nav-link">
+            <span class="nav-icon">⌂</span><span>Dashboard</span>
+        </a>
+
+        <a href="programmes.html" class="nav-link">
+            <span class="nav-icon">▦</span><span>Programmes</span>
+        </a>
+
+        <a href="admissions.html" class="nav-link">
+            <span class="nav-icon">✚</span><span>Admissions</span>
+        </a>
+
+        <a href="fees.html" class="nav-link">
+            <span class="nav-icon">▤</span><span>Fee Management</span>
+        </a>
+
+        <a href="assignments.html" class="nav-link">
+            <span class="nav-icon">📝</span><span>Assignments</span>
+        </a>
+
+        <a href="timetable.html" class="nav-link">
+            <span class="nav-icon">◷</span><span>Timetable</span>
+        </a>
+
+        <a href="homework.html" class="nav-link active">
+            <span class="nav-icon">✎</span><span>Homework</span>
+        </a>
+
+        <a href="reports.html" class="nav-link">
+            <span class="nav-icon">▥</span><span>Reports & Analysis</span>
+        </a>
+
+        <a href="communication.html" class="nav-link">
+            <span class="nav-icon">✉</span><span>Communication</span>
+        </a>
+
+        <a href="library.html" class="nav-link">
+            <span class="nav-icon">▣</span><span>Library</span>
+        </a>
+
+        <a href="users.html" class="nav-link">
+            <span class="nav-icon">♙</span><span>User Management</span>
+        </a>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+        <header class="topbar">
+            <div>
+                <div class="breadcrumb">Admin / Academic Management / Homework</div>
+                <h1>Homework Management</h1>
+            </div>
+
+            <div class="admin-profile">
+                <div class="avatar">A</div>
+                <div>
+                    <strong>Administrator</strong>
+                    <small>URWA Admin</small>
+                </div>
+            </div>
+        </header>
+
+        <section class="page-intro">
+            <div>
+                <h2>Homework Overview</h2>
+                <p>Create homework, assign it to halaqas and monitor student submissions.</p>
+            </div>
+
+            <button class="primary-btn" onclick="openModal()">
+                + Create Homework
+            </button>
+        </section>
+
+        <!-- STATISTICS -->
+        <section class="stats">
+
+            <div class="stat-card">
+                <span class="stat-icon">📝</span>
+                <small>Total Homework</small>
+                <h2 id="totalHomework">3</h2>
+                <span>Homework records</span>
+            </div>
+
+            <div class="stat-card">
+                <span class="stat-icon">📤</span>
+                <small>Published</small>
+                <h2 id="publishedCount">2</h2>
+                <span>Available to students</span>
+            </div>
+
+            <div class="stat-card">
+                <span class="stat-icon">📥</span>
+                <small>Submissions</small>
+                <h2>48</h2>
+                <span>Submitted by students</span>
+            </div>
+
+            <div class="stat-card">
+                <span class="stat-icon">⏳</span>
+                <small>Pending Review</small>
+                <h2>12</h2>
+                <span>Awaiting teacher review</span>
+            </div>
+
+        </section>
+
+        <!-- HOMEWORK TABLE -->
+        <section class="panel">
+
+            <div class="panel-heading">
+                <h3>All Homework</h3>
+                <span class="muted">Manage and monitor homework activities</span>
+            </div>
+
+            <div class="filters">
+                <input
+                    type="search"
+                    id="searchInput"
+                    placeholder="Search homework, subject or halaqa..."
+                    oninput="filterHomework()"
+                >
+
+                <select id="statusFilter" onchange="filterHomework()">
+                    <option value="">All Statuses</option>
+                    <option value="Published">Published</option>
+                    <option value="Draft">Draft</option>
+                    <option value="Closed">Closed</option>
+                </select>
+
+                <select id="subjectFilter" onchange="filterHomework()">
+                    <option value="">All Subjects</option>
+                    <option value="Qur'an">Qur'an</option>
+                    <option value="Tajweed">Tajweed</option>
+                    <option value="Tafseer">Tafseer</option>
+                    <option value="Arabic">Arabic</option>
+                </select>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>HOMEWORK TITLE</th>
+                            <th>SUBJECT</th>
+                            <th>HALAQA / CLASS</th>
+                            <th>TEACHER</th>
+                            <th>DUE DATE</th>
+                            <th>SUBMISSIONS</th>
+                            <th>STATUS</th>
+                            <th>ACTION</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="homeworkTable">
+
+                        <tr data-status="Published" data-subject="Qur'an">
+                            <td>
+                                <strong>Surah Al-Baqarah Revision</strong>
+                                <span class="muted">HW-001</span>
+                            </td>
+                            <td>Qur'an</td>
+                            <td>Halaqa Al-Ibrahim</td>
+                            <td>Abla Asmaa</td>
+                            <td>25 Nov 2026</td>
+                            <td>
+                                18 / 25
+                                <div class="progress"><div style="width:72%"></div></div>
+                            </td>
+                            <td><span class="status published">Published</span></td>
+                            <td><button class="action-btn" onclick="viewHomework(this)">View</button></td>
+                        </tr>
+
+                        <tr data-status="Published" data-subject="Tajweed">
+                            <td>
+                                <strong>Rules of Noon Saakin</strong>
+                                <span class="muted">HW-002</span>
+                            </td>
+                            <td>Tajweed</td>
+                            <td>Halaqa An-Nur</td>
+                            <td>Abla Khadija</td>
+                            <td>27 Nov 2026</td>
+                            <td>
+                                20 / 22
+                                <div class="progress"><div style="width:91%"></div></div>
+                            </td>
+                            <td><span class="status published">Published</span></td>
+                            <td><button class="action-btn" onclick="viewHomework(this)">View</button></td>
+                        </tr>
+
+                        <tr data-status="Draft" data-subject="Tafseer">
+                            <td>
+                                <strong>Lessons from Surah Yusuf</strong>
+                                <span class="muted">HW-003</span>
+                            </td>
+                            <td>Tafseer</td>
+                            <td>Halaqa Al-Iman</td>
+                            <td>Abla Warda</td>
+                            <td>30 Nov 2026</td>
+                            <td>
+                                0 / 18
+                                <div class="progress"><div style="width:0%"></div></div>
+                            </td>
+                            <td><span class="status draft">Draft</span></td>
+                            <td><button class="action-btn" onclick="viewHomework(this)">View</button></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="empty" id="emptyMessage">
+                No homework matches your search.
+            </div>
+
+        </section>
+
+        <!-- SUBMISSION OVERVIEW -->
+        <section class="panel">
+            <div class="panel-heading">
+                <h3>Submission Overview</h3>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>HOMEWORK</th>
+                            <th>ASSIGNED STUDENTS</th>
+                            <th>SUBMITTED</th>
+                            <th>PENDING</th>
+                            <th>REVIEW STATUS</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td><strong>Surah Al-Baqarah Revision</strong></td>
+                            <td>25</td>
+                            <td>18</td>
+                            <td>7</td>
+                            <td><span class="status published">In Progress</span></td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>Rules of Noon Saakin</strong></td>
+                            <td>22</td>
+                            <td>20</td>
+                            <td>2</td>
+                            <td><span class="status published">In Progress</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<!-- CREATE HOMEWORK MODAL -->
+<div class="modal" id="homeworkModal">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <h3>Create New Homework</h3>
+            <button class="close" onclick="closeModal()">×</button>
+        </div>
+
+        <form id="homeworkForm">
+
+            <div class="form-group">
+                <label>Homework Title</label>
+                <input type="text" id="hwTitle" placeholder="Enter homework title" required>
+            </div>
+
+            <div class="form-group">
+                <label>Subject</label>
+                <select id="hwSubject" required>
+                    <option value="">Select subject</option>
+                    <option>Qur'an</option>
+                    <option>Tajweed</option>
+                    <option>Tafseer</option>
+                    <option>Arabic</option>
+                    <option>Islamic Studies</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Halaqa / Class</label>
+                <select id="hwClass" required>
+                    <option value="">Select halaqa</option>
+                    <option>Halaqa Al-Ibrahim</option>
+                    <option>Halaqa An-Nur</option>
+                    <option>Halaqa Al-Iman</option>
+                    <option>All Halaqas</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Assigned Teacher</label>
+                <input type="text" id="hwTeacher" placeholder="Enter Abla's name">
+            </div>
+
+            <div class="form-group">
+                <label>Instructions</label>
+                <textarea id="hwInstructions" placeholder="Write homework instructions..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Due Date</label>
+                <input type="date" id="hwDueDate" required>
+            </div>
+
+            <div class="form-group">
+                <label>Attachment (Optional)</label>
+                <input type="file" id="hwAttachment">
+            </div>
+
+            <div class="form-group">
+                <label>Publication Status</label>
+                <select id="hwStatus">
+                    <option value="Draft">Save as Draft</option>
+                    <option value="Published">Publish Homework</option>
+                </select>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="secondary-btn" onclick="closeModal()">Cancel</button>
+                <button type="submit" class="primary-btn">Save Homework</button>
+            </div>
+
+        </form>
     </div>
-    </div>
-  </main>
-
- 
 </div>
 
 <script>
-(() => {
- const links=[...document.querySelectorAll('[data-admin-nav]')];
- const currentPath=location.pathname.split('/').pop();
- links.forEach(link=>link.classList.toggle('active',link.getAttribute('href')===currentPath));
-})();
+const modal = document.getElementById("homeworkModal");
+const form = document.getElementById("homeworkForm");
+
+function openModal() {
+    modal.classList.add("show");
+}
+
+function closeModal() {
+    modal.classList.remove("show");
+}
+
+function filterHomework() {
+    const search = document.getElementById("searchInput").value.toLowerCase();
+    const status = document.getElementById("statusFilter").value;
+    const subject = document.getElementById("subjectFilter").value;
+
+    const rows = document.querySelectorAll("#homeworkTable tr");
+    let visible = 0;
+
+    rows.forEach(row => {
+        const matchesSearch = row.innerText.toLowerCase().includes(search);
+        const matchesStatus = !status || row.dataset.status === status;
+        const matchesSubject = !subject || row.dataset.subject === subject;
+
+        const show = matchesSearch && matchesStatus && matchesSubject;
+
+        row.style.display = show ? "" : "none";
+        if (show) visible++;
+    });
+
+    document.getElementById("emptyMessage").style.display =
+        visible === 0 ? "block" : "none";
+}
+
+form.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const title = document.getElementById("hwTitle").value.trim();
+    const subject = document.getElementById("hwSubject").value;
+    const halaqa = document.getElementById("hwClass").value;
+    const teacher = document.getElementById("hwTeacher").value.trim() || "Not assigned";
+    const dueDate = document.getElementById("hwDueDate").value;
+    const status = document.getElementById("hwStatus").value;
+
+    const formattedDate = new Date(dueDate + "T00:00:00").toLocaleDateString(
+        "en-GB",
+        { day: "2-digit", month: "short", year: "numeric" }
+    );
+
+    const row = document.createElement("tr");
+    row.dataset.status = status;
+    row.dataset.subject = subject;
+
+    const cells = [
+        title,
+        subject,
+        halaqa,
+        teacher,
+        formattedDate,
+        "0 / 0",
+        status
+    ];
+
+    const titleCell = document.createElement("td");
+    const titleStrong = document.createElement("strong");
+    titleStrong.textContent = title;
+    const titleSmall = document.createElement("span");
+    titleSmall.className = "muted";
+    titleSmall.textContent = "New homework";
+    titleCell.append(titleStrong, titleSmall);
+    row.appendChild(titleCell);
+
+    cells.slice(1, 5).forEach(value => {
+        const td = document.createElement("td");
+        td.textContent = value;
+        row.appendChild(td);
+    });
+
+    const submissions = document.createElement("td");
+    submissions.textContent = "0 / 0";
+    const progress = document.createElement("div");
+    progress.className = "progress";
+    const bar = document.createElement("div");
+    bar.style.width = "0%";
+    progress.appendChild(bar);
+    submissions.appendChild(progress);
+    row.appendChild(submissions);
+
+    const statusCell = document.createElement("td");
+    const badge = document.createElement("span");
+    badge.className = "status " + status.toLowerCase();
+    badge.textContent = status;
+    statusCell.appendChild(badge);
+    row.appendChild(statusCell);
+
+    const actionCell = document.createElement("td");
+    const viewButton = document.createElement("button");
+    viewButton.className = "action-btn";
+    viewButton.textContent = "View";
+    viewButton.onclick = function() {
+        viewHomework(viewButton);
+    };
+    actionCell.appendChild(viewButton);
+    row.appendChild(actionCell);
+
+    document.getElementById("homeworkTable").appendChild(row);
+
+    updateCounts();
+    form.reset();
+    closeModal();
+    filterHomework();
+});
+
+function updateCounts() {
+    const rows = [...document.querySelectorAll("#homeworkTable tr")];
+
+    document.getElementById("totalHomework").textContent = rows.length;
+
+    document.getElementById("publishedCount").textContent =
+        rows.filter(row => row.dataset.status === "Published").length;
+}
+
+function viewHomework(button) {
+    const row = button.closest("tr");
+    const cells = row.querySelectorAll("td");
+
+    alert(
+        "Homework: " + cells[0].innerText +
+        "\nSubject: " + cells[1].innerText +
+        "\nHalaqa: " + cells[2].innerText +
+        "\nTeacher: " + cells[3].innerText +
+        "\nDue date: " + cells[4].innerText +
+        "\nSubmissions: " + cells[5].innerText +
+        "\nStatus: " + cells[6].innerText
+    );
+}
+
+modal.addEventListener("click", function(event) {
+    if (event.target === modal) closeModal();
+});
 </script>
-\n<script type="module" src="../../js/dashboard-data.js"></script>
+
 </body>
 </html>
