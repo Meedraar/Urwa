@@ -1,0 +1,183 @@
+/* URWA role dashboards — reference-led layout layer.
+   Keeps the existing Supabase markup/data hooks and adds only presentation + message navigation. */
+:root{--ref-green:#00a878;--ref-blue:#1767df;--ref-ink:#25243b;--ref-muted:#8b9297;--ref-line:#e6e8e9;--ref-bg:#fff;--ref-shadow:0 3px 8px rgba(20,30,35,.10)}
+body[data-urwa-role]{background:#fff!important;color:var(--ref-ink)!important;font-family:Inter,"Segoe UI",Arial,sans-serif!important}
+body[data-urwa-role] a{transition:background-color .15s,color .15s,border-color .15s}
+body[data-urwa-role] .hm-panel{scroll-margin-top:90px}
+/* STUDENT — clean Designo-style learner workspace */
+body.urwa-student-dashboard{background:#fff!important}
+body.urwa-student-dashboard .student-shell{grid-template-columns:238px minmax(0,1fr);background:#fff}
+body.urwa-student-dashboard .student-sidebar{width:238px;background:#f8f8f8;border-right:1px solid #e6e6e6;box-shadow:none;padding:0 14px 18px}
+body.urwa-student-dashboard .student-brand{height:70px;min-height:70px;padding:0 28px;border-bottom:1px solid #e8e8e8}
+body.urwa-student-dashboard .student-brand img{display:none}
+body.urwa-student-dashboard .student-brand b{font-size:1.35rem;letter-spacing:.13em;color:#151515}
+body.urwa-student-dashboard .student-brand small{display:none}
+body.urwa-student-dashboard .student-profile{margin:14px 0;padding:10px;border:0;background:transparent}
+body.urwa-student-dashboard .student-avatar{background:#e8f5ef;color:#079c70}
+body.urwa-student-dashboard .student-nav{padding:0}
+body.urwa-student-dashboard .student-nav-label{display:none}
+body.urwa-student-dashboard .student-nav a{min-height:40px;margin:3px 0;padding:10px 12px;border-radius:5px;color:#171717;font-size:.79rem;font-weight:550}
+body.urwa-student-dashboard .student-nav a i{width:18px;color:#62696b;font-style:normal}
+body.urwa-student-dashboard .student-nav a.selected{background:#00a878!important;color:#fff!important;box-shadow:none!important}
+body.urwa-student-dashboard .student-nav a.selected i{color:#fff}
+body.urwa-student-dashboard .student-sidebar-footer{margin-top:auto}
+body.urwa-student-dashboard .student-help{display:none}
+body.urwa-student-dashboard .student-logout{color:#56615c}
+body.urwa-student-dashboard .student-main{background:#fff}
+body.urwa-student-dashboard .student-topbar{height:70px;min-height:70px;padding:0 36px;background:#fff;border-bottom:1px solid #e5e5e5;box-shadow:none}
+body.urwa-student-dashboard .student-search{width:min(360px,50vw);height:40px;border:1px solid #16a77e;border-radius:5px}
+body.urwa-student-dashboard .student-search input{font-size:.78rem}
+body.urwa-student-dashboard .student-dashboard-content{max-width:1600px;padding:24px 3.6vw 40px}
+body.urwa-student-dashboard .student-page-title{margin-bottom:20px}
+body.urwa-student-dashboard .student-page-title h1{font-size:2.15rem;letter-spacing:-.045em;color:#25243b}
+body.urwa-student-dashboard .student-page-title p{font-size:1.12rem;color:#00a878}
+body.urwa-student-dashboard .student-welcome{display:none}
+body.urwa-student-dashboard .student-dashboard-grid{grid-template-columns:minmax(0,1fr);gap:18px}
+body.urwa-student-dashboard .student-center-column{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px;align-items:stretch}
+body.urwa-student-dashboard .student-center-column>.student-course-row{grid-column:span 12;display:grid;grid-template-columns: minmax(220px,.75fr) minmax(0,1.35fr) minmax(190px,.6fr);gap:18px}
+body.urwa-student-dashboard .student-course-row .current-course{grid-column:auto}
+body.urwa-student-dashboard .student-course-row .halaqa-panel{grid-column:auto}
+body.urwa-student-dashboard .student-center-column>.progress-panel{grid-column:span 4}
+body.urwa-student-dashboard .student-center-column>#homework{grid-column:span 4}
+body.urwa-student-dashboard .student-center-column>#resources{grid-column:span 4}
+body.urwa-student-dashboard .student-center-column>#community,
+body.urwa-student-dashboard .student-center-column>#announcements{grid-column:span 6}
+body.urwa-student-dashboard .student-right-column{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+body.urwa-student-dashboard .student-right-column>.student-calendar{grid-column:span 1}
+body.urwa-student-dashboard .student-right-column>#schedule{grid-column:span 1}
+body.urwa-student-dashboard .student-right-column>.student-todo{grid-column:span 1}
+body.urwa-student-dashboard .student-right-column>.student-quran-card{grid-column:1/-1}
+body.urwa-student-dashboard .student-panel{padding:18px;background:#fff;border:1px solid #e2e5e5;border-radius:9px;box-shadow:var(--ref-shadow)}
+body.urwa-student-dashboard .panel-heading h2{color:#202020;font-size:.95rem;font-weight:650}
+body.urwa-student-dashboard .panel-kicker{color:#00a878}
+body.urwa-student-dashboard .panel-icon,body.urwa-student-dashboard .halaqa-emblem{background:#e7f6f0;color:#00a878}
+body.urwa-student-dashboard .course-progress span,body.urwa-student-dashboard .student-progress-track span{background:#00a878}
+body.urwa-student-dashboard .course-progress{background:#e9f5f0}
+body.urwa-student-dashboard .student-text-link{color:#00a878}
+body.urwa-student-dashboard .student-primary-link{background:#00a878;color:#fff}
+body.urwa-student-dashboard .student-right-column .calendar-grid{gap:5px 3px}
+body.urwa-student-dashboard .calendar-month b{color:#00a878}
+body.urwa-student-dashboard .student-footer{color:#92999a}
+body.urwa-student-dashboard .profile-panel{margin-top:18px}
+body.urwa-student-dashboard .hm-panel{grid-column:1/-1;margin:0;border-radius:9px;box-shadow:var(--ref-shadow)}
+/* TEACHER — EduNova teacher workspace hierarchy and blue accent */
+body.urwa-abla-dashboard .abla-app{grid-template-columns:238px minmax(0,1fr);background:#fff}
+body.urwa-abla-dashboard .abla-sidebar{width:238px;background:#fff;border-right:1px solid #e5e8eb;box-shadow:none;padding:0 13px 16px}
+body.urwa-abla-dashboard .abla-brand{height:70px;padding:0 16px;border-bottom:1px solid #e8eaed}
+body.urwa-abla-dashboard .abla-brand img{width:32px;height:32px}
+body.urwa-abla-dashboard .abla-brand b{color:#1767df;letter-spacing:.03em}
+body.urwa-abla-dashboard .abla-brand small{color:#7b8795;letter-spacing:.06em}
+body.urwa-abla-dashboard .abla-profile{margin:13px 2px;padding:10px;background:#f7f9fc;border:1px solid #e9edf2}
+body.urwa-abla-dashboard .abla-avatar{background:#eaf1ff;color:#1767df}
+body.urwa-abla-dashboard .abla-nav{gap:2px}
+body.urwa-abla-dashboard .abla-nav-label{display:none}
+body.urwa-abla-dashboard .abla-nav a{min-height:39px;padding:9px 11px;color:#39434c;font-size:.75rem;border-radius:5px}
+body.urwa-abla-dashboard .abla-nav a.active{background:#edf3ff!important;color:#1767df!important;box-shadow:inset 3px 0 #1767df!important}
+body.urwa-abla-dashboard .abla-sidebar-bottom{margin-top:auto}
+body.urwa-abla-dashboard .abla-support{background:#f4f8ff;border-color:#e5edfb}
+body.urwa-abla-dashboard .abla-support b{color:#245aab}
+body.urwa-abla-dashboard .abla-topbar{height:70px;padding:0 28px;background:#fff;border-bottom:1px solid #e5e8eb;box-shadow:none}
+body.urwa-abla-dashboard .abla-search{width:min(460px,52vw);border-color:#dce3eb;border-radius:5px}
+body.urwa-abla-dashboard .abla-search:focus-within{border-color:#1767df}
+body.urwa-abla-dashboard .abla-bell{border-color:#dce3eb;color:#1767df;border-radius:8px}
+body.urwa-abla-dashboard .abla-workspace{max-width:1600px;padding:22px clamp(18px,2.4vw,34px) 32px}
+body.urwa-abla-dashboard .abla-title-row{margin-bottom:14px}
+body.urwa-abla-dashboard .abla-title-row h1{font-size:1.25rem;color:#24283a}
+body.urwa-abla-dashboard .abla-eyebrow{color:#1767df}
+body.urwa-abla-dashboard .abla-hero{min-height:175px;background:linear-gradient(105deg,#eaf2ff,#f4f8ff 72%,#edf7f6);border:1px solid #e1eaf7;border-radius:12px;box-shadow:none;color:#24283a}
+body.urwa-abla-dashboard .abla-hero-label{color:#1767df}
+body.urwa-abla-dashboard .abla-hero h2{color:#20283b}
+body.urwa-abla-dashboard .abla-hero p{color:#4d5866}
+body.urwa-abla-dashboard .abla-hero-actions a{background:#1767df;color:#fff;border:0}
+body.urwa-abla-dashboard .abla-hero-actions a+a{background:#fff;border:1px solid #dbe5f2;color:#1767df}
+body.urwa-abla-dashboard .abla-hero-calligraphy{color:#1767df}
+body.urwa-abla-dashboard .abla-connection{border-left-color:#1767df}
+body.urwa-abla-dashboard .abla-connection strong{color:#245aab}
+body.urwa-abla-dashboard .abla-stat-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+body.urwa-abla-dashboard .abla-stat-card{border-radius:10px;box-shadow:none}
+body.urwa-abla-dashboard .abla-stat-icon{background:#edf3ff!important;color:#1767df!important}
+body.urwa-abla-dashboard .abla-panel{border-radius:10px;box-shadow:none}
+body.urwa-abla-dashboard .abla-panel-head small{color:#1767df}
+body.urwa-abla-dashboard .abla-panel-head h2{color:#20283b}
+body.urwa-abla-dashboard .abla-round-icon{background:#edf3ff;color:#1767df}
+body.urwa-abla-dashboard .abla-chip{background:#edf3ff;color:#1767df}
+body.urwa-abla-dashboard .abla-button{background:#1767df}
+body.urwa-abla-dashboard .abla-calendar-grid .today{background:#1767df}
+body.urwa-abla-dashboard .hm-panel{margin:0;border-radius:10px;box-shadow:none}
+body.urwa-abla-dashboard .abla-dashboard-columns{grid-template-columns:minmax(0,1.7fr) minmax(260px,.82fr);gap:14px}
+/* ADMIN — compact ERP-style operations dashboard */
+body[data-urwa-role="admin"] .urwa-app,body[data-urwa-role="admin"] .urwa-layout{background:#fff}
+body[data-urwa-role="admin"] .urwa-layout{display:grid;grid-template-columns:238px minmax(0,1fr)}
+body[data-urwa-role="admin"] .urwa-sidebar{position:sticky;top:0;width:238px;height:100vh;overflow:auto;background:#fff;border-right:1px solid #e5e8eb;box-shadow:none;padding:0 13px 16px}
+body[data-urwa-role="admin"] .urwa-brand{min-height:70px;padding:10px 14px}
+body[data-urwa-role="admin"] .urwa-brand img{width:36px;height:36px}
+body[data-urwa-role="admin"] .urwa-brand-name{color:#1767df;letter-spacing:.02em}
+body[data-urwa-role="admin"] .urwa-brand-tagline{color:#768392}
+body[data-urwa-role="admin"] .urwa-profile{margin:13px 2px;padding:10px;background:#f6f8fc;border:1px solid #e8edf5}
+body[data-urwa-role="admin"] .urwa-nav{padding:0}
+body[data-urwa-role="admin"] .urwa-nav-label{font-size:.58rem;color:#8995a2;letter-spacing:.1em;padding:12px 10px 5px}
+body[data-urwa-role="admin"] .urwa-nav a{min-height:37px;padding:8px 10px;border-radius:5px;color:#3f4a55;font-size:.72rem}
+body[data-urwa-role="admin"] .urwa-nav a.active{background:#edf3ff!important;color:#1767df!important;box-shadow:inset 3px 0 #1767df!important}
+body[data-urwa-role="admin"] .urwa-main{width:auto;min-width:0;margin:0;background:#fff}
+body[data-urwa-role="admin"] .urwa-topbar{height:70px;padding:0 28px;background:#fff;border-bottom:1px solid #e5e8eb;box-shadow:none}
+body[data-urwa-role="admin"] .urwa-topbar-title{color:#20283b}
+body[data-urwa-role="admin"] .urwa-content{max-width:1800px;padding:20px 26px 42px}
+body[data-urwa-role="admin"] .urwa-page-heading h1{font-size:1.15rem;color:#20283b}
+body[data-urwa-role="admin"] .urwa-page-heading p{display:none}
+body[data-urwa-role="admin"] .admin-kpi-grid{gap:10px}
+body[data-urwa-role="admin"] .admin-kpi{min-height:104px;padding:13px;border-radius:10px;box-shadow:none}
+body[data-urwa-role="admin"] .admin-kpi .urwa-stat-icon{background:#edf3ff;color:#1767df}
+body[data-urwa-role="admin"] .admin-quick-actions{border-radius:10px;box-shadow:none;padding:14px}
+body[data-urwa-role="admin"] .admin-action-grid a{min-height:76px;border:1px solid #edf0f3;border-radius:8px}
+body[data-urwa-role="admin"] .admin-command-grid{grid-template-columns:minmax(0,1.7fr) minmax(250px,.78fr);gap:12px}
+body[data-urwa-role="admin"] .admin-panel,body[data-urwa-role="admin"] .urwa-card,body[data-urwa-role="admin"] .urwa-stat{border-radius:10px;box-shadow:none}
+body[data-urwa-role="admin"] .admin-panel{padding:14px}
+body[data-urwa-role="admin"] .admin-panel h2,body[data-urwa-role="admin"] .urwa-card-title{color:#20283b}
+body[data-urwa-role="admin"] .admin-eyebrow{color:#1767df}
+body[data-urwa-role="admin"] .admin-panel a{color:#1767df}
+body[data-urwa-role="admin"] .admin-attendance-visual{gap:14px}
+body[data-urwa-role="admin"] .admin-donut{border-color:#1767df}
+body[data-urwa-role="admin"] .admin-attention-icon{background:#edf3ff;color:#1767df}
+body[data-urwa-role="admin"] .admin-legacy-overview{display:none}
+body[data-urwa-role="admin"] .urwa-content>section[id],body[data-urwa-role="admin"] .urwa-content>div.urwa-grid{margin-top:16px}
+body[data-urwa-role="admin"] .urwa-section-title{color:#20283b}
+body[data-urwa-role="admin"] .urwa-btn-primary{background:#1767df;border-color:#1767df}
+body[data-urwa-role="admin"] .hm-panel{margin:18px 0;border-radius:10px;box-shadow:none}
+@media(max-width:1100px){
+ body.urwa-student-dashboard .student-center-column>.student-course-row{grid-template-columns:1fr 1fr}
+ body.urwa-student-dashboard .student-course-row .current-course{grid-column:span 1}
+ body.urwa-student-dashboard .student-course-row .halaqa-panel{grid-column:span 1}
+ body.urwa-student-dashboard .student-center-column>.progress-panel,body.urwa-student-dashboard .student-center-column>#homework,body.urwa-student-dashboard .student-center-column>#resources{grid-column:span 6}
+ body.urwa-student-dashboard .student-right-column{grid-template-columns:repeat(2,minmax(0,1fr))}
+ body.urwa-student-dashboard .student-right-column>.student-quran-card{grid-column:1/-1}
+ body[data-urwa-role="admin"] .admin-command-grid{grid-template-columns:1fr}
+}
+@media(max-width:850px){
+ body.urwa-student-dashboard .student-shell,body.urwa-abla-dashboard .abla-app,body[data-urwa-role="admin"] .urwa-layout{grid-template-columns:1fr}
+ body.urwa-student-dashboard .student-sidebar,body.urwa-abla-dashboard .abla-sidebar,body[data-urwa-role="admin"] .urwa-sidebar{position:fixed;left:-260px;width:238px;z-index:60;transition:left .2s}
+ body.urwa-student-dashboard .student-sidebar.open,body.urwa-abla-dashboard .abla-sidebar.open,body[data-urwa-role="admin"] .urwa-sidebar.open{left:0}
+ body.urwa-student-dashboard .student-mobile-menu,body.urwa-abla-dashboard .abla-menu,body[data-urwa-role="admin"] .urwa-menu-button{display:block}
+ body.urwa-student-dashboard .student-dashboard-grid{grid-template-columns:1fr}
+ body.urwa-student-dashboard .student-center-column>.student-course-row{grid-template-columns:1fr 1fr}
+ body.urwa-student-dashboard .student-right-column{grid-template-columns:repeat(2,minmax(0,1fr))}
+ body.urwa-abla-dashboard .abla-dashboard-columns{grid-template-columns:1fr}
+ body.urwa-abla-dashboard .abla-side-column{grid-template-columns:repeat(2,minmax(0,1fr))}
+ body[data-urwa-role="admin"] .urwa-main{width:100%;margin:0}
+ body[data-urwa-role="admin"] .admin-kpi-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:620px){
+ body.urwa-student-dashboard .student-topbar,body.urwa-abla-dashboard .abla-topbar,body[data-urwa-role="admin"] .urwa-topbar{padding:0 14px;gap:10px}
+ body.urwa-student-dashboard .student-dashboard-content,body.urwa-abla-dashboard .abla-workspace,body[data-urwa-role="admin"] .urwa-content{padding:16px 13px 28px}
+ body.urwa-student-dashboard .student-page-title h1{font-size:1.55rem}
+ body.urwa-student-dashboard .student-center-column{grid-template-columns:1fr}
+ body.urwa-student-dashboard .student-center-column>*{grid-column:1/-1!important}
+ body.urwa-student-dashboard .student-center-column>.student-course-row{grid-template-columns:1fr}
+ body.urwa-student-dashboard .student-right-column{grid-template-columns:1fr}
+ body.urwa-student-dashboard .student-right-column>*{grid-column:1/-1!important}
+ body.urwa-abla-dashboard .abla-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ body.urwa-abla-dashboard .abla-side-column{grid-template-columns:1fr}
+ body[data-urwa-role="admin"] .admin-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ body[data-urwa-role="admin"] .admin-action-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+ body[data-urwa-role="admin"] .admin-action-grid a{min-width:0}
+ body[data-urwa-role="admin"] .admin-command-grid{grid-template-columns:1fr}
+}
