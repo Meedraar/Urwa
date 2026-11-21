@@ -34,3 +34,8 @@ The browser client is configured in `js/supabase.js` with the Supabase publishab
 - Public registration must not allow users to assign privileged roles.
 - Use database policies to enforce student, teacher and administrator permissions.
 - Never put service-role keys, database passwords or other secrets in frontend code or GitHub.
+
+
+
+
+assistant to be able to mark the attendance for abla follow up on student and 
