@@ -283,7 +283,7 @@ async function initAdmin(user) {
         const teacherId = assign.dataset.assign;
         const halaqaId = $('[data-teacher-halaqa="' + teacherId + '"]')?.value;
         if (!halaqaId) throw new Error('Choose a halaqa.');
-        const { error } = await supabase.from('teacher_assignments').insert({ teacher_id: teacherId, halaqa_id: halaqaId });
+        const { error } = await supabase.from('teacher_assignments').upsert({ teacher_id: teacherId, halaqa_id: halaqaId }, { onConflict: 'teacher_id,halaqa_id', ignoreDuplicates: true });
         if (error) fail(error);
         await adminLoad(user);
       }
