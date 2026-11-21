@@ -696,3 +696,271 @@ body[data-urwa-role="admin"] .admin-attention-panel small{color:#e8e0cf!importan
 .staff-shell .welcome .arabic,.staff-shell .login-art blockquote{color:#f2d68d!important}
 .staff-shell .page-heading h1,.staff-shell .section-title{color:#0e4a40!important}
 .staff-shell .page-heading p,.staff-shell .panel p{color:#52675d!important}
+
+
+/* ==========================================================
+   URWA GLOBAL VISUAL STANDARD — final site-wide contrast layer
+   Palette: emerald, cream, mint, muted gold and white.
+   Text is always chosen for its actual surface, not arbitrarily.
+   ========================================================== */
+:root{
+  --urwa-page:#fbf6e9;
+  --urwa-surface:#fff;
+  --urwa-emerald:#0e4a40;
+  --urwa-emerald-deep:#08372f;
+  --urwa-ink:#18342d;
+  --urwa-muted:#52675d;
+  --urwa-gold:#c6a75e;
+  --urwa-gold-text:#8c6b2c;
+  --urwa-cream:#fbf6e9;
+  --urwa-mint:#e3f0ea;
+  --urwa-border:#e3d9c7;
+}
+
+/* Default reading surface: dark text on cream/white, never pale text on pale cards. */
+html,body{background:var(--urwa-page);color:var(--urwa-ink)}
+body,p,li,dd,dt,td,label,legend,figcaption,small{color:inherit}
+h1,h2,h3,h4,h5,h6{color:var(--urwa-emerald)}
+p,.muted,.text-muted,.subtitle,.description,.helper-text,.form-note,.caption{
+  color:var(--urwa-muted);
+}
+a{color:var(--urwa-emerald)}
+a:hover{color:var(--urwa-gold-text)}
+.card,.panel,.content-card,.dashboard-card,.auth-card,.login-card,
+.stat-card,.metric-card,.widget-card,.modal-content,.settings-card{
+  border-color:var(--urwa-border);
+}
+input,select,textarea,.form-control{
+  color:var(--urwa-ink)!important;background:#fff!important;
+  border-color:var(--urwa-border)!important;
+}
+input::placeholder,textarea::placeholder{color:#64756d!important;opacity:1!important}
+label,.form-label,.form-group label{color:#334b40}
+table th{background:var(--urwa-mint);color:var(--urwa-emerald)}
+table td{color:var(--urwa-ink)}
+
+/* One shared emerald navigation treatment; all navigation text stays white. */
+.urwa-sidebar,.sidebar,.staff-side,.staff-sidebar,.abla-sidebar,
+.admin-sidebar,.portal-sidebar,.dashboard-sidebar,.dt-sidebar{
+  background:var(--urwa-emerald)!important;color:#fff!important;
+}
+.urwa-sidebar a,.sidebar a,.staff-side a,.staff-sidebar a,.abla-sidebar a,
+.admin-sidebar a,.portal-sidebar a,.dashboard-sidebar a,.dt-sidebar a,
+.urwa-sidebar .urwa-nav-label,.sidebar .side-label,.dt-sidebar .dt-nav-label{
+  color:#fff!important;opacity:1!important;
+}
+.urwa-sidebar a.active,.sidebar a.active,.staff-side a.active,
+.staff-sidebar a.active,.abla-sidebar a.active,.admin-sidebar a.active,
+.portal-sidebar a.active,.dashboard-sidebar a.active,.dt-sidebar a.active,
+.urwa-sidebar a:hover,.sidebar a:hover,.staff-sidebar a:hover,
+.abla-sidebar a:hover,.dt-sidebar a:hover{
+  background:rgba(255,255,255,.15)!important;color:#fff!important;
+}
+.urwa-sidebar .urwa-nav-label,.sidebar .side-label,.staff-sidebar .nav-label,
+.abla-sidebar .abla-nav-label,.dt-sidebar .dt-nav-label{
+  color:#f2d68d!important;
+}
+
+/* Emerald banners and cards: gold headings, warm-white body copy. */
+.hero,.hero-banner,.welcome,.welcome-panel,.urwa-welcome,.abla-hero,
+.login-art,.login-visual,.auth-visual,.auth-side,.story,.story-copy,
+.band,.dt-hero,.staff-shell .welcome{
+  color:var(--urwa-cream);
+}
+.hero h1,.hero h2,.hero h3,.hero h4,
+.hero-banner h1,.hero-banner h2,.hero-banner h3,.hero-banner h4,
+.welcome h1,.welcome h2,.welcome h3,.welcome h4,
+.welcome-panel h1,.welcome-panel h2,.welcome-panel h3,.welcome-panel h4,
+.urwa-welcome h1,.urwa-welcome h2,.urwa-welcome h3,.urwa-welcome h4,
+.abla-hero h1,.abla-hero h2,.abla-hero h3,.abla-hero h4,
+.login-art h1,.login-art h2,.login-art h3,.login-art h4,
+.login-visual h1,.login-visual h2,.login-visual h3,.login-visual h4,
+.auth-visual h1,.auth-visual h2,.auth-visual h3,.auth-visual h4,
+.auth-side h1,.auth-side h2,.auth-side h3,.auth-side h4,
+.story h1,.story h2,.story h3,.story h4,.story-copy h1,.story-copy h2,
+.story-copy h3,.story-copy h4,.band h1,.band h2,.band h3,.band h4,
+.dt-hero h1,.dt-hero h2,.dt-hero h3,.dt-hero h4{
+  color:#f2d68d!important;
+}
+.hero p,.hero li,.hero .lead,.hero-banner p,.welcome p,.welcome-panel p,
+.urwa-welcome p,.abla-hero p,.login-art p,.login-visual p,
+.auth-visual p,.auth-side p,.story p,.story-copy p,.band p,.dt-hero p{
+  color:#fbf6e9!important;opacity:1!important;
+}
+
+/* Homepage feature cards use the homepage's established emerald/gold style. */
+#programmes .card,#story .card,#about .card,#beyond .card,
+#brothers .card,#team .card,#grow-alone .card{
+  background:var(--urwa-emerald)!important;border:1px solid var(--urwa-gold)!important;
+  color:var(--urwa-cream)!important;
+}
+#programmes .card h1,#programmes .card h2,#programmes .card h3,
+#story .card h1,#story .card h2,#story .card h3,
+#about .card h1,#about .card h2,#about .card h3,
+#beyond .card h1,#beyond .card h2,#beyond .card h3,
+#brothers .card h1,#brothers .card h2,#brothers .card h3,
+#team .card h1,#team .card h2,#team .card h3,
+#grow-alone .card h1,#grow-alone .card h2,#grow-alone .card h3{
+  color:var(--urwa-gold)!important;
+}
+#programmes .card p,#story .card p,#about .card p,#beyond .card p,
+#brothers .card p,#team .card p,#grow-alone .card p{
+  color:var(--urwa-cream)!important;
+}
+
+/* Admin dashboard: KPI cards and emerald analytics panels need visible copy. */
+body[data-urwa-role="admin"] .admin-kpi,
+body[data-urwa-role="admin"] .admin-kpi-card,
+body[data-urwa-role="admin"] .admin-stat-card,
+body[data-urwa-role="admin"] .admin-panel,
+body[data-urwa-role="admin"] .admin-quick-actions,
+body[data-urwa-role="admin"] .urwa-card{
+  border-color:var(--urwa-gold)!important;
+}
+body[data-urwa-role="admin"] .admin-kpi *,
+body[data-urwa-role="admin"] .admin-kpi-card *,
+body[data-urwa-role="admin"] .admin-stat-card *{
+  opacity:1!important;
+}
+body[data-urwa-role="admin"] .admin-kpi,
+body[data-urwa-role="admin"] .admin-kpi-card,
+body[data-urwa-role="admin"] .admin-stat-card{
+  background:var(--urwa-emerald)!important;color:var(--urwa-cream)!important;
+}
+body[data-urwa-role="admin"] .admin-kpi h1,
+body[data-urwa-role="admin"] .admin-kpi h2,
+body[data-urwa-role="admin"] .admin-kpi h3,
+body[data-urwa-role="admin"] .admin-kpi-card h1,
+body[data-urwa-role="admin"] .admin-kpi-card h2,
+body[data-urwa-role="admin"] .admin-kpi-card h3,
+body[data-urwa-role="admin"] .admin-stat-card h1,
+body[data-urwa-role="admin"] .admin-stat-card h2,
+body[data-urwa-role="admin"] .admin-stat-card h3{
+  color:var(--urwa-gold)!important;
+}
+body[data-urwa-role="admin"] .admin-kpi p,
+body[data-urwa-role="admin"] .admin-kpi span,
+body[data-urwa-role="admin"] .admin-kpi small,
+body[data-urwa-role="admin"] .admin-kpi-card p,
+body[data-urwa-role="admin"] .admin-kpi-card span,
+body[data-urwa-role="admin"] .admin-kpi-card small,
+body[data-urwa-role="admin"] .admin-stat-card p,
+body[data-urwa-role="admin"] .admin-stat-card span,
+body[data-urwa-role="admin"] .admin-stat-card small{
+  color:var(--urwa-cream)!important;opacity:1!important;
+}
+body[data-urwa-role="admin"] .admin-quick-actions h1,
+body[data-urwa-role="admin"] .admin-quick-actions h2,
+body[data-urwa-role="admin"] .admin-quick-actions h3,
+body[data-urwa-role="admin"] .admin-quick-actions .section-kicker{
+  color:var(--urwa-gold)!important;
+}
+body[data-urwa-role="admin"] .admin-quick-actions a{
+  background:var(--urwa-mint)!important;color:var(--urwa-emerald)!important;
+}
+body[data-urwa-role="admin"] .admin-quick-actions a *,
+body[data-urwa-role="admin"] .admin-action-grid a,
+body[data-urwa-role="admin"] .admin-action-grid a *{
+  color:var(--urwa-emerald)!important;opacity:1!important;
+}
+body[data-urwa-role="admin"] .admin-panel h1,
+body[data-urwa-role="admin"] .admin-panel h2,
+body[data-urwa-role="admin"] .admin-panel h3,
+body[data-urwa-role="admin"] .admin-panel h4,
+body[data-urwa-role="admin"] .urwa-card h1,
+body[data-urwa-role="admin"] .urwa-card h2,
+body[data-urwa-role="admin"] .urwa-card h3{
+  color:var(--urwa-gold)!important;
+}
+body[data-urwa-role="admin"] .admin-panel p,
+body[data-urwa-role="admin"] .admin-panel span,
+body[data-urwa-role="admin"] .admin-panel small,
+body[data-urwa-role="admin"] .admin-panel label,
+body[data-urwa-role="admin"] .admin-panel li,
+body[data-urwa-role="admin"] .admin-panel td,
+body[data-urwa-role="admin"] .admin-panel th,
+body[data-urwa-role="admin"] .urwa-card p,
+body[data-urwa-role="admin"] .urwa-card span,
+body[data-urwa-role="admin"] .urwa-card small{
+  color:var(--urwa-cream)!important;opacity:1!important;
+}
+body[data-urwa-role="admin"] .admin-panel a,
+body[data-urwa-role="admin"] .admin-panel a *,
+body[data-urwa-role="admin"] .admin-panel>header>a{
+  color:var(--urwa-gold)!important;
+}
+
+/* Chart canvases/SVGs: retain data colours but remove blue text and link accents. */
+body[data-urwa-role="admin"] .admin-chart,
+body[data-urwa-role="admin"] .chart-card,
+body[data-urwa-role="admin"] .chart-container{
+  color:var(--urwa-cream)!important;
+}
+body[data-urwa-role="admin"] .admin-chart text,
+body[data-urwa-role="admin"] .chart-card text,
+body[data-urwa-role="admin"] .chart-container text{
+  fill:var(--urwa-cream)!important;
+}
+body[data-urwa-role="admin"] .admin-chart a,
+body[data-urwa-role="admin"] .chart-card a,
+body[data-urwa-role="admin"] .chart-container a{color:var(--urwa-gold)!important}
+
+/* Student, Abla and department dashboard surfaces: dark ink on white cards;
+   gold titles and cream copy only when the card itself is emerald. */
+.student-panel,.abla-panel,.dt-panel,.dt-card,.student-stat-card,.abla-stat-card,.dt-stat{
+  color:var(--urwa-ink);
+}
+.student-panel h1,.student-panel h2,.student-panel h3,
+.abla-panel h1,.abla-panel h2,.abla-panel h3,
+.dt-panel h1,.dt-panel h2,.dt-panel h3,
+.dt-card h1,.dt-card h2,.dt-card h3{
+  color:var(--urwa-emerald)!important;
+}
+.student-panel p,.student-panel small,.abla-panel p,.abla-panel small,
+.dt-panel p,.dt-panel small,.dt-card p,.dt-card small,
+.dt-stat small,.dt-muted,.dt-meta{
+  color:var(--urwa-muted)!important;opacity:1!important;
+}
+.student-welcome,.abla-hero,.urwa-welcome,.dt-hero{
+  background:linear-gradient(112deg,var(--urwa-emerald-deep),var(--urwa-emerald) 62%,#176657)!important;
+}
+.student-welcome h1,.student-welcome h2,.student-welcome h3,
+.abla-hero h1,.abla-hero h2,.abla-hero h3,.dt-hero h1,.dt-hero h2{
+  color:var(--urwa-gold)!important;
+}
+.student-welcome p,.abla-hero p,.dt-hero p{color:var(--urwa-cream)!important}
+
+/* Department Tracker: restore sidebar contrast and readable banner heading. */
+.dt-sidebar .dt-brand,.dt-sidebar .dt-brand strong,
+.dt-sidebar .dt-nav a,.dt-sidebar .dt-nav-label{color:#fff!important;opacity:1!important}
+.dt-sidebar .dt-nav-label{color:var(--urwa-gold)!important}
+.dt-sidebar .dt-nav a.active,.dt-sidebar .dt-nav a:hover{
+  background:rgba(255,255,255,.15)!important;color:#fff!important
+}
+.dt-hero h1,.dt-hero h2,.dt-hero h3{color:var(--urwa-gold)!important}
+.dt-hero p{color:var(--urwa-cream)!important}
+.dt-card{background:#fff!important;border:1px solid var(--urwa-border)!important}
+.dt-card h3{color:var(--urwa-emerald)!important}
+.dt-card p,.dt-card .dt-meta{color:var(--urwa-muted)!important}
+
+/* Status and validation colours remain semantic and distinguishable. */
+.alert-success,.notice-success{background:#e3f0ea;color:#174c3d}
+.alert-warning,.notice-warning{background:#fff3d6;color:#6f531b}
+.alert-danger,.notice-danger,.error-message{background:#fff0ed;color:#8f3025}
+.badge,.pill,.status-pill{opacity:1}
+
+/* Consistent type scale and prevent clipping/overflow at every viewport. */
+body{line-height:1.6}
+p,li,label,small,td,th,.muted,.helper-text,.form-note{
+  line-height:1.5;overflow-wrap:anywhere;opacity:1;
+}
+small,.muted,.helper-text,.form-note{font-size:max(.78rem,1em)}
+button,a{line-height:1.4}
+main,section,article,aside,header,footer,nav,form,fieldset,
+.card,.panel,.content-card,.dashboard-card{min-width:0}
+img,svg,canvas,video{max-width:100%}
+@media(max-width:760px){
+  .grid,.g3,.g4,.g5{grid-template-columns:minmax(0,1fr)!important}
+  .admin-kpi-grid,.admin-action-grid,.dt-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .card,.panel,.content-card,.dashboard-card{overflow-wrap:anywhere}
+}
