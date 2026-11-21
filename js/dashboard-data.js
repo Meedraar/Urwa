@@ -122,14 +122,24 @@ async function adminLoad(user) {
       '<div class="admin-bar-item"><strong>' + count + '</strong><div class="admin-bar-track"><i class="admin-bar-fill" style="height:' +
       Math.max(5, Math.round(count/maxProgramme*100)) + '%"></i></div><small title="' + esc(name) + '">' + esc(name) + '</small></div>'
     ).join('') : '<p class="admin-empty">No approved programme enrolments to chart yet.</p>');
-    const halaqaRows = halaqas.slice(0,7).map(h => {
+    const renderHalaqaRow = (h, includeAction = false) => {
       const assigned = assignments.filter(a => a.halaqa_id === h.id);
       const studentCount = approvedEnrollments.filter(e => e.halaqa_id === h.id).length;
       const teacherNames = assigned.map(a => byId.get(a.teacher_id)?.full_name).filter(Boolean);
-      return '<tr><td><b>' + esc(h.name) + '</b></td><td>' + esc(teacherNames.join(', ') || 'Unassigned') +
-        '</td><td>' + studentCount + '</td><td><span class="admin-mini-status">' + (h.is_active ? 'Active' : 'Inactive') + '</span></td></tr>';
-    }).join('');
+      const statusLabel = h.is_active ? 'Active' : 'Inactive';
+      return '<tr><td><b>' + esc(h.name) + '</b></td><td>' + esc(teacherNames.join(', ') || 'Not assigned') +
+        '</td><td>' + studentCount + '</td><td><span class="admin-mini-status">' + statusLabel + '</span></td>' +
+        (includeAction ? '<td><a class="urwa-btn urwa-btn-outline urwa-btn-small" href="../departments/index.html">Manage</a></td>' : '') + '</tr>';
+    };
+    const halaqaRows = halaqas.map(h => renderHalaqaRow(h)).join('');
     put('#admin-halaqa-overview', halaqaRows, '<tr><td colspan="4">No halaqas configured yet.</td></tr>');
+    put('#admin-halaqa-management-body', halaqas.map(h => renderHalaqaRow(h, true)).join(''),
+      '<tr><td colspan="5">No halaqas configured yet.</td></tr>');
+    const activeHalaqaCount = halaqas.filter(h => h.is_active).length;
+    const halaqaSummary = $('#admin-halaqa-summary');
+    if (halaqaSummary) halaqaSummary.textContent = 'Manage all ' + activeHalaqaCount + ' active halaqas, their assigned Ablas and enrolled students.';
+    const halaqaBadge = $('#admin-halaqa-badge');
+    if (halaqaBadge) halaqaBadge.textContent = activeHalaqaCount + ' active halaqas';
     const recentPeople = [...people].sort((a,b) => new Date(b.created_at || 0)-new Date(a.created_at || 0)).slice(0,5);
     put('#admin-recent-activity', recentPeople.map(p => {
       const role = p.role === 'teacher' ? 'Abla / Teacher' : p.role === 'admin' ? 'Administrator' : 'Student';
