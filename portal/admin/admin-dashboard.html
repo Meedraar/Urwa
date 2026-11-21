@@ -159,7 +159,13 @@ body{background:var(--canvas);color:var(--ink)}
     padding-top: 12px;
     border-top: 1px solid #edf0f3;
 }
-/* Live Supabase data panels */#admin-live-status{font-size:11px;color:var(--ink)}#admin-live-status p{margin:4px 0 0;color:var(--muted);font-size:10px}#admin-live-status.is-error{border-color:#e6a0a0;background:#fff8f8}.urwa-admin-actions{display:flex;flex-wrap:wrap;gap:5px;align-items:center;min-width:190px}.urwa-admin-actions select{max-width:145px;border:1px solid var(--line);border-radius:5px;padding:5px;background:#fff;color:var(--ink);font:inherit}.urwa-btn{border:1px solid var(--line);border-radius:5px;padding:5px 8px;font:inherit;font-size:9px;background:#fff;color:var(--ink)}.urwa-btn-primary{background:#0e4a40;color:#fff;border-color:#0e4a40}.urwa-btn-small{white-space:nowrap}.course-table td small{display:block;color:var(--muted);font-size:8px;margin-top:2px}</style>
+/* Live Supabase data panels */#admin-live-status{font-size:11px;color:var(--ink)}#admin-live-status p{margin:4px 0 0;color:var(--muted);font-size:10px}#admin-live-status.is-error{border-color:#e6a0a0;background:#fff8f8}.urwa-admin-actions{display:flex;flex-wrap:wrap;gap:5px;align-items:center;min-width:190px}.urwa-admin-actions select{max-width:145px;border:1px solid var(--line);border-radius:5px;padding:5px;background:#fff;color:var(--ink);font:inherit}.urwa-btn{border:1px solid var(--line);border-radius:5px;padding:5px 8px;font:inherit;font-size:9px;background:#fff;color:var(--ink)}.urwa-btn-primary{background:#0e4a40;color:#fff;border-color:#0e4a40}.urwa-btn-small{white-space:nowrap}.course-table td small{display:block;color:var(--muted);font-size:8px;margin-top:2px}
+.admin-bar-item{height:100%;min-width:0;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:3px;font-size:8px;color:var(--muted)}
+.admin-bar-item strong{font-size:9px;color:var(--ink)}
+.admin-bar-track{height:82px;width:18px;display:flex;align-items:flex-end;background:#f0f3ee;border-radius:4px 4px 0 0;overflow:hidden}
+.admin-bar-fill{display:block;width:100%;background:#0e4a40;border-radius:4px 4px 0 0}
+.admin-bar-item small{max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.admin-chart-note{display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:9px;text-align:center;padding:12px;border:1px dashed var(--line);border-radius:6px}</style>
 </head>
 <body data-urwa-role="admin">
 <div class="app">
@@ -209,8 +215,7 @@ body{background:var(--canvas);color:var(--ink)}
         <article class="panel">
           <div class="panel-top"><h3>Halaqa Overview</h3><a href="#">View All</a></div>
           <div class="legend"><span><i class="dot" style="background:#1768df"></i>Active</span><span><i class="dot" style="background:#77cbb1"></i>Completed</span><span><i class="dot" style="background:#9b7bd2"></i>Upcoming</span></div>
-          <div class="bar-chart">
-            <div class="bar-group"><i class="bar" style="height:56%"></i><i class="bar light" style="height:68%"></i><span class="bar-label">Morning</span></div>
+          <div class="bar-chart" id="admin-programme-chart"><p class="admin-empty">Loading live programme data…</p></div>
             <div class="bar-group"><i class="bar" style="height:67%"></i><i class="bar light" style="height:40%"></i><span class="bar-label">Evening</span></div>
             <div class="bar-group"><i class="bar" style="height:60%"></i><i class="bar light" style="height:44%"></i><span class="bar-label">Weekend</span></div>
             <div class="bar-group"><i class="bar" style="height:74%"></i><i class="bar light" style="height:52%"></i><span class="bar-label">Tajweed</span></div>
@@ -234,7 +239,7 @@ body{background:var(--canvas);color:var(--ink)}
           <div class="attendance"><div class="donut" id="admin-attendance-donut"><div class="donut-inner" id="admin-attendance-percent">—<small>Present</small></div></div><div class="legend-list"><span><i><i class="dot" style="background:#1768df"></i>Present</i><b id="admin-attendance-present">—</b></span><span><i><i class="dot" style="background:#b5a2db"></i>Absent</i><b id="admin-attendance-absent">—</b></span><span><i><i class="dot" style="background:#77cbb1"></i>Other</i><b id="admin-attendance-other">—</b></span></div></div>
           <h3 style="margin-top:6px">Admissions & Enquiries</h3>
           <div class="legend"><span><i class="dot" style="background:#1768df"></i>New Applications</span><span><i class="dot" style="background:#77cbb1"></i>Approved</span></div>
-          <svg class="line-chart" viewBox="0 0 320 116" preserveAspectRatio="none"><path d="M0 24 C20 82 20 50 42 56 S70 100 98 78 S125 34 147 48 S181 77 202 12 S228 82 247 51 S275 28 320 16" fill="none" stroke="#3678cb" stroke-width="2"/><path d="M0 103 C23 98 22 80 43 24 S71 107 99 96 S129 78 151 89 S182 102 203 91 S231 101 250 82 S280 78 320 67" fill="none" stroke="#53b69a" stroke-width="2"/><g fill="#9aa4b1" font-size="8"><text x="0" y="114">19 May</text><text x="54" y="114">20 May</text><text x="108" y="114">21 May</text><text x="162" y="114">22 May</text><text x="216" y="114">23 May</text><text x="270" y="114">24 May</text></g></svg>
+          <div class="line-chart admin-chart-note" id="admin-admissions-chart">Admission trends will appear as dated applications are recorded.</div>
         </article>
       </section>
 
