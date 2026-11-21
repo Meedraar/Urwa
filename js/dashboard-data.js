@@ -210,6 +210,17 @@ async function adminLoad(user) {
 }
 
 async function initAdmin(user) {
+  const { data: profile, error: profileError } = await supabase
+    .from('profiles')
+    .select('id,role,status,admin_level')
+    .eq('id', user.id)
+    .maybeSingle();
+  if (profileError) fail(profileError);
+  if (!profile || profile.role !== 'admin' || profile.status !== 'approved') {
+    await supabase.auth.signOut();
+    window.location.replace('/portal/admin/login.html');
+    return;
+  }
   await adminLoad(user);
   document.addEventListener('click', async (event) => {
     try {
@@ -422,6 +433,10 @@ async function teacherLoad(user) {
     if (role === 'teacher') await teacherLoad(user);
   } catch (error) {
     const role = document.body.dataset.urwaRole;
+    if (role === 'admin' && /sign in again|not approved|profile is not ready/i.test(error.message || '')) {
+      window.location.replace('/portal/admin/login.html');
+      return;
+    }
     status(role === 'student' ? 'student-live-overview' : role === 'teacher' ? 'teacher-live-overview' : 'admin-live-status',
       'Could not load records', error.message, true);
   }
