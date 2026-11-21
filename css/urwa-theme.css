@@ -1312,3 +1312,40 @@ body[data-urwa-role] :is(input,select,textarea){
 }
 body[data-urwa-role] :is(input,textarea)::placeholder{color:#64756d!important;opacity:1!important}
 body[data-urwa-role] :is(label,.form-label,.helper-text,.form-note){color:#40584e!important;opacity:1!important}
+
+
+/* Department workspace uses its own .app-shell markup, not a role attribute. */
+.app-shell{background:#fbf6e9!important;color:#18342d!important}
+.app-shell .main{background:#fbf6e9!important;color:#18342d!important}
+.app-shell :is(.stat-card,.panel,.loading-card,.department-card,.task-card,
+.report-card,.application-panel,.chat-panel,.review-dialog,.stack-item,
+.application-status,.detail-grid>div){
+  background:#fff!important;color:#18342d!important;border-color:#e3d9c7!important;
+}
+.app-shell :is(.stat-card,.panel,.loading-card,.department-card,.task-card,
+.report-card,.application-panel,.chat-panel,.review-dialog,.stack-item,
+.application-status,.detail-grid>div) :is(h1,h2,h3,h4,h5,h6,b,strong){
+  color:#0e4a40!important;opacity:1!important;
+}
+.app-shell :is(.stat-card,.panel,.loading-card,.department-card,.task-card,
+.report-card,.application-panel,.chat-panel,.review-dialog,.stack-item,
+.application-status,.detail-grid>div) :is(p,span,small,li,label,div,td,th){
+  color:#40584e!important;opacity:1!important;
+}
+.app-shell .sidebar{background:#0e4a40!important;color:#fff!important}
+.app-shell .sidebar :is(a,b,strong,small,span,button,.side-label){
+  color:#fff!important;opacity:1!important;
+}
+.app-shell .sidebar .side-label{color:#f2d68d!important}
+.app-shell .sidebar .nav-link.active,
+.app-shell .sidebar .nav-link:hover{background:rgba(255,255,255,.16)!important;color:#fff!important}
+.app-shell .welcome-panel{
+  background:linear-gradient(115deg,#08372f,#0e4a40 62%,#176657)!important;color:#fbf6e9!important;
+}
+.app-shell .welcome-panel :is(h1,h2,h3,p){color:#fbf6e9!important;opacity:1!important}
+.app-shell .welcome-panel .eyebrow.light{color:#f2d68d!important}
+.app-shell .topbar{background:#fff!important;color:#18342d!important}
+.app-shell .topbar :is(h1,h2,b,small){color:#18342d!important}
+.app-shell .quick-links button{color:#18342d!important}
+.app-shell .table-wrap th{background:#e3f0ea!important;color:#0e4a40!important}
+.app-shell .table-wrap td{background:#fff!important;color:#18342d!important}
