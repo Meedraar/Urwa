@@ -43,7 +43,7 @@ async function boot(){
  const halaqas=halaqasQ.data||[], enrollments=enrollmentsQ.data||[], attendance=attendanceQ.data||[];
  const studentIds=[...new Set(enrollments.map(x=>x.student_id))];
  const [profilesQ,submissionsQ]=await Promise.all([
-   studentIds.length?supabase.from('profiles').select('id,full_name,email').in('id',studentIds):Promise.resolve({data:[],error:null}),
+   supabase.rpc('get_teacher_student_directory'),
    assignmentsQ.data?.length?supabase.from('submissions').select('id,assignment_id,student_id,content,file_url,submitted_at,feedback').in('assignment_id',assignmentsQ.data.map(x=>x.id)).order('submitted_at',{ascending:false}):Promise.resolve({data:[],error:null})
  ]);
  if(profilesQ.error)throw profilesQ.error;if(submissionsQ.error)throw submissionsQ.error;
