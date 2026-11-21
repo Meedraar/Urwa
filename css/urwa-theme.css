@@ -1349,3 +1349,134 @@ body[data-urwa-role] :is(label,.form-label,.helper-text,.form-note){color:#40584
 .app-shell .quick-links button{color:#18342d!important}
 .app-shell .table-wrap th{background:#e3f0ea!important;color:#0e4a40!important}
 .app-shell .table-wrap td{background:#fff!important;color:#18342d!important}
+
+
+/* ==========================================================
+   TARGETED REGRESSION FIX — homepage hero + signed-in Admin
+   Homepage hero is a light cream surface: use emerald headline
+   and muted-green paragraph text, not white-on-cream.
+   Admin workspace cards are white reading surfaces with dark
+   text; reserve emerald/cream contrast for the sidebar and
+   intentional welcome bands only.
+   ========================================================== */
+body:not([data-urwa-role]) .hero{
+  background:
+    radial-gradient(circle at 85% 25%,rgba(198,167,94,.20),transparent 30%),
+    #fbf6e9!important;
+}
+body:not([data-urwa-role]) .hero h1,
+body:not([data-urwa-role]) .hero h2,
+body:not([data-urwa-role]) .hero .hero-title{
+  color:#0e4a40!important;
+}
+body:not([data-urwa-role]) .hero p,
+body:not([data-urwa-role]) .hero .lead{
+  color:#52675d!important;opacity:1!important;
+}
+body:not([data-urwa-role]) .hero .kicker,
+body:not([data-urwa-role]) .hero .eyebrow{
+  color:#8c6b2c!important;
+}
+
+/* Admin: white content cards, emerald headings, readable body copy. */
+body[data-urwa-role="admin"] .urwa-sidebar{
+  background:#0e4a40!important;color:#fff!important;border-color:rgba(255,255,255,.16)!important;
+}
+body[data-urwa-role="admin"] .urwa-sidebar .urwa-brand-name,
+body[data-urwa-role="admin"] .urwa-sidebar .urwa-brand-tagline,
+body[data-urwa-role="admin"] .urwa-sidebar .urwa-profile strong,
+body[data-urwa-role="admin"] .urwa-sidebar .urwa-profile span,
+body[data-urwa-role="admin"] .urwa-sidebar .urwa-nav-label,
+body[data-urwa-role="admin"] .urwa-sidebar .urwa-nav a,
+body[data-urwa-role="admin"] .urwa-sidebar .urwa-sidebar-bottom a{
+  color:#fff!important;opacity:1!important;
+}
+body[data-urwa-role="admin"] .urwa-sidebar .urwa-nav-label{color:#f2d68d!important}
+body[data-urwa-role="admin"] .urwa-sidebar .urwa-nav a.active,
+body[data-urwa-role="admin"] .urwa-sidebar .urwa-nav a:hover{
+  background:rgba(255,255,255,.16)!important;color:#fff!important;
+}
+body[data-urwa-role="admin"] .urwa-profile{
+  background:rgba(255,255,255,.1)!important;border-color:rgba(255,255,255,.2)!important;
+}
+body[data-urwa-role="admin"] .urwa-main,
+body[data-urwa-role="admin"] .urwa-content{background:#fbf6e9!important;color:#18342d!important}
+body[data-urwa-role="admin"] .admin-kpi,
+body[data-urwa-role="admin"] .admin-quick-actions,
+body[data-urwa-role="admin"] .urwa-card,
+body[data-urwa-role="admin"] .admin-panel{
+  background:#fff!important;border:1px solid #e3d9c7!important;color:#18342d!important;
+}
+body[data-urwa-role="admin"] .admin-kpi *,
+body[data-urwa-role="admin"] .admin-quick-actions *,
+body[data-urwa-role="admin"] .urwa-card *,
+body[data-urwa-role="admin"] .admin-panel *{
+  color:#18342d;
+}
+body[data-urwa-role="admin"] .admin-kpi .urwa-stat-label,
+body[data-urwa-role="admin"] .admin-kpi .urwa-stat-note,
+body[data-urwa-role="admin"] .urwa-card-subtitle,
+body[data-urwa-role="admin"] .admin-panel>header p,
+body[data-urwa-role="admin"] .admin-empty,
+body[data-urwa-role="admin"] .admin-activity-row small,
+body[data-urwa-role="admin"] .admin-attention-panel small{
+  color:#52675d!important;opacity:1!important;
+}
+body[data-urwa-role="admin"] .admin-kpi .urwa-stat-value{color:#0e4a40!important}
+body[data-urwa-role="admin"] .admin-kpi .urwa-stat-icon{
+  background:#e3f0ea!important;color:#0e4a40!important;
+}
+body[data-urwa-role="admin"] .urwa-card-title,
+body[data-urwa-role="admin"] .admin-panel h1,
+body[data-urwa-role="admin"] .admin-panel h2,
+body[data-urwa-role="admin"] .admin-panel h3,
+body[data-urwa-role="admin"] .admin-section-head h2,
+body[data-urwa-role="admin"] .admin-section-head span{
+  color:#0e4a40!important;
+}
+body[data-urwa-role="admin"] .admin-action-grid a{
+  background:#e3f0ea!important;color:#0e4a40!important;
+}
+body[data-urwa-role="admin"] .admin-action-grid a b,
+body[data-urwa-role="admin"] .admin-action-grid a i{color:#0e4a40!important}
+body[data-urwa-role="admin"] .admin-action-grid a:hover{background:#d5e9df!important}
+body[data-urwa-role="admin"] .admin-panel a,
+body[data-urwa-role="admin"] .admin-section-head>a{color:#0e4a40!important}
+body[data-urwa-role="admin"] .admin-panel td,
+body[data-urwa-role="admin"] .admin-panel th,
+body[data-urwa-role="admin"] .urwa-card td,
+body[data-urwa-role="admin"] .urwa-card th{color:#18342d!important}
+body[data-urwa-role="admin"] .admin-panel th,
+body[data-urwa-role="admin"] .urwa-card th{background:#e3f0ea!important;color:#0e4a40!important}
+body[data-urwa-role="admin"] .admin-bar-fill{background:#c6a75e!important}
+body[data-urwa-role="admin"] .admin-donut:before{background:#fff!important}
+body[data-urwa-role="admin"] .admin-donut strong{color:#0e4a40!important}
+body[data-urwa-role="admin"] .admin-legend span,
+body[data-urwa-role="admin"] .admin-legend b,
+body[data-urwa-role="admin"] .admin-activity-row b,
+body[data-urwa-role="admin"] .admin-attention-panel b,
+body[data-urwa-role="admin"] .admin-attention-panel>a,
+body[data-urwa-role="admin"] .admin-attention-panel>a>strong,
+body[data-urwa-role="admin"] .admin-schedule-panel>a{color:#18342d!important}
+body[data-urwa-role="admin"] .admin-activity-avatar,
+body[data-urwa-role="admin"] .admin-attention-icon{background:#e3f0ea!important;color:#0e4a40!important}
+body[data-urwa-role="admin"] .admin-mini-table td,
+body[data-urwa-role="admin"] .admin-mini-table th{color:#18342d!important}
+body[data-urwa-role="admin"] .admin-mini-table th{background:#e3f0ea!important}
+body[data-urwa-role="admin"] .urwa-table-wrap{overflow-x:auto}
+body[data-urwa-role="admin"] .urwa-table{min-width:640px}
+body[data-urwa-role="admin"] .urwa-table td,
+body[data-urwa-role="admin"] .urwa-table th{color:#18342d!important}
+body[data-urwa-role="admin"] .urwa-table th{background:#e3f0ea!important}
+@media(max-width:850px){
+  body[data-urwa-role="admin"] .urwa-sidebar{background:#0e4a40!important}
+}
+
+/* Preserve readable button and status semantics on white Admin cards. */
+body[data-urwa-role="admin"] .urwa-btn-primary,
+body[data-urwa-role="admin"] .btn-primary{background:#0e4a40!important;color:#fff!important;border-color:#0e4a40!important}
+body[data-urwa-role="admin"] .urwa-btn-outline{background:#fff!important;color:#0e4a40!important;border-color:#c6a75e!important}
+body[data-urwa-role="admin"] .urwa-badge{color:#18342d!important}
+body[data-urwa-role="admin"] .urwa-badge.pending{background:#fff3df!important;color:#805b20!important}
+body[data-urwa-role="admin"] .urwa-badge.info{background:#e3f0ea!important;color:#0e4a40!important}
+body[data-urwa-role="admin"] .admin-mini-status{background:#e3f0ea!important;color:#0e4a40!important}
