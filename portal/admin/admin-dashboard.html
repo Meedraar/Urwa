@@ -19,7 +19,7 @@ button{cursor:pointer}
 .sidebar{background:#fff;border-right:1px solid var(--line);padding:15px 12px 18px;display:flex;flex-direction:column;min-height:100vh}
 .brand{display:flex;gap:10px;align-items:center;padding:2px 5px 18px;border-bottom:1px solid var(--line)}
 .brand-mark{width:39px;height:39px;border-radius:8px;background:linear-gradient(145deg,#1975ef,#0754c4);color:white;display:grid;place-items:center;font-size:22px;font-weight:800;box-shadow:0 3px 8px #1768df33}
-.brand-name{font-size:16px;font-weight:800;color:#155fc8;letter-spacing:-.5px;white-space:nowrap}
+.brand-logo{width:100%;height:100%;display:block;object-fit:contain}.brand-name{font-size:16px;font-weight:800;color:#155fc8;letter-spacing:-.5px;white-space:nowrap}
 .brand-sub{font-size:8px;color:#687789;line-height:1.25;margin-top:2px}
 .school-chip{margin:16px 0 12px;padding:10px 11px;border-radius:10px;background:linear-gradient(110deg,#1768df,#3287f1);color:#fff;display:flex;align-items:center;gap:9px;font-weight:700;font-size:12px;box-shadow:0 4px 10px #1768df25}
 .school-chip .round{width:29px;height:29px;border:1px solid #ffffff55;border-radius:50%;display:grid;place-items:center;font-size:15px}
@@ -170,7 +170,7 @@ body{background:var(--canvas);color:var(--ink)}
 <body data-urwa-role="admin">
 <div class="app">
   <aside class="sidebar">
-    <div class="brand"><div class="brand-mark">U</div><div><div class="brand-name">URWA</div><div class="brand-sub">URWATUL WUTHQA<br>The Firmest Handhold</div></div></div>
+    <div class="brand"><div class="brand-mark"><img class="brand-logo" src="../../assets/logo.jpg" alt="URWA logo"></div><div><div class="brand-name">URWA</div><div class="brand-sub">URWATUL WUTHQA<br>The Firmest Handhold</div></div></div>
     <nav class="nav">
       <a class="active" href="#"><span class="ico">▦</span>Dashboard</a>
       <a href="#halaqa-overview"><span class="ico">▤</span>Halaqas</a><a href="#students"><span class="ico">♙</span>Students</a><a href="#ablas"><span class="ico">♙</span>Ablas / Teachers</a>
