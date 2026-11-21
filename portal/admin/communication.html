@@ -203,13 +203,12 @@ body{background:var(--canvas);color:var(--ink)}
     </header>
 
     <div class="content">
-      <h1 class="page-title">Communication</h1>
+      <h1 class="page-title">Communication & Announcements</h1>
       <section class="quick admin-module" id="communication">
-        <div class="section-head"><h2>Communication & Announcements</h2><span>Supabase announcements</span></div>
         <form id="admin-announcement-form" class="module-form">
           <label for="announcement-title">Announcement title</label><input id="announcement-title" required maxlength="160" placeholder="Enter announcement title">
           <label for="announcement-message">Message</label><textarea id="announcement-message" required rows="3" placeholder="Write an update for your URWA community"></textarea>
-          <label for="announcement-audience">Audience</label><select id="announcement-audience"><option value="all">Everyone</option><option value="students">Students</option><option value="teachers">Ablas / Teachers</option></select>
+          <label for="announcement-audience">Audience</label><select id="announcement-audience"><option value="all">Everyone</option><option value="students">Students</option><option value="teachers">Ablas / Teachers</option> <option value="departments">Departments</option></select>
           <label for="announcement-halaqa">Specific halaqa (optional)</label><select id="announcement-halaqa"><option value="">All selected audiences</option></select>
           <button class="urwa-btn urwa-btn-primary" type="submit">Publish announcement</button>
         </form>
