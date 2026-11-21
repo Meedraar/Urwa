@@ -396,3 +396,21 @@ select:focus-visible,textarea:focus-visible{
     max-width:100%;overflow-wrap:anywhere
   }
 }
+
+
+/* Admin dashboard navigation: enforce visible link rendering and readable sizing. */
+body[data-urwa-role="admin"] .urwa-sidebar{color:#18342d!important}
+body[data-urwa-role="admin"] .urwa-nav{display:flex!important;flex-direction:column!important;visibility:visible!important}
+body[data-urwa-role="admin"] .urwa-nav-label{
+  display:block!important;color:#52675d!important;opacity:1!important;
+  font-size:.7rem!important;line-height:1.4!important
+}
+body[data-urwa-role="admin"] .urwa-nav a{
+  display:flex!important;align-items:center!important;visibility:visible!important;
+  opacity:1!important;color:#29483e!important;-webkit-text-fill-color:#29483e!important;
+  font-size:.82rem!important;line-height:1.4!important;min-height:40px!important
+}
+body[data-urwa-role="admin"] .urwa-nav a.active{
+  color:#0e4a40!important;-webkit-text-fill-color:#0e4a40!important
+}
+body[data-urwa-role="admin"] .urwa-nav a .urwa-nav-icon{color:#426b5b!important}
