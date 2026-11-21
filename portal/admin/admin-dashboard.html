@@ -183,12 +183,12 @@ body{background:var(--canvas);color:var(--ink)}
     <div class="brand"><div class="brand-mark"><img class="brand-logo" src="../../assets/logo.jpg" alt="URWA logo"></div><div><div class="brand-name">URWA</div><div class="brand-sub">URWATUL WUTHQA<br>The Firmest Handhold</div></div></div>
     <nav class="nav" aria-label="Admin dashboard navigation">
       <a class="active" href="#overview" data-admin-nav><span class="ico">▦</span>Dashboard</a>
-      <a href="#halaqa-overview" data-admin-nav><span class="ico">▤</span>Halaqas</a><a href="#students" data-admin-nav><span class="ico">♙</span>Students</a><a href="#ablas" data-admin-nav><span class="ico">♙</span>Ablas / Teachers</a>
-      <a href="#attendance" data-admin-nav><span class="ico">♧</span>Attendance</a><a href="#programmes" data-admin-nav><span class="ico">▣</span>Programmes</a>
-      <a href="#admissions" data-admin-nav><span class="ico">♧</span>Admissions</a><a href="#fees" data-admin-nav><span class="ico">$</span>Fee Management</a><a href="#assignments" data-admin-nav><span class="ico">▤</span>Assignments</a>
-      <a href="#timetable" data-admin-nav><span class="ico">▦</span>Timetable</a><a href="#homework" data-admin-nav><span class="ico">▤</span>Homework</a><a href="#library" data-admin-nav><span class="ico">▱</span>Library</a>
-      <a href="#communication" data-admin-nav><span class="ico">▢</span>Communication</a><a href="#reports" data-admin-nav><span class="ico">▧</span>Reports & Analytics</a><a href="#settings" data-admin-nav><span class="ico">⚙</span>System Settings</a>
-      <a href="#users" data-admin-nav><span class="ico">♙</span>User Management</a>
+      <a href="halaqas.html" data-admin-nav><span class="ico">▤</span>Halaqas</a><a href="students.html" data-admin-nav><span class="ico">♙</span>Students</a><a href="ablas.html" data-admin-nav><span class="ico">♙</span>Ablas / Teachers</a>
+      <a href="attendance.html" data-admin-nav><span class="ico">♧</span>Attendance</a><a href="programmes.html" data-admin-nav><span class="ico">▣</span>Programmes</a>
+      <a href="admissions.html" data-admin-nav><span class="ico">♧</span>Admissions</a><a href="fees.html" data-admin-nav><span class="ico">$</span>Fee Management</a><a href="assignments.html" data-admin-nav><span class="ico">▤</span>Assignments</a>
+      <a href="timetable.html" data-admin-nav><span class="ico">▦</span>Timetable</a><a href="homework.html" data-admin-nav><span class="ico">▤</span>Homework</a><a href="library.html" data-admin-nav><span class="ico">▱</span>Library</a>
+      <a href="communication.html" data-admin-nav><span class="ico">▢</span>Communication</a><a href="reports.html" data-admin-nav><span class="ico">▧</span>Reports & Analytics</a><a href="settings.html" data-admin-nav><span class="ico">⚙</span>System Settings</a>
+      <a href="users.html" data-admin-nav><span class="ico">♙</span>User Management</a>
     </nav>
     <div class="sidebar-bottom"><div class="ai-mini"><strong>URWA Support</strong><p>Keep the academy organised and connected.</p><button onclick="document.getElementById('messages').scrollIntoView({behavior:'smooth'})">Open Messages</button></div></div>
   </aside>
@@ -221,32 +221,7 @@ body{background:var(--canvas);color:var(--ink)}
         </div>
       </section>
 
-      <section class="mid-grid" id="halaqa-overview">
-        <article class="panel">
-          <div class="panel-top"><h3>Halaqa Overview</h3><a href="#">View All</a></div>
-          <div class="legend">Approved student enrolments by programme</div>
-          <div class="bar-chart" id="admin-programme-chart"><p class="admin-empty">Loading live programme data…</p></div>
-          <div class="mini-stats">
-    <div><small>Total Halaqas</small><b id="admin-halaqa-total">—</b></div>
-    <div><small>Active Halaqas</small><b id="admin-halaqa-active">—</b></div>
-    <div><small>Upcoming Halaqas</small><b id="admin-halaqa-upcoming">—</b></div>
-    <div><small>Completed Halaqas</small><b id="admin-halaqa-completed">—</b></div>
-</div>
-        </article>
-        <article class="panel">
-          <div class="panel-top"><h3>Programme Management</h3><a href="#">View All</a></div>
-          <table class="course-table"><thead><tr><th>Programme Name</th><th>Code</th><th>Halaqas</th><th>Students</th><th>Status</th></tr></thead><tbody id="admin-programme-management-body">
-          <tr><td colspan="5">Loading programme records from Supabase…</td></tr>
-          </tbody></table><button class="outline-btn">Manage All Programmes　 →</button>
-        </article>
-        <article class="panel">
-          <h3>Student & Abla Attendance</h3>
-          <div class="attendance"><div class="donut" id="admin-attendance-donut"><div class="donut-inner" id="admin-attendance-percent">—<small>Present</small></div></div><div class="legend-list"><span><i><i class="dot" style="background:#1768df"></i>Present</i><b id="admin-attendance-present">—</b></span><span><i><i class="dot" style="background:#b5a2db"></i>Absent</i><b id="admin-attendance-absent">—</b></span><span><i><i class="dot" style="background:#77cbb1"></i>Other</i><b id="admin-attendance-other">—</b></span></div></div>
-          <h3 style="margin-top:6px">Admissions & Enquiries</h3>
-          <div class="legend"><span><i class="dot" style="background:#1768df"></i>New Applications</span><span><i class="dot" style="background:#77cbb1"></i>Approved</span></div>
-          <div class="line-chart admin-chart-note" id="admin-admissions-chart">Admission trends will appear as dated applications are recorded.</div>
-        </article>
-      </section>
+      
 
       <section class="bottom-grid">
         <article class="panel"><div class="panel-top"><h3>Admissions Overview</h3><a href="#">This Month⌄</a></div><div style="display:flex;align-items:center;gap:14px"><b id="admin-admission-rate" style="font-size:28px;color:#1768df">—</b><div><b style="font-size:10px">Application Status</b><div style="font-size:9px;color:#8994a1">Approval Rate</div></div></div><div class="metric-row"><span>Applications Received</span><b id="admin-admission-received">—</b></div><div class="metric-row"><span>Approved Applications</span><b id="admin-admission-approved" style="color:#16966d">—</b></div><p style="font-size:8px;color:#8994a1">Applications received for URWA learning programmes.</p><button class="outline-btn">View Admissions Report</button></article>
@@ -289,74 +264,21 @@ body{background:var(--canvas);color:var(--ink)}
         </article>
       </section>
     
-      <section class="quick" id="admissions">
-        <div class="section-head"><h2>Student Applications — Review & Accept</h2><span id="admin-student-pending-label">Loading…</span></div>
-        <div style="overflow-x:auto"><table class="course-table"><thead><tr><th>Applicant</th><th>Programme</th><th>Applied</th><th>Status</th><th>Choose Halaqa & Review</th></tr></thead><tbody id="admin-admissions-body"><tr><td colspan="5">Connecting to Supabase…</td></tr></tbody></table></div>
-      </section>
-      <section class="quick" id="ablas">
-        <div class="section-head"><h2>Abla Applications — Review & Approve</h2><span id="admin-abla-pending-label">Loading…</span></div>
-        <div style="overflow-x:auto"><table class="course-table"><thead><tr><th>Applicant</th><th>Teaching Background / Interest</th><th>Assigned Halaqa</th><th>Students</th><th>Review / Assignment</th></tr></thead><tbody id="admin-teachers-body"><tr><td colspan="5">Connecting to Supabase…</td></tr></tbody></table></div>
-      </section>
-      <section class="quick" id="students">
-        <div class="section-head"><h2>Registered Students</h2></div>
-        <div style="overflow-x:auto"><table class="course-table"><thead><tr><th>Student</th><th>Programme</th><th>Halaqa</th><th>Abla</th><th>Status</th></tr></thead><tbody id="admin-students-body"><tr><td colspan="5">Connecting to Supabase…</td></tr></tbody></table></div>
-      </section>
+      
+      
+      
 
-      <section class="quick admin-module" id="attendance">
-        <div class="section-head"><h2>Attendance Management</h2><span>Live Supabase summary</span></div>
-        <div class="mini-stats"><div><small>Present / Late</small><b id="admin-attendance-present-module">—</b></div><div><small>Absent</small><b id="admin-attendance-absent-module">—</b></div><div><small>Other</small><b id="admin-attendance-other-module">—</b></div><div><small>Attendance rate</small><b id="admin-attendance-rate-module">—</b></div></div>
-        <p class="module-note">Attendance totals are read from recorded attendance entries. Attendance entry and editing remain with the assigned Abla workflow.</p>
-      </section>
-      <section class="quick admin-module" id="programmes">
-        <div class="section-head"><h2>Programme Management</h2><span>From approved enrolments</span></div>
-        <div style="overflow-x:auto"><table class="course-table"><thead><tr><th>Programme</th><th>Approved Students</th></tr></thead><tbody id="admin-programmes-module-body"><tr><td colspan="2">Loading programme records…</td></tr></tbody></table></div>
-        <p class="module-note">This list reflects programme names stored on approved student enrolments. Programme creation and editing are not connected to a dedicated programme table yet.</p>
-      </section>
-      <section class="quick admin-module" id="fees">
-        <div class="section-head"><h2>Fee Management</h2><span>Not connected</span></div>
-        <p class="module-note">Fee totals, balances, invoices and payment follow-ups are not available yet because this project does not currently have a confirmed fee or payment data source. No fee amounts are being estimated or displayed as real records.</p>
-      </section>
-      <section class="quick admin-module" id="assignments">
-        <div class="section-head"><h2>Assignments</h2><span>Teacher-managed</span></div>
-        <p class="module-note">Assignments are currently created by assigned Ablas from their dashboard. A central admin assignment manager is not connected yet.</p>
-      </section>
-      <section class="quick admin-module" id="timetable">
-        <div class="section-head"><h2>Timetable Management</h2><span>Not connected</span></div>
-        <p class="module-note">The schedule shown in the right-hand panel is reference content, not a live timetable. A timetable editor and saved schedule source have not been connected yet.</p>
-      </section>
-      <section class="quick admin-module" id="homework">
-        <div class="section-head"><h2>Homework</h2><span>Teacher-managed</span></div>
-        <p class="module-note">Homework and learning tasks are currently published through the Abla assignment workflow. A separate admin homework manager is not connected yet.</p>
-      </section>
-      <section class="quick admin-module" id="library">
-        <div class="section-head"><h2>Learning Library</h2><span>Not connected</span></div>
-        <p class="module-note">The library area is ready as a dashboard destination, but there is no confirmed library resource table or upload workflow connected yet.</p>
-      </section>
-      <section class="quick admin-module" id="communication">
-        <div class="section-head"><h2>Communication & Announcements</h2><span>Supabase announcements</span></div>
-        <form id="admin-announcement-form" class="module-form">
-          <label for="announcement-title">Announcement title</label><input id="announcement-title" required maxlength="160" placeholder="Enter announcement title">
-          <label for="announcement-message">Message</label><textarea id="announcement-message" required rows="3" placeholder="Write an update for your URWA community"></textarea>
-          <label for="announcement-audience">Audience</label><select id="announcement-audience"><option value="all">Everyone</option><option value="students">Students</option><option value="teachers">Ablas / Teachers</option></select>
-          <label for="announcement-halaqa">Specific halaqa (optional)</label><select id="announcement-halaqa"><option value="">All selected audiences</option></select>
-          <button class="urwa-btn urwa-btn-primary" type="submit">Publish announcement</button>
-        </form>
-        <p class="module-note">Announcements are saved to the existing Supabase announcements table and displayed on relevant student and Abla dashboards.</p>
-      </section>
-      <section class="quick admin-module" id="reports">
-        <div class="section-head"><h2>Reports & Analytics</h2><span>Live summary</span></div>
-        <div class="mini-stats"><div><small>Approved students</small><b id="admin-report-students">—</b></div><div><small>Approved Ablas</small><b id="admin-report-ablas">—</b></div><div><small>Applications pending</small><b id="admin-report-pending">—</b></div><div><small>Halaqas</small><b id="admin-report-halaqas">—</b></div></div>
-        <p class="module-note">These report figures are calculated from the existing Supabase profiles, enrolments and halaqas records.</p>
-      </section>
-      <section class="quick admin-module" id="settings">
-        <div class="section-head"><h2>System Settings</h2><span>Administrator access</span></div>
-        <p class="module-note">System-wide configuration controls are not connected yet. Authentication, role checks and account approval continue to be enforced by the existing Supabase setup.</p>
-      </section>
-      <section class="quick admin-module" id="users">
-        <div class="section-head"><h2>User Management</h2><span>Administrator accounts</span></div>
-        <div id="super-admin-management"><p class="module-note">Administrator account controls are available to Super Admins only.</p><div style="overflow-x:auto"><table class="course-table"><thead><tr><th>Name</th><th>Email</th><th>Level</th><th>Status</th><th>Action</th></tr></thead><tbody id="super-admin-list"><tr><td colspan="5">Loading administrator accounts…</td></tr></tbody></table></div></div>
-        <p class="module-note">Student and Abla account review is managed in their respective sections above.</p>
-      </section>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
       <section class="quick" id="admin-live-status" role="status" aria-live="polite"><strong>Connecting to Supabase…</strong><p>Checking the signed-in administrator and loading URWA records.</p></section>
     </div>
   </main>
@@ -384,17 +306,9 @@ body{background:var(--canvas);color:var(--ink)}
 
 <script>
 (() => {
-  const links = [...document.querySelectorAll('[data-admin-nav]')];
-  links.forEach(link => link.addEventListener('click', () => {
-    links.forEach(item => item.classList.toggle('active', item === link));
-  }));
-  const current = () => {
-    const target = location.hash || '#overview';
-    const link = links.find(item => item.getAttribute('href') === target);
-    if (link) links.forEach(item => item.classList.toggle('active', item === link));
-  };
-  window.addEventListener('hashchange', current);
-  current();
+ const links=[...document.querySelectorAll('[data-admin-nav]')];
+ const currentPath=location.pathname.split('/').pop() || 'admin-dashboard.html';
+ links.forEach(link=>link.classList.toggle('active',link.getAttribute('href')===currentPath));
 })();
 </script>
 \n<script type="module" src="../../js/dashboard-data.js"></script>
