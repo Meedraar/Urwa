@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="/css/urwa-theme.css?v=10">
   <link rel="stylesheet" href="../../css/edunova-role-dashboards.css?v=1">
   <link rel="stylesheet" href="../../css/dashboard-reference-layouts.css?v=1">
+    <link rel="stylesheet" href="../../css/admin-dashboard-reference.css?v=1">
 </head>
 <body data-urwa-role="admin">
 <div class="urwa-app">
@@ -119,7 +120,7 @@
                       <div id="admin-programme-chart" class="admin-bars"><p class="admin-empty">Programme data will appear when records load.</p></div>
                     </section>
                     <section class="admin-panel admin-course-panel">
-                      <header><div><span class="admin-eyebrow">LEARNING OPERATIONS</span><h2>Halaqa management</h2><p>Current halaqa allocation and student coverage</p></div><a href="#halaqas">Manage all ↗</a></header>
+                      <header><div><span class="admin-eyebrow">LEARNING OPERATIONS</span><h2>Halaqa coverage overview</h2><p>Current halaqa allocation and student coverage</p></div><a href="#halaqas">Manage all ↗</a></header>
                       <div class="admin-table-scroll"><table class="admin-mini-table"><thead><tr><th>Halaqa</th><th>Abla</th><th>Students</th><th>Status</th></tr></thead><tbody id="admin-halaqa-overview"><tr><td colspan="4">Loading halaqas…</td></tr></tbody></table></div>
                     </section>
                     <section class="admin-panel admin-activity-panel">
@@ -423,7 +424,13 @@
                 </footer>
             </div>
         </main>
-    </div>
+    
+        <aside class="urwa-admin-rightbar" aria-label="Admin dashboard side panel">
+          <section class="admin-side-card"><header><h2>Today’s Schedule</h2><a href="#programmes">View timetable</a></header><div class="admin-side-empty"><span class="admin-side-icon">◷</span><b>Academy timetable</b><p>Schedule entries will appear here when timetable records are available.</p></div><a class="admin-side-link" href="#programmes">Go to timetable <span>→</span></a></section>
+          <section class="admin-side-card"><h2>URWA Insight of the Day</h2><div class="admin-insight">Consistent muraja’ah, attendance and communication help every halaqa stay connected.</div><a class="admin-side-link" href="#reports">View academy reports <span>→</span></a></section>
+          <section class="admin-side-card"><h2>Platform Status</h2><div class="admin-health-row"><i>◎</i><span><b>URWA Portal</b><small>Academy workspace</small></span></div><div class="admin-health-row"><i>▤</i><span><b>Supabase</b><small>Live data source</small></span></div><div class="admin-health-row"><i>♧</i><span><b>Messaging</b><small>Halaqa communication</small></span></div></section>
+        </aside>
+</div>
 </div>
 
 <script>
