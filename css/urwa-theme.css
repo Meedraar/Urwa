@@ -174,3 +174,94 @@ input::placeholder,textarea::placeholder{color:#64756d;opacity:1}
 @media(prefers-reduced-motion:reduce){
   .student-sidebar,.abla-sidebar{transition:none}
 }
+
+
+/* ==========================================================
+   URWA CONTRAST CORRECTION — shared across public + portal pages
+   Fixes inherited heading colours inside dark banners, sidebar
+   label contrast, and low-contrast supporting text.
+   ========================================================== */
+
+/* Dark promotional / welcome surfaces must keep light text.
+   Do not allow the global heading colour to turn these headings dark. */
+.welcome h1,.welcome h2,.welcome h3,.welcome h4,
+.urwa-welcome h1,.urwa-welcome h2,.urwa-welcome h3,.urwa-welcome h4,
+.urwa-hero h1,.urwa-hero h2,.urwa-hero h3,.urwa-hero h4,
+.hero-banner h1,.hero-banner h2,.hero-banner h3,.hero-banner h4,
+.login-art h1,.login-art h2,.login-art h3,.login-art h4,
+.login-visual h1,.login-visual h2,.login-visual h3,.login-visual h4,
+.auth-visual h1,.auth-visual h2,.auth-visual h3,.auth-visual h4,
+.auth-side h1,.auth-side h2,.auth-side h3,.auth-side h4{
+  color:#fff!important;
+}
+.welcome p,.urwa-welcome p,.urwa-hero p,.hero-banner p,
+.login-art p,.login-visual p,.auth-visual p,.auth-side p{
+  color:rgba(255,255,255,.92)!important;
+}
+.welcome .arabic,.urwa-welcome .arabic{color:#f2d68d!important}
+
+/* Legacy Administration Portal uses a light content area and dark sidebar.
+   Keep all sidebar text readable, including labels and secondary links. */
+.staff-sidebar{color:#fff!important}
+.staff-sidebar .brand strong,.staff-sidebar .staff-intro strong,
+.staff-sidebar .staff-nav a,.staff-sidebar .sidebar-bottom a{color:#fff!important}
+.staff-sidebar .brand small,.staff-sidebar .staff-intro span,
+.staff-sidebar .nav-label{color:#e8dcc8!important;opacity:1!important}
+.staff-sidebar .staff-nav a:hover,.staff-sidebar .staff-nav a.active,
+.staff-sidebar .sidebar-bottom a:hover{background:rgba(255,255,255,.16)!important;color:#fff!important}
+.staff-sidebar .nav-icon{color:#f2d68d!important}
+
+/* Admin dashboard has a deliberately light sidebar. Use dark, high-contrast
+   navigation text rather than the generic dark-sidebar palette. */
+body[data-urwa-role="admin"] .urwa-sidebar{
+  background:#fff!important;color:#18342d!important;border-right:1px solid #d9e3dc!important
+}
+body[data-urwa-role="admin"] .urwa-brand-name,
+body[data-urwa-role="admin"] .urwa-profile strong{color:#123f37!important}
+body[data-urwa-role="admin"] .urwa-brand-tagline,
+body[data-urwa-role="admin"] .urwa-profile span{color:#52675d!important;opacity:1!important}
+body[data-urwa-role="admin"] .urwa-nav-label{color:#64756d!important;font-weight:800!important;opacity:1!important}
+body[data-urwa-role="admin"] .urwa-nav a,
+body[data-urwa-role="admin"] .urwa-sidebar-bottom a{color:#29483e!important;opacity:1!important}
+body[data-urwa-role="admin"] .urwa-nav a .urwa-nav-icon,
+body[data-urwa-role="admin"] .urwa-sidebar-bottom a span{color:#426b5b!important}
+body[data-urwa-role="admin"] .urwa-nav a.active{
+  color:#124c42!important;background:#e3f0ea!important;box-shadow:inset 3px 0 #0e4a40!important
+}
+body[data-urwa-role="admin"] .urwa-nav a:hover,
+body[data-urwa-role="admin"] .urwa-sidebar-bottom a:hover{
+  color:#0e4a40!important;background:#edf6f1!important
+}
+
+/* Shared sidebar/navigation fixes for other dashboard variants. */
+.student-nav-label,.abla-nav-label,.staff-nav-label,
+.sidebar .side-label,.portal-sidebar .side-label{
+  color:#52675d!important;opacity:1!important;font-weight:800!important
+}
+.student-nav a,.abla-nav a,.staff-nav a,.sidebar .nav-link,
+.portal-sidebar .nav-link{opacity:1!important}
+.student-nav a,.abla-nav a,.sidebar .nav-link,.portal-sidebar .nav-link{
+  text-decoration:none
+}
+.student-nav a span,.abla-nav a span,.sidebar .nav-link span,
+.portal-sidebar .nav-link span{opacity:1!important}
+
+/* Prevent tiny secondary copy from fading into cream/white cards. */
+.staff-main .topbar-sub,.staff-main .page-heading p,
+.staff-main .stat-label,.staff-main .stat-note,.staff-main .panel p,
+.staff-main .feature,.staff-main .tag,
+.urwa-content .urwa-page-heading p,.urwa-content .urwa-stat-label,
+.urwa-content .urwa-stat-note,.urwa-content .urwa-card-subtitle,
+.urwa-content .urwa-panel p,.urwa-content .admin-empty{
+  color:#52675d!important;opacity:1!important
+}
+.staff-main .page-heading h1,.staff-main .section-title,
+.staff-main .panel h3,.staff-main .stat-value{
+  color:#123f37!important
+}
+
+/* Keep keyboard focus and controls clearly visible on every background. */
+a:focus-visible,button:focus-visible,input:focus-visible,
+select:focus-visible,textarea:focus-visible{
+  outline:3px solid #c6a75e!important;outline-offset:2px
+}
