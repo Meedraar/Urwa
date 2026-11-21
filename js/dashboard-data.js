@@ -80,7 +80,7 @@ async function adminLoad(user) {
     if (studentCountNode) studentCountNode.textContent = String(students.filter(p => (byStudent.get(p.id)?.status || p.status) === 'approved').length);
     const applicationCountNode = $('#admin-new-applications');
     if (applicationCountNode) applicationCountNode.textContent = String(pending.length + pendingTeachers.length);
-    const studentPendingLabel = $('#admin-student-pending');
+    const studentPendingLabel = $('#admin-student-pending-label');
     if (studentPendingLabel) studentPendingLabel.textContent = pending.length + ' pending';
     const ablaPendingLabel = $('#admin-abla-pending-label');
     if (ablaPendingLabel) ablaPendingLabel.textContent = pendingTeachers.length + ' pending';
