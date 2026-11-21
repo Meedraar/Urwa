@@ -137,26 +137,9 @@ button{cursor:pointer}
 @media(max-width:1200px){.app{grid-template-columns:190px minmax(0,1fr)}.rightbar{display:none}.mid-grid{grid-template-columns:1fr 1fr}.mid-grid>.panel:last-child{grid-column:1/-1}.bottom-grid{grid-template-columns:1fr 1fr}.footer-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:760px){.app{grid-template-columns:1fr}.sidebar{display:none}.topbar{padding:0 12px;height:60px}.content{padding:12px}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.kpis .kpi:last-child{grid-column:1/-1}.actions{grid-template-columns:repeat(3,minmax(0,1fr))}.mid-grid,.bottom-grid,.footer-grid{grid-template-columns:1fr}.mid-grid>.panel:last-child{grid-column:auto}.user div:last-child{display:none}.page-title{margin-bottom:10px}}
 
-/* URWA brand adaptation — layout retained from the supplied reference */
-:root{--blue:#0e4a40;--blue-soft:#e3f0ea;--green:#287b63;--green-soft:#e3f0ea;--purple:#7d6842;--purple-soft:#f5efdf;--gold:#c79d43;--gold-soft:#fbf6e9;--red:#c86f67;--red-soft:#fbefeb;--ink:#173c37;--muted:#71817c;--line:#e7dfcf;--surface:#fff;--canvas:#fbf6e9}
-body{background:var(--canvas);color:var(--ink)}
-.sidebar{background:#0e4a40;border-right:1px solid #0b4037;color:#fff}
-.brand{border-bottom-color:#ffffff38}.brand-mark{background:#fbf6e9;color:#0e4a40;box-shadow:none;border-radius:4px}.brand-name{color:#fff;letter-spacing:1px}.brand-sub{color:#e3f0ea}
-.school-chip{background:#176354;box-shadow:none}.school-chip .round{color:#f2c94c}
-.nav a{color:#e3f0ea}.nav a .ico{color:#f2c94c}.nav a.active{background:#e3f0ea;color:#0e4a40;box-shadow:inset 3px 0 #e0a526}.nav a.active .ico{color:#0e4a40}.nav-label{color:#f2c94c}
-.ai-mini{border-color:#ffffff30;background:#176354}.ai-mini strong{color:#f2c94c}.ai-mini p{color:#e3f0ea}.ai-mini button{background:#e0a526;color:#173c37}
-.topbar{border-bottom-color:var(--line)}.avatar{background:#e3f0ea;color:#0e4a40}
-.kpi.blue .kpi-icon,.round-icon,.health-row .health-ico{background:#e3f0ea;color:#0e4a40}
-.kpi.green .kpi-icon{background:#e5f2eb;color:#287b63}.kpi.purple .kpi-icon{background:#f5efdf;color:#7d6842}.kpi.gold .kpi-icon{background:#fbf6e9;color:#b28732}
-.kpi.red .kpi-icon{background:#fbefeb;color:#c86f67}
-.action .action-ico{color:#0e4a40}.action:nth-child(2) .action-ico{color:#287b63}.action:nth-child(3) .action-ico{color:#7d6842}.action:nth-child(4) .action-ico{color:#c79d43}.action:nth-child(5) .action-ico{color:#0e4a40}.action:nth-child(6) .action-ico{color:#7d6842}
-.bar{background:#0e4a40}.bar.light{background:#8bb9a8}.donut{background:conic-gradient(#0e4a40 0 72%,#8bb9a8 72% 92%,#e9e4d9 92% 100%)}
-.up,.active,.check{color:#287b63}.status{color:#176354;background:#e3f0ea}.outline-btn{color:#0e4a40;border-color:#d8e6dd}.section-head a,.panel-top a{color:#98752e}
-.schedule-stripe{background:#0e4a40}.rightbar{border-left-color:var(--line)}
-@media(max-width:760px){.sidebar{display:none}}
 </style>
 </head>
-<body>
+<body data-urwa-role="admin">
 <div class="app">
   <aside class="sidebar">
     <div class="brand"><div class="brand-mark">U</div><div><div class="brand-name">URWA</div><div class="brand-sub">URWATUL WUTHQA<br>The Firmest Handhold</div></div></div>
@@ -185,11 +168,11 @@ body{background:var(--canvas);color:var(--ink)}
     <div class="content">
       <h1 class="page-title">URWA Administration Dashboard</h1>
       <section class="kpis" id="overview">
-        <article class="kpi blue"><div class="kpi-top"><span class="kpi-label">Total Students</span><span class="kpi-icon">♟</span></div><div class="kpi-value">128</div><div class="kpi-foot"><span class="up">↑ 8.4%</span> this month</div><svg class="spark" viewBox="0 0 150 25"><path d="M2 22 C18 22 19 15 31 17 S51 12 62 15 S80 5 94 10 S116 4 148 1" fill="none" stroke="#6d91d6" stroke-width="1.7"/></svg></article>
-        <article class="kpi green"><div class="kpi-top"><span class="kpi-label">Total Ablas</span><span class="kpi-icon">♟</span></div><div class="kpi-value">24</div><div class="kpi-foot"><span class="up">↑ 6.1%</span> this month</div><svg class="spark" viewBox="0 0 150 25"><path d="M2 22 C18 20 24 18 36 19 S55 10 68 13 S85 16 98 7 S125 8 148 1" fill="none" stroke="#5aa98b" stroke-width="1.7"/></svg></article>
-        <article class="kpi purple"><div class="kpi-top"><span class="kpi-label">New Applications</span><span class="kpi-icon">♟+</span></div><div class="kpi-value">12</div><div class="kpi-foot"><span class="up">↑ 12.3%</span> this month</div><svg class="spark" viewBox="0 0 150 25"><path d="M2 22 C18 18 22 22 36 14 S12 18 70 10 S93 15 106 7 S130 8 148 1" fill="none" stroke="#9172c4" stroke-width="1.7"/></svg></article>
-        <article class="kpi gold"><div class="kpi-top"><span class="kpi-label">Fee Collection</span><span class="kpi-icon">▣</span></div><div class="kpi-value">KSh 186K</div><div class="kpi-foot"><span class="up">↑ 15.6%</span> vs Apr</div><svg class="spark" viewBox="0 0 150 25"><path d="M2 22 C18 21 21 16 36 18 S52 9 67 14 S87 8 101 11 S126 2 148 1" fill="none" stroke="#c8a451" stroke-width="1.7"/></svg></article>
-        <article class="kpi red"><div class="kpi-top"><span class="kpi-label">Outstanding Fees</span><span class="kpi-icon">♙</span></div><div class="kpi-value">KSh 42K</div><div class="kpi-foot"><span class="down">↓ 5.2%</span> vs Apr</div><svg class="spark" viewBox="0 0 150 25"><path d="M2 7 C18 10 23 19 38 14 S56 21 71 16 S92 23 107 17 S130 22 148 18" fill="none" stroke="#c8757c" stroke-width="1.7"/></svg></article>
+        <article class="kpi blue"><div class="kpi-top"><span class="kpi-label">Total Students</span><span class="kpi-icon">♟</span></div><div class="kpi-value" id="admin-total-students">—</div><div class="kpi-foot"><span class="up">↑ 8.4%</span> this month</div><svg class="spark" viewBox="0 0 150 25"><path d="M2 22 C18 22 19 15 31 17 S51 12 62 15 S80 5 94 10 S116 4 148 1" fill="none" stroke="#6d91d6" stroke-width="1.7"/></svg></article>
+        <article class="kpi green"><div class="kpi-top"><span class="kpi-label">Total Ablas</span><span class="kpi-icon">♟</span></div><div class="kpi-value">32</div><div class="kpi-foot"><span class="up">↑ 6.1%</span> this month</div><svg class="spark" viewBox="0 0 150 25"><path d="M2 22 C18 20 24 18 36 19 S55 10 68 13 S85 16 98 7 S125 8 148 1" fill="none" stroke="#5aa98b" stroke-width="1.7"/></svg></article>
+        <article class="kpi purple"><div class="kpi-top"><span class="kpi-label">New Applications</span><span class="kpi-icon">♟+</span></div><div class="kpi-value" id="admin-new-applications">—</div><div class="kpi-foot"><span class="up">↑ 12.3%</span> this month</div><svg class="spark" viewBox="0 0 150 25"><path d="M2 22 C18 18 22 22 36 14 S12 18 70 10 S93 15 106 7 S130 8 148 1" fill="none" stroke="#9172c4" stroke-width="1.7"/></svg></article>
+        <article class="kpi gold"><div class="kpi-top"><span class="kpi-label">Fee Collection</span><span class="kpi-icon">▣</span></div><div class="kpi-value">—</div><div class="kpi-foot"><span class="up">↑ 15.6%</span> vs Apr</div><svg class="spark" viewBox="0 0 150 25"><path d="M2 22 C18 21 21 16 36 18 S52 9 67 14 S87 8 101 11 S126 2 148 1" fill="none" stroke="#c8a451" stroke-width="1.7"/></svg></article>
+        <article class="kpi red"><div class="kpi-top"><span class="kpi-label">Outstanding Fees</span><span class="kpi-icon">♙</span></div><div class="kpi-value">—</div><div class="kpi-foot"><span class="down">↓ 5.2%</span> vs Apr</div><svg class="spark" viewBox="0 0 150 25"><path d="M2 7 C18 10 23 19 38 14 S56 21 71 16 S92 23 107 17 S130 22 148 18" fill="none" stroke="#c8757c" stroke-width="1.7"/></svg></article>
       </section>
 
       <section class="quick">
@@ -212,7 +195,7 @@ body{background:var(--canvas);color:var(--ink)}
             <div class="bar-group"><i class="bar" style="height:74%"></i><i class="bar light" style="height:52%"></i><span class="bar-label">Tajweed</span></div>
             <div class="bar-group"><i class="bar" style="height:54%"></i><i class="bar light" style="height:35%"></i><i class="bar" style="height:22%;background:#9b7bd2"></i><span class="bar-label">Tafsir</span></div>
           </div>
-          <div class="mini-stats"><div><small>Total Halaqas</small><b>42</b></div><div><small>Active Halaqas</small><b>28</b></div><div><small>Upcoming Halaqas</small><b>8</b></div><div><small>Completed Halaqas</small><b>6</b></div></div>
+          <div class="mini-stats"><div><small>Total Halaqas</small><b id="admin-halaqa-total">—</b></div><div><small>Active Halaqas</small><b id="admin-halaqa-active">—</b></div><div><small>Upcoming Halaqas</small><b id="admin-halaqa-upcoming">—</b></div><div><small>Completed Halaqas</small><b id="admin-halaqa-completed">—</b></div></div>
         </article>
         <article class="panel">
           <div class="panel-top"><h3>Programme Management</h3><a href="#">View All</a></div>
@@ -226,7 +209,7 @@ body{background:var(--canvas);color:var(--ink)}
         </article>
         <article class="panel">
           <h3>Student & Abla Attendance</h3>
-          <div class="attendance"><div class="donut"><div class="donut-inner">92%<small>Present</small></div></div><div class="legend-list"><span><i><i class="dot" style="background:#1768df"></i>Present</i><b>79 (92%)</b></span><span><i><i class="dot" style="background:#b5a2db"></i>Absent</i><b>5 (6%)</b></span><span><i><i class="dot" style="background:#77cbb1"></i>On Leave</i><b>2 (2%)</b></span></div></div>
+          <div class="attendance"><div class="donut"><div class="donut-inner" id="admin-attendance-percent">—<small>Present</small></div></div><div class="legend-list"><span><i><i class="dot" style="background:#1768df"></i>Present</i><b id="admin-attendance-present">—</b></span><span><i><i class="dot" style="background:#b5a2db"></i>Absent</i><b id="admin-attendance-absent">—</b></span><span><i><i class="dot" style="background:#77cbb1"></i>On Leave</i><b id="admin-attendance-other">—</b></span></div></div>
           <h3 style="margin-top:6px">Admissions & Enquiries</h3>
           <div class="legend"><span><i class="dot" style="background:#1768df"></i>New Applications</span><span><i class="dot" style="background:#77cbb1"></i>Approved</span></div>
           <svg class="line-chart" viewBox="0 0 320 116" preserveAspectRatio="none"><path d="M0 24 C20 82 20 50 42 56 S70 100 98 78 S125 34 147 48 S181 77 202 12 S228 82 247 51 S275 28 320 16" fill="none" stroke="#3678cb" stroke-width="2"/><path d="M0 103 C23 98 22 80 43 24 S71 107 99 96 S129 78 151 89 S182 102 203 91 S231 101 250 82 S280 78 320 67" fill="none" stroke="#53b69a" stroke-width="2"/><g fill="#9aa4b1" font-size="8"><text x="0" y="114">19 May</text><text x="54" y="114">20 May</text><text x="108" y="114">21 May</text><text x="162" y="114">22 May</text><text x="216" y="114">23 May</text><text x="270" y="114">24 May</text></g></svg>
@@ -234,7 +217,7 @@ body{background:var(--canvas);color:var(--ink)}
       </section>
 
       <section class="bottom-grid">
-        <article class="panel"><div class="panel-top"><h3>Admissions Overview</h3><a href="#">This Month⌄</a></div><div style="display:flex;align-items:center;gap:14px"><b style="font-size:28px;color:#1768df">72%</b><div><b style="font-size:10px">Application Status</b><div style="font-size:9px;color:#8994a1">Approval Rate</div></div></div><div class="metric-row"><span>Applications Received</span><b>84</b></div><div class="metric-row"><span>Approved Applications</span><b style="color:#16966d">High</b></div><p style="font-size:8px;color:#8994a1">Applications received for URWA learning programmes.</p><button class="outline-btn">View Admissions Report</button></article>
+        <article class="panel"><div class="panel-top"><h3>Admissions Overview</h3><a href="#">This Month⌄</a></div><div style="display:flex;align-items:center;gap:14px"><b id="admin-admission-rate" style="font-size:28px;color:#1768df">—</b><div><b style="font-size:10px">Application Status</b><div style="font-size:9px;color:#8994a1">Approval Rate</div></div></div><div class="metric-row"><span>Applications Received</span><b id="admin-admission-received">—</b></div><div class="metric-row"><span>Approved Applications</span><b id="admin-admission-approved" style="color:#16966d">—</b></div><p style="font-size:8px;color:#8994a1">Applications received for URWA learning programmes.</p><button class="outline-btn">View Admissions Report</button></article>
         <article class="panel"><div class="panel-top"><h3>Outstanding Fee Follow-up</h3><a href="#">View All</a></div>
           <div class="risk"><span class="initial">RK</span><span class="risk-name">Student account · fee due<small>Payment follow-up</small></span><b class="risk-tag">High Risk</b></div>
           <div class="risk"><span class="initial" style="background:#e9f7f2;color:#159b70">PS</span><span class="risk-name">Student account · reminder<small>Payment follow-up</small></span><b class="risk-tag" style="color:#c28a22">Medium Risk</b></div>
@@ -269,10 +252,24 @@ body{background:var(--canvas);color:var(--ink)}
         <article class="panel"><div class="panel-top"><h3>Platform Activity</h3><a href="#">View All</a></div>
           <div class="automation"><span>◉ Attendance Records<small>All systems normal</small></span><b class="active">Active</b></div>
           <div class="automation"><span>▧ Fee Reminders<small>Next reminder in 2 hours</small></span><b class="active">Active</b></div>
-          <div class="automation"><span>▣ Reports<small>Reports generated: 12</small></span><b class="active">Active</b></div>
+          <div class="automation"><span>▣ Reports<small>Report totals will appear when report data is connected</small></span><b class="active">Active</b></div>
           <div class="automation"><span>✧ Messaging<small>Last active: 2 min ago</small></span><b class="active">Active</b></div><button class="outline-btn">View Platform Activity</button>
         </article>
       </section>
+
+      <section class="quick" id="admissions">
+        <div class="section-head"><h2>Student Applications — Review & Accept</h2><span id="admin-student-pending-label">Loading applications…</span></div>
+        <div style="overflow-x:auto"><table class="course-table"><thead><tr><th>Applicant</th><th>Programme</th><th>Applied</th><th>Status</th><th>Choose Halaqa & Review</th></tr></thead><tbody id="admin-admissions-body"><tr><td colspan="5">Loading student applications…</td></tr></tbody></table></div>
+      </section>
+      <section class="quick" id="ablas">
+        <div class="section-head"><h2>Abla Applications — Review & Approve</h2><span id="admin-abla-pending-label">Loading applications…</span></div>
+        <div style="overflow-x:auto"><table class="course-table"><thead><tr><th>Applicant</th><th>Teaching Background / Interest</th><th>Assigned Halaqa</th><th>Students</th><th>Review / Assignment</th></tr></thead><tbody id="admin-teachers-body"><tr><td colspan="5">Loading Abla applications…</td></tr></tbody></table></div>
+      </section>
+      <section class="quick" id="students">
+        <div class="section-head"><h2>Registered Students</h2></div>
+        <div style="overflow-x:auto"><table class="course-table"><thead><tr><th>Student</th><th>Programme</th><th>Halaqa</th><th>Abla</th><th>Status</th></tr></thead><tbody id="admin-students-body"><tr><td colspan="5">Loading student records…</td></tr></tbody></table></div>
+      </section>
+      <section class="quick" id="admin-live-status" role="status" aria-live="polite"><strong>Connecting to Supabase…</strong><p>Loading URWA administration records.</p></section>
     </div>
   </main>
 
@@ -294,6 +291,6 @@ body{background:var(--canvas);color:var(--ink)}
     </section>
   </aside>
 </div>
-<!-- Standalone visual prototype: connect values and actions to the URWA Supabase project before production use. -->
+<script type="module" src="../../js/dashboard-data.js"></script>
 </body>
 </html>
