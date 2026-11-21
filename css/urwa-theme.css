@@ -1086,3 +1086,12 @@ body[data-urwa-role="admin"] .urwa-table th{background:#e3f0ea!important}
 @media(max-width:850px){
   body[data-urwa-role="admin"] .urwa-sidebar{background:#0e4a40!important}
 }
+
+/* Preserve readable button and status semantics on white Admin cards. */
+body[data-urwa-role="admin"] .urwa-btn-primary,
+body[data-urwa-role="admin"] .btn-primary{background:#0e4a40!important;color:#fff!important;border-color:#0e4a40!important}
+body[data-urwa-role="admin"] .urwa-btn-outline{background:#fff!important;color:#0e4a40!important;border-color:#c6a75e!important}
+body[data-urwa-role="admin"] .urwa-badge{color:#18342d!important}
+body[data-urwa-role="admin"] .urwa-badge.pending{background:#fff3df!important;color:#805b20!important}
+body[data-urwa-role="admin"] .urwa-badge.info{background:#e3f0ea!important;color:#0e4a40!important}
+body[data-urwa-role="admin"] .admin-mini-status{background:#e3f0ea!important;color:#0e4a40!important}
