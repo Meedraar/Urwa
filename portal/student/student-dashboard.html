@@ -1,145 +1,1283 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Learning Space | URWA</title>
-  <link rel="stylesheet" href="../../css/portal.css">
-  <link rel="stylesheet" href="../../css/dashboard-live.css">
-  <link rel="stylesheet" href="../../css/dashboard-modern.css">
-  <link rel="stylesheet" href="/css/urwa-theme.css?v=9">
-  <link rel="stylesheet" href="../../css/edunova-role-dashboards.css?v=1">
-  <link rel="stylesheet" href="../../css/dashboard-reference-layouts.css?v=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Dashboard | URWA</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --green: #0e4a40;
+  --green-dark: #093b33;
+  --mint: #e3f0ea;
+  --gold: #e0a526;
+  --text: #242238;
+  --muted: #92929b;
+  --border: #e9e9ed;
+  --white: #fff;
+  --sidebar: 239px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: Inter, sans-serif;
+  background: #fff;
+  color: var(--text);
+}
+
+button { font: inherit; cursor: pointer; border: 0; }
+
+.app { min-height: 100vh; }
+
+/* SIDEBAR */
+.sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: var(--sidebar);
+  background: #fafafa;
+  border-right: 1px solid var(--border);
+  padding: 20px 15px;
+  z-index: 10;
+}
+
+.brand {
+  height: 49px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 29px;
+  margin-bottom: 28px;
+  color: #111;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 3px;
+}
+
+.brand-mark {
+  width: 23px;
+  height: 23px;
+  border: 5px solid var(--gold);
+  border-radius: 6px;
+}
+
+.nav { display: grid; gap: 3px; }
+
+.nav a {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  min-height: 40px;
+  padding: 9px 10px;
+  border-radius: 5px;
+  color: #171717;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: .2s;
+}
+
+.nav a:hover { background: var(--mint); color: var(--green); }
+.nav a.active { background: var(--green); color: white; }
+.nav .ico { width: 19px; text-align: center; font-size: 19px; }
+
+/* TOPBAR */
+.topbar {
+  height: 70px;
+  margin-left: var(--sidebar);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 35px;
+  gap: 25px;
+}
+
+.collapse {
+  background: var(--mint);
+  color: var(--green);
+  padding: 7px 5px;
+  border-radius: 3px;
+  font-size: 17px;
+}
+
+.search {
+  height: 43px;
+  width: 358px;
+  border: 1.5px solid var(--green);
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 13px;
+  color: var(--green);
+}
+
+.search input {
+  border: 0;
+  outline: 0;
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+}
+
+.search kbd { background: var(--mint); padding: 4px; color: var(--green); }
+
+.top-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 17px;
+}
+
+.notification {
+  border: 1px solid var(--green);
+  color: var(--green);
+  background: white;
+  padding: 8px 11px;
+  border-radius: 10px;
+}
+
+.avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--mint);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+.profile { display: flex; align-items: center; gap: 12px; font-size: 14px; }
+
+/* MAIN */
+.main {
+  margin-left: var(--sidebar);
+  padding: 23px 48px 30px;
+  max-width: 1600px;
+}
+
+.greeting { margin: 0 4px 21px; }
+
+.greeting h1 {
+  font-size: 36px;
+  line-height: 1.35;
+  font-weight: 700;
+}
+
+.greeting p {
+  color: var(--green);
+  font-size: 21px;
+  margin-top: 1px;
+}
+
+/* GENERAL CARDS */
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  box-shadow: 0 3px 6px rgba(0,0,0,.10);
+  padding: 20px;
+  min-width: 0;
+}
+
+.card h3 { font-size: 15px; font-weight: 600; margin-bottom: 16px; }
+
+.top-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.8fr .76fr;
+  gap: 27px;
+  margin-bottom: 30px;
+}
+
+.course-preview {
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 17px 14px;
+  min-height: 124px;
+}
+
+.course-icon {
+  width: 32px;
+  height: 32px;
+  background: #f5f6f7;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  margin-bottom: 14px;
+}
+
+.course-preview strong { font-size: 13px; }
+
+.progress-line {
+  height: 9px;
+  background: var(--mint);
+  border-radius: 20px;
+  margin-top: 13px;
+  overflow: hidden;
+}
+
+.progress-line span {
+  display: block;
+  height: 100%;
+  width: 50%;
+  border-radius: inherit;
+  background: var(--green);
+}
+
+.progress-caption {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.progress-caption small { color: var(--green); white-space: nowrap; }
+
+/* RESOURCES */
+.resource {
+  display: grid;
+  grid-template-columns: 24px 1fr auto auto;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 0;
+  font-size: 9px;
+  color: #666;
+}
+
+.file-icon {
+  width: 22px;
+  height: 28px;
+  border-radius: 5px;
+  display: grid;
+  place-items: center;
+  color: white;
+  font-size: 8px;
+  font-weight: 700;
+}
+
+.pdf { background: #f04438; }
+.png { background: #a100e8; }
+.fig { background: #1598e8; }
+.resource strong { display: block; color: #333; font-weight: 500; margin-bottom: 4px; }
+.resource small { color: #aaa; }
+.resource button { background: transparent; color: var(--green); font-size: 9px; }
+
+.see-more {
+  width: 100%;
+  background: var(--mint);
+  color: var(--green);
+  padding: 5px;
+  border-radius: 6px;
+  margin-top: 7px;
+}
+
+/* CALENDAR */
+.calendar-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 4px 8px 14px;
+}
+
+.calendar-head button { background: transparent; font-size: 20px; }
+.calendar-head strong { color: var(--green); font-size: 9px; }
+
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  gap: 9px 3px;
+  font-size: 9px;
+}
+
+.calendar span { padding: 3px 0; }
+.calendar .day { color: #aaa; font-size: 8px; }
+.calendar .today { background: var(--green); color: white; border-radius: 50%; }
+
+/* MIDDLE GRID */
+.middle-grid {
+  display: grid;
+  grid-template-columns: 1.35fr .92fr 1.1fr;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.legend {
+  display: flex;
+  gap: 20px;
+  font-size: 9px;
+  color: #999;
+  margin: 10px 0 20px;
+}
+
+.dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+  margin-right: 6px;
+  vertical-align: middle;
+  background: var(--green);
+}
+
+.dot.light { background: #d6b45f; }
+
+.chart {
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 15px 10px 10px;
+}
+
+.bar-chart {
+  height: 180px;
+  display: flex;
+  align-items: end;
+  justify-content: space-around;
+  background: repeating-linear-gradient(to bottom, transparent 0 31px, #eee 32px 33px);
+}
+
+.bar-group {
+  height: 100%;
+  display: flex;
+  align-items: end;
+  flex-direction: column;
+  justify-content: end;
+  gap: 0;
+}
+
+.bar {
+  width: 34px;
+  background: var(--green);
+  border-radius: 9px 9px 0 0;
+}
+
+.bar.light {
+  background: #d6b45f;
+  border-radius: 9px 9px 0 0;
+}
+
+.months {
+  display: flex;
+  justify-content: space-around;
+  color: #aaa;
+  font-size: 9px;
+  margin-top: 12px;
+}
+
+/* PERFORMANCE */
+.performance {
+  text-align: center;
+  min-height: 230px;
+}
+
+.performance select {
+  border: 0;
+  background: var(--mint);
+  border-radius: 5px;
+  padding: 6px;
+  font-size: 9px;
+}
+
+.gauge {
+  width: 145px;
+  height: 88px;
+  margin: 22px auto 18px;
+  border: 10px solid #d8e9df;
+  border-bottom: 0;
+  border-radius: 100px 100px 0 0;
+  position: relative;
+}
+
+.gauge::before {
+  content: "";
+  position: absolute;
+  width: 9px;
+  height: 76px;
+  background: var(--green);
+  bottom: -4px;
+  left: 61px;
+  border-radius: 9px;
+  transform: rotate(37deg);
+  transform-origin: bottom center;
+}
+
+.gauge::after {
+  content: "";
+  width: 17px;
+  height: 17px;
+  border: 4px solid var(--green);
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  bottom: -8px;
+  left: 52px;
+}
+
+.grade { color: #999; font-size: 13px; }
+.grade strong { color: #111; font-size: 16px; }
+
+/* TODO */
+.todo-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 11px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.todo-item:last-child { border: 0; }
+
+.todo-item input {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--green);
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.todo-item input:checked { background: var(--green); }
+
+.todo-item input:checked::after {
+  content: "✓";
+  display: block;
+  color: white;
+  text-align: center;
+  font-size: 13px;
+}
+
+.todo-item:has(input:checked) .todo-text strong {
+  text-decoration: line-through;
+  color: #999;
+}
+
+.todo-text strong { display: block; font-size: 14px; font-weight: 500; color: #555; }
+.todo-text small { display: block; color: #aaa; margin-top: 4px; }
+
+/* BOTTOM GRID */
+.bottom-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1.1fr;
+  gap: 10px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 19px;
+}
+
+.section-heading h2 { font-size: 20px; font-weight: 500; }
+.section-heading button { background: transparent; font-size: 14px; }
+
+.class-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 18px;
+  border-radius: 12px;
+  margin-bottom: 17px;
+  box-shadow: 0 3px 15px rgba(0,0,0,.06);
+  border: 1px solid transparent;
+}
+
+.class-item.selected { border-color: var(--green); }
+
+.class-icon { font-size: 27px; width: 52px; text-align: center; }
+.class-info { flex: 1; min-width: 0; }
+.class-info h4 { font-size: 15px; font-weight: 600; margin-bottom: 15px; }
+.selected .class-info h4 { color: var(--green); }
+
+.class-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  font-size: 13px;
+  color: #333;
+}
+
+.lesson {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 25px 18px;
+  border-radius: 12px;
+  margin-bottom: 17px;
+  box-shadow: 0 3px 15px rgba(0,0,0,.06);
+}
+
+.lesson-icon { font-size: 27px; }
+.lesson-info { flex: 1; }
+.lesson-info strong { display: block; font-size: 14px; font-weight: 500; }
+.lesson-info small { display: block; color: #666; margin-top: 4px; }
+
+.join {
+  background: var(--green);
+  color: white;
+  padding: 8px 17px;
+  border-radius: 7px;
+}
+
+.join.secondary { color: var(--green); background: var(--mint); }
+
+/* URWA CLASS DISCUSSION */
+.discussion-section {
+  margin-top: 30px;
+}
+
+.discussion-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  min-height: 390px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  overflow: hidden;
+}
+
+.discussion-people {
+  background: #fafafa;
+  border-right: 1px solid var(--border);
+  padding: 18px;
+}
+
+.discussion-people h3 {
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.chat-person {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 12px 9px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 5px;
+}
+
+.chat-person:hover,
+.chat-person.active {
+  background: var(--mint);
+}
+
+.chat-person .avatar {
+  flex-shrink: 0;
+  color: var(--green);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.chat-person-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.chat-person-info strong {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.chat-person-info small {
+  display: block;
+  color: #999;
+  font-size: 10px;
+  margin-top: 4px;
+}
+
+.online-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #39a879;
+}
+
+.discussion-chat {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: white;
+}
+
+.chat-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 17px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.chat-heading .avatar {
+  color: var(--green);
+  font-weight: 700;
+}
+
+.chat-heading strong {
+  display: block;
+  font-size: 13px;
+}
+
+.chat-heading small {
+  display: block;
+  color: #999;
+  font-size: 10px;
+  margin-top: 4px;
+}
+
+.chat-messages {
+  flex: 1;
+  padding: 20px;
+  min-height: 230px;
+  max-height: 290px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.message {
+  max-width: 75%;
+  align-self: flex-start;
+}
+
+.message.mine {
+  align-self: flex-end;
+}
+
+.message-author {
+  font-size: 10px;
+  color: #999;
+  margin-bottom: 5px;
+}
+
+.message-bubble {
+  background: #f4f5f4;
+  padding: 11px 14px;
+  border-radius: 3px 12px 12px 12px;
+  font-size: 12px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.message.mine .message-bubble {
+  background: var(--mint);
+  color: var(--green-dark);
+  border-radius: 12px 3px 12px 12px;
+}
+
+.message-time {
+  font-size: 9px;
+  color: #aaa;
+  margin-top: 5px;
+}
+
+.chat-compose {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px;
+  border-top: 1px solid var(--border);
+}
+
+.chat-compose input {
+  flex: 1;
+  min-width: 0;
+  height: 42px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 0 13px;
+  outline: none;
+  font: inherit;
+  font-size: 12px;
+}
+
+.chat-compose input:focus {
+  border-color: var(--green);
+}
+
+.send-message {
+  background: var(--green);
+  color: white;
+  border-radius: 7px;
+  padding: 12px 17px;
+  font-size: 12px;
+}
+
+.send-message:hover,
+.join:hover {
+  background: var(--green-dark);
+}
+
+.chat-notice {
+  font-size: 10px;
+  color: #999;
+  padding: 0 15px 12px;
+}
+
+/* RESPONSIVE */
+@media(max-width:1100px) {
+  .main { padding: 22px; }
+  .top-grid { grid-template-columns: 1fr 1.5fr; }
+  .top-grid .calendar-card { grid-column: span 2; }
+  .middle-grid { grid-template-columns: 1fr 1fr; }
+  .middle-grid .todo-card { grid-column: span 2; }
+}
+
+@media(max-width:760px) {
+  :root { --sidebar: 0px; }
+  .sidebar { width: 240px; transform: translateX(-100%); transition: .25s; }
+  body.menu-open .sidebar { transform: translateX(0); }
+  .topbar { margin-left: 0; padding: 0 15px; gap: 12px; }
+  .search { width: min(55vw, 358px); }
+  .profile span { display: none; }
+  .main { margin-left: 0; padding: 22px 15px; }
+  .greeting h1 { font-size: 27px; }
+  .greeting p { font-size: 16px; }
+  .top-grid, .middle-grid, .bottom-grid { grid-template-columns: 1fr; }
+  .top-grid .calendar-card, .middle-grid .todo-card { grid-column: auto; }
+  .class-meta { gap: 9px; font-size: 11px; }
+  .class-item { gap: 10px; padding: 13px; }
+  .lesson { padding: 18px 12px; }
+  .discussion-layout { grid-template-columns: 1fr; }
+  .discussion-people {
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .discussion-people-list {
+    display: flex;
+    overflow-x: auto;
+    gap: 5px;
+  }
+  .chat-person {
+    min-width: 150px;
+  }
+  .chat-messages { min-height: 220px; }
+  .message { max-width: 90%; }
+}
+</style>
 </head>
-<body data-urwa-role="student" class="urwa-student-dashboard">
-<div class="student-shell">
-  <aside class="student-sidebar" id="sidebar">
-    <a class="student-brand" href="../../index.html">
-      <img src="../../assets/logo.jpg" alt="URWA">
-      <span><b>URWA</b><small>THE FIRMEST HANDHOLD</small></span>
-    </a>
-    <div class="student-profile">
-      <div class="student-avatar">S</div>
-      <div><strong data-profile-name>Student</strong><small>Student</small></div>
+
+<body>
+<div class="app">
+
+<aside class="sidebar">
+  <div class="brand"><span class="brand-mark"></span> URWA</div>
+
+  <nav class="nav">
+    <a class="active" href="#"><span class="ico">◷</span>Dashboard</a>
+    <a href="#"><span class="ico">▤</span>Assignments</a>
+    <a href="#"><span class="ico">♧</span>Schedule</a>
+    <a href="#"><span class="ico">🎙</span>Recordings</a>
+    <a href="#class-discussion"><span class="ico">▢</span>Class Discussion</a>
+    <a href="#"><span class="ico">♧</span>Resources</a>
+    <a href="#"><span class="ico">▤</span>Notes</a>
+    <a href="#"><span class="ico">↓</span>Downloads</a>
+    <a href="#"><span class="ico">▦</span>Classes</a>
+    <a href="#"><span class="ico">♙</span>Programmes</a>
+    <a href="#"><span class="ico">⚙</span>Settings</a>
+  </nav>
+</aside>
+
+<header class="topbar">
+  <button class="collapse" onclick="document.body.classList.toggle('menu-open')">‹ ›</button>
+
+  <label class="search">
+    <span>⌕</span>
+    <input type="search" placeholder="Search">
+    <kbd>⌘ F</kbd>
+  </label>
+
+  <div class="top-actions">
+    <button class="notification">♧</button>
+    <div class="profile">
+      <div class="avatar">👤</div>
+      <span>Student</span>
+      <span style="color:var(--green)">⌄</span>
     </div>
-    <nav class="student-nav" aria-label="Student navigation">
-      <span class="student-nav-label">MY LEARNING</span>
-      <a class="selected" href="#dashboard"><i>◫</i>Dashboard</a>
-      <a href="#program"><i>▣</i>My Programme</a>
-      <a href="#schedule"><i>◷</i>Schedule</a>
-      <a href="#progress"><i>▥</i>My Progress</a>
-      <a href="#homework"><i>☷</i>Assignments</a>
-      <a href="#quran"><i>۞</i>Qur'an & Hifdh</a>
-      <a href="#resources"><i>▤</i>Learning Resources</a>
-      <a href="#halaqa-messages"><i>▤</i>Messages</a>
-      <a href="#community"><i>◎</i>Discussions</a>
-      <a href="#announcements"><i>♧</i>Announcements</a>
-      <a href="../../departments.html"><i>◎</i>URWA Teams</a>
-      <span class="student-nav-label">MY ACCOUNT</span>
-      <a href="#profile"><i>♙</i>My Profile</a>
-    </nav>
-    <div class="student-sidebar-footer">
-      <div class="student-help"><span class="help-mark">?</span><b>Need a hand?</b><p>Reach out to the URWA team if you need help with your learning.</p><a href="#profile">Get support →</a></div>
-      <a href="student-login.html" data-urwa-logout class="student-logout">↪ &nbsp; Log out</a>
-    </div>
-  </aside>
+  </div>
+</header>
 
-  <main class="student-main" id="dashboard">
-    <header class="student-topbar">
-      <button class="student-mobile-menu" onclick="toggleSidebar()" aria-label="Open menu">☰</button>
-      <label class="student-search"><span>⌕</span><input type="search" placeholder="Search classes, assignments, resources..." aria-label="Search learning space"><kbd>⌘ K</kbd></label>
-      <div class="student-top-actions"><button class="student-notification" aria-label="Notifications">♧</button><div class="student-top-user"><div class="student-avatar small">S</div><span><b data-profile-name>Student</b><small>Student</small></span></div></div>
-    </header>
+<main class="main">
 
-    <div class="student-dashboard-content">
-      <div class="student-page-title"><div><h1>My Learning Dashboard</h1><p>Your space to learn, reflect and grow with URWA.</p></div><span class="student-date-chip" id="student-current-date">My learning space</span></div>
+  <section class="greeting">
+    <h1>Assalaamu Alaykum 👋🏻</h1>
+    <p>Let's continue your journey of seeking knowledge!</p>
+  </section>
 
-      <section class="student-welcome">
-        <div class="welcome-copy"><span class="welcome-eyebrow">YOUR JOURNEY OF ILM</span><h2>Assalaamu alaykum, <span data-profile-name>Student</span> <span class="wave">✦</span></h2><p>Every ayah learned, every lesson attended and every effort made is a step forward.</p><a href="#program" class="student-primary-link">Continue learning <span>→</span></a></div>
-        <div class="welcome-arabic" lang="ar" dir="rtl">وَقُل رَّبِّ زِدْنِي عِلْمًا</div>
-        <div class="welcome-orbit"></div>
-      </section>
+  <section class="top-grid">
 
-      <section class="student-overview" id="student-live-overview" aria-live="polite"><strong>Your learning overview is loading…</strong><p>Your programme, halaqa and learning records will appear here.</p></section>
-
-      <div class="student-dashboard-grid">
-        <div class="student-center-column">
-          <section class="student-course-row" id="program">
-            <article class="student-panel current-course">
-              <div class="panel-heading"><div><span class="panel-kicker">YOUR STUDIES</span><h2>My Programme</h2></div><span class="panel-icon">▣</span></div>
-              <div class="course-tile"><div class="course-symbol">۞</div><div class="course-info"><b>Qur'an Studies</b><small>Your enrolled programme</small><div class="course-progress"><span></span></div></div><span class="course-state">Enrolled</span></div>
-              <a class="student-text-link" href="#progress">View learning progress →</a>
-            </article>
-            <article class="student-panel halaqa-panel" id="halaqa">
-              <div class="panel-heading"><div><span class="panel-kicker">YOUR LEARNING CIRCLE</span><h2>My Halaqa</h2></div><span class="panel-icon mint">◎</span></div>
-              <div class="halaqa-placeholder"><span class="halaqa-emblem">◎</span><b>Your halaqa details</b><p>Your assigned halaqa and Abla information will appear here.</p></div>
-            </article>
-          </section>
-
-          <section class="student-panel progress-panel" id="progress">
-            <div class="panel-heading"><div><span class="panel-kicker">YOUR GROWTH</span><h2>Learning Progress</h2><p>Celebrate the steps you take along your learning journey.</p></div><span class="panel-icon violet">↗</span></div>
-            <div class="progress-metrics"><div><span class="metric-dot green"></span><b>Hifdh & Muraja'ah</b><small>Updated by your Abla</small></div><div class="progress-empty-state">Your progress records will appear here as your Abla updates them.</div></div>
-            <div class="student-progress-track"><span></span></div>
-          </section>
-
-          <section class="student-panel" id="homework">
-            <div class="panel-heading"><div><span class="panel-kicker">STAY ON TRACK</span><h2>Assignments & Homework</h2><p>Work shared with you by your Abla.</p></div><a class="student-text-link" href="#homework">View all →</a></div>
-            <div id="student-assignments-list" class="student-assignment-list"><div class="student-empty"><b>No assignments yet</b><span>Your Abla's tasks will appear here.</span></div></div>
-          </section>
-
-          <section class="student-panel" id="resources">
-            <div class="panel-heading"><div><span class="panel-kicker">YOUR STUDY MATERIAL</span><h2>Learning Resources</h2></div><span class="panel-icon gold">▤</span></div>
-            <div class="resource-placeholder"><span>▧</span><div><b>Your learning library</b><small>Study notes, lesson materials and resources shared by URWA will be available here.</small></div></div>
-          </section>
-
-          <section class="student-panel" id="community">
-            <div class="panel-heading"><div><span class="panel-kicker">LEARN TOGETHER</span><h2>My Level Community</h2><p>Updates for your assigned learning level.</p></div><span class="read-only-tag">ADMIN UPDATES</span></div>
-            <div id="student-community-feed" class="student-feed"><div class="student-empty"><b>Your community will appear here</b><span>Once your level is assigned, its updates will show here.</span></div></div>
-          </section>
-
-          <section class="student-panel" id="announcements">
-            <div class="panel-heading"><div><span class="panel-kicker">FROM URWA</span><h2>Announcements</h2></div></div>
-            <div id="student-announcements-feed" class="student-feed"><div class="student-empty"><b>No announcements yet</b><span>Official updates from URWA will appear here.</span></div></div>
-          </section>
+    <article class="card">
+      <h3>My Current Programme</h3>
+      <div class="course-preview">
+        <div class="course-icon">📖</div>
+        <strong>Qur'an Memorisation</strong>
+        <div class="progress-caption">
+          <div class="progress-line" style="flex:1"><span></span></div>
+          <small>14/30 lessons</small>
         </div>
+      </div>
+    </article>
 
-        <aside class="student-right-column">
-          <section class="student-panel student-calendar">
-            <div class="panel-heading"><div><span class="panel-kicker">PLAN YOUR TIME</span><h2>Calendar</h2></div><span class="panel-icon">▦</span></div>
-            <div class="calendar-month"><button type="button" aria-label="Previous month">‹</button><b id="student-calendar-month">Your calendar</b><button type="button" aria-label="Next month">›</button></div>
-            <div class="calendar-grid" aria-label="Calendar"><span>SU</span><span>MO</span><span>TU</span><span>WE</span><span>TH</span><span>FR</span><span>SA</span><div class="calendar-empty">Your class dates and upcoming events will appear here.</div></div>
-            <a href="#schedule" class="student-text-link">View schedule →</a>
-          </section>
+    <article class="card">
+      <h3>Learning Resources</h3>
 
-          <section class="student-panel" id="schedule">
-            <div class="panel-heading"><div><span class="panel-kicker">WHAT'S NEXT</span><h2>Upcoming Lessons</h2></div></div>
-            <div class="student-empty"><b>Your timetable is coming here</b><span>Your assigned class days, lesson times and joining details will be displayed here.</span></div>
-          </section>
-
-          <section class="student-panel student-todo">
-            <div class="panel-heading"><div><span class="panel-kicker">A LITTLE AT A TIME</span><h2>My Learning Checklist</h2></div><span class="panel-icon mint">✓</span></div>
-            <div class="todo-row"><span class="todo-check">01</span><span><b>Attend your lesson</b><small>Keep up with your halaqa</small></span></div>
-            <div class="todo-row"><span class="todo-check">02</span><span><b>Revise what you learned</b><small>Make time for Muraja'ah</small></span></div>
-            <div class="todo-row"><span class="todo-check">03</span><span><b>Complete your assignments</b><small>Check tasks from your Abla</small></span></div>
-          </section>
-
-          <section class="student-panel student-quran-card" id="quran">
-            <span class="quran-star">۞</span><span class="panel-kicker">A DAILY REMINDER</span>
-            <p lang="ar" dir="rtl">إِنَّ مَعَ الْعُسْرِ يُسْرًا</p><b>Indeed, with hardship comes ease.</b><small>Surah Ash-Sharh · 94:6</small>
-          </section>
-        </aside>
+      <div class="resource">
+        <span class="file-icon pdf">PDF</span>
+        <div>
+          <strong>Tajweed Notes.pdf</strong>
+          <small>Learning notes and Tajweed reference</small>
+        </div>
+        <span>8.5 MB</span>
+        <button>Download</button>
       </div>
 
-      <section class="student-panel profile-panel" id="profile"><div class="panel-heading"><div><span class="panel-kicker">YOUR ACCOUNT</span><h2>My Profile</h2></div></div><p><b>Name:</b> <span data-profile-name>Student</span></p><p><b>Account type:</b> Student</p></section>
-      <footer class="student-footer">URWA · The Firmest Handhold <span>Learn with purpose. Grow with ihsan.</span></footer>
+      <div class="resource">
+        <span class="file-icon png">PDF</span>
+        <div>
+          <strong>Muraja'ah Guide.pdf</strong>
+          <small>Your Qur'an revision guide</small>
+        </div>
+        <span>576 KB</span>
+        <button>Download</button>
+      </div>
+
+      <div class="resource">
+        <span class="file-icon fig">PDF</span>
+        <div>
+          <strong>Class Materials.pdf</strong>
+          <small>Materials shared by your Abla</small>
+        </div>
+        <span>2.5 MB</span>
+        <button>Download</button>
+      </div>
+
+      <button class="see-more">See more</button>
+    </article>
+
+    <article class="card calendar-card">
+      <div class="calendar-head">
+        <button onclick="changeMonth(-1)">‹</button>
+        <strong id="monthLabel"></strong>
+        <button onclick="changeMonth(1)">›</button>
+      </div>
+      <div class="calendar" id="calendar"></div>
+    </article>
+
+  </section>
+
+  <section class="middle-grid">
+
+    <article class="card">
+      <h3>Hours Spent Learning</h3>
+
+      <div class="legend">
+        <span><i class="dot"></i>Qur'an Study</span>
+        <span><i class="dot light"></i>Other Lessons</span>
+      </div>
+
+      <div class="chart">
+        <div class="bar-chart">
+          <div class="bar-group">
+            <div class="bar light" style="height:29%"></div>
+            <div class="bar" style="height:39%"></div>
+          </div>
+          <div class="bar-group">
+            <div class="bar light" style="height:20%"></div>
+            <div class="bar" style="height:20%"></div>
+          </div>
+          <div class="bar-group">
+            <div class="bar light" style="height:10%"></div>
+            <div class="bar" style="height:63%"></div>
+          </div>
+          <div class="bar-group">
+            <div class="bar light" style="height:17%"></div>
+            <div class="bar" style="height:37%"></div>
+          </div>
+          <div class="bar-group">
+            <div class="bar light" style="height:10%"></div>
+            <div class="bar" style="height:15%"></div>
+          </div>
+        </div>
+
+        <div class="months">
+          <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="card performance">
+      <h3 style="text-align:left">Performance</h3>
+
+      <div style="display:flex;justify-content:space-between;font-size:9px;align-items:center">
+        <span><i class="dot"></i>Learning Progress</span>
+        <select>
+          <option>Monthly</option>
+          <option>Weekly</option>
+        </select>
+      </div>
+
+      <div class="gauge"></div>
+      <p class="grade">Your Progress: <strong>8.966</strong></p>
+    </article>
+
+    <article class="card todo-card">
+      <h3>To do List</h3>
+
+      <label class="todo-item">
+        <input type="checkbox">
+        <span class="todo-text">
+          <strong>Complete Qur'an revision</strong>
+          <small>Tuesday, 30 June 2024</small>
+        </span>
+      </label>
+
+      <label class="todo-item">
+        <input type="checkbox">
+        <span class="todo-text">
+          <strong>Prepare Tajweed lesson</strong>
+          <small>Monday, 24 June 2024</small>
+        </span>
+      </label>
+
+      <label class="todo-item">
+        <input type="checkbox" checked>
+        <span class="todo-text">
+          <strong>Submit class assignment</strong>
+          <small>Friday, 10 June 2024</small>
+        </span>
+      </label>
+
+      <label class="todo-item">
+        <input type="checkbox" checked>
+        <span class="todo-text">
+          <strong>Review previous lesson</strong>
+          <small>Friday, 05 June 2024</small>
+        </span>
+      </label>
+    </article>
+
+  </section>
+
+  <section class="bottom-grid">
+
+    <article class="card">
+      <div class="section-heading">
+        <h2>My Enrolled Classes</h2>
+        <button>All　⌕</button>
+      </div>
+
+      <div class="class-item selected">
+        <div class="class-icon">📖</div>
+        <div class="class-info">
+          <h4>Qur'an Memorisation</h4>
+          <div class="class-meta">
+            <span>◷ 5:30hrs</span>
+            <span>▤ 05 Lessons</span>
+            <span>⊙ Assignments</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="class-item">
+        <div class="class-icon">☷</div>
+        <div class="class-info">
+          <h4>Tajweed Studies</h4>
+          <div class="class-meta">
+            <span>◷ 4:00hrs</span>
+            <span>▤ 03 Lessons</span>
+            <span>⊙ Assignments</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="section-heading">
+        <h2>Upcoming Lesson</h2>
+      </div>
+
+      <div class="lesson">
+        <div class="lesson-icon">📖</div>
+        <div class="lesson-info">
+          <strong>Qur'an Memorisation</strong>
+          <small>5:30pm</small>
+        </div>
+        <button class="join">Join</button>
+      </div>
+
+      <div class="lesson">
+        <div class="lesson-icon">☷</div>
+        <div class="lesson-info">
+          <strong>Tajweed Class</strong>
+          <small>9:00pm</small>
+        </div>
+        <button class="join secondary">Join</button>
+      </div>
+    </article>
+
+  </section>
+
+  <!-- CLASS DISCUSSION: STUDENTS AND ABLA -->
+  <section class="card discussion-section" id="class-discussion">
+
+    <div class="section-heading">
+      <h2>Class Discussion</h2>
+      <button>My Class　⌕</button>
     </div>
-  </main>
+
+    <div class="discussion-layout">
+
+      <aside class="discussion-people">
+        <h3>Conversations</h3>
+
+        <div class="discussion-people-list">
+
+          <div class="chat-person active" onclick="selectChat('class')">
+            <div class="avatar">📖</div>
+            <div class="chat-person-info">
+              <strong>Class Group</strong>
+              <small>Qur'an Memorisation</small>
+            </div>
+            <span class="online-dot"></span>
+          </div>
+
+          <div class="chat-person" onclick="selectChat('abla')">
+            <div class="avatar">A</div>
+            <div class="chat-person-info">
+              <strong>My Abla</strong>
+              <small>Class teacher</small>
+            </div>
+            <span class="online-dot"></span>
+          </div>
+
+        </div>
+      </aside>
+
+      <div class="discussion-chat">
+
+        <div class="chat-heading">
+          <div class="avatar" id="chatAvatar">📖</div>
+          <div>
+            <strong id="chatTitle">Class Group</strong>
+            <small id="chatSubtitle">Qur'an Memorisation · Group discussion</small>
+          </div>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+
+          <div class="message">
+            <div class="message-author">Abla</div>
+            <div class="message-bubble">
+              Assalaamu alaykunna everyone. Please remember to prepare your revision before our next class.
+            </div>
+            <div class="message-time">Today</div>
+          </div>
+
+          <div class="message">
+            <div class="message-author">Student</div>
+            <div class="message-bubble">
+              Wa alaykum salaam. In shaa Allah, we will prepare.
+            </div>
+            <div class="message-time">Today</div>
+          </div>
+
+        </div>
+
+        <form class="chat-compose" id="messageForm">
+          <input
+            type="text"
+            id="messageInput"
+            placeholder="Write a message..."
+            autocomplete="off"
+            required
+          >
+          <button class="send-message" type="submit">Send ➤</button>
+        </form>
+
+        <p class="chat-notice">
+          Keep conversations respectful and related to your class.
+        </p>
+
+      </div>
+    </div>
+  </section>
+
+</main>
 </div>
-<script>function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');}</script>
+
 <script>
-(()=>{const d=new Date();const el=document.getElementById('student-current-date');if(el)el.textContent=d.toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'});})();
+/* CALENDAR */
+const today = new Date();
+let currentMonth = today.getMonth();
+let currentYear = today.getFullYear();
+
+function renderCalendar() {
+  const monthNames = [
+    "January","February","March","April","May","June",
+    "July","August","September","October","November","December"
+  ];
+
+  document.getElementById("monthLabel").textContent =
+    monthNames[currentMonth] + " " + currentYear;
+
+  const calendar = document.getElementById("calendar");
+  calendar.innerHTML = "";
+
+  ["SUN","MON","TUE","WED","THU","FRI","SAT"].forEach(day => {
+    const el = document.createElement("span");
+    el.className = "day";
+    el.textContent = day;
+    calendar.appendChild(el);
+  });
+
+  const firstDay = new Date(currentYear,currentMonth,1).getDay();
+  const totalDays = new Date(currentYear,currentMonth+1,0).getDate();
+
+  for(let i=0;i<firstDay;i++) {
+    calendar.appendChild(document.createElement("span"));
+  }
+
+  for(let day=1;day<=totalDays;day++) {
+    const el = document.createElement("span");
+    el.textContent = day;
+
+    if(
+      day === today.getDate() &&
+      currentMonth === today.getMonth() &&
+      currentYear === today.getFullYear()
+    ) {
+      el.className = "today";
+    }
+
+    calendar.appendChild(el);
+  }
+}
+
+function changeMonth(direction) {
+  currentMonth += direction;
+
+  if(currentMonth > 11) {
+    currentMonth = 0;
+    currentYear++;
+  }
+
+  if(currentMonth < 0) {
+    currentMonth = 11;
+    currentYear--;
+  }
+
+  renderCalendar();
+}
+
+renderCalendar();
+
+
+/* CLASS DISCUSSION INTERFACE */
+let activeChat = "class";
+
+const chatMessages = document.getElementById("chatMessages");
+const chatTitle = document.getElementById("chatTitle");
+const chatSubtitle = document.getElementById("chatSubtitle");
+const chatAvatar = document.getElementById("chatAvatar");
+
+const demoMessages = {
+  class: [
+    {
+      author: "Abla",
+      message: "Assalaamu alaykunna everyone. Please remember to prepare your revision before our next class.",
+      time: "Today",
+      mine: false
+    },
+    {
+      author: "Student",
+      message: "Wa alaykum salaam. In shaa Allah, we will prepare.",
+      time: "Today",
+      mine: false
+    }
+  ],
+
+  abla: [
+    {
+      author: "Abla",
+      message: "Assalaamu alayki. How is your revision progressing?",
+      time: "Today",
+      mine: false
+    }
+  ]
+};
+
+function selectChat(type) {
+  activeChat = type;
+
+  document.querySelectorAll(".chat-person").forEach(person => {
+    person.classList.remove("active");
+  });
+
+  event.currentTarget.classList.add("active");
+
+  if(type === "class") {
+    chatTitle.textContent = "Class Group";
+    chatSubtitle.textContent = "Qur'an Memorisation · Group discussion";
+    chatAvatar.textContent = "📖";
+  } else {
+    chatTitle.textContent = "My Abla";
+    chatSubtitle.textContent = "Class teacher";
+    chatAvatar.textContent = "A";
+  }
+
+  renderMessages();
+}
+
+function renderMessages() {
+  chatMessages.innerHTML = "";
+
+  demoMessages[activeChat].forEach(message => {
+    const messageElement = document.createElement("div");
+    messageElement.className = message.mine ? "message mine" : "message";
+
+    const author = document.createElement("div");
+    author.className = "message-author";
+    author.textContent = message.author;
+
+    const bubble = document.createElement("div");
+    bubble.className = "message-bubble";
+    bubble.textContent = message.message;
+
+    const time = document.createElement("div");
+    time.className = "message-time";
+    time.textContent = message.time;
+
+    messageElement.append(author, bubble, time);
+    chatMessages.appendChild(messageElement);
+  });
+
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+document.getElementById("messageForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const input = document.getElementById("messageInput");
+  const message = input.value.trim();
+
+  if(!message) return;
+
+  demoMessages[activeChat].push({
+    author: "You",
+    message: message,
+    time: "Just now",
+    mine: true
+  });
+
+  input.value = "";
+  renderMessages();
+});
 </script>
-<script type="module" src="../../js/supabase-auth.js"></script>
-<script type="module" src="../../js/dashboard-data.js"></script>
+
 </body>
 </html>

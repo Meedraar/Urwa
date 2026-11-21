@@ -175,6 +175,23 @@ body{background:var(--canvas);color:var(--ink)}
 .module-form button{justify-self:start;padding:8px 12px}
 .nav a{transition:background .15s ease,color .15s ease}
 .nav a:focus-visible,.nav a:hover{outline:2px solid #f2c94c;outline-offset:1px}
+.home-button {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  background: #0e4a40;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  margin-top: 12px;
+  transition: background 0.2s ease;
+}
+
+.home-button:hover {
+  background: #e0a526;
+  color: #fff;
+}
 </style>
 </head>
 <body data-urwa-role="admin">
@@ -191,7 +208,13 @@ body{background:var(--canvas);color:var(--ink)}
       <a href="users.html" data-admin-nav><span class="ico">♙</span>User Management</a>
       <a href="../departments/operations.html"><span class="ico">◇</span>Projects & approvals</a>
     </nav>
-    <div class="sidebar-bottom"><div class="ai-mini"><strong>URWA Support</strong><p>Keep the academy organised and connected.</p><button onclick="document.getElementById('messages').scrollIntoView({behavior:'smooth'})">Open Messages</button></div></div>
+<div class="sidebar-bottom">
+  <div class="ai-mini">
+    <strong>URWA Support</strong>
+    <p>Keep the academy organised and connected.</p>
+    <a href="../../index.html" class="home-button">HOME</a>
+  </div>
+</div>
   </aside>
 
   <main class="main">
