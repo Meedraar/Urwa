@@ -75,6 +75,15 @@ async function adminLoad(user) {
         p.id + '">Decline</button></td></tr>';
     }).join(''), '<tr><td colspan="5">No pending student applications.</td></tr>');
 
+    const pendingTeachers = teachers.filter(p => p.status === 'pending');
+    const studentCountNode = $('#admin-total-students');
+    if (studentCountNode) studentCountNode.textContent = String(students.filter(p => (byStudent.get(p.id)?.status || p.status) === 'approved').length);
+    const applicationCountNode = $('#admin-new-applications');
+    if (applicationCountNode) applicationCountNode.textContent = String(pending.length + pendingTeachers.length);
+    const studentPendingLabel = $('#admin-student-pending-label');
+    if (studentPendingLabel) studentPendingLabel.textContent = pending.length + ' pending';
+    const ablaPendingLabel = $('#admin-abla-pending-label');
+    if (ablaPendingLabel) ablaPendingLabel.textContent = pendingTeachers.length + ' pending';
     put('#admin-students-body', students.map(p => {
       const e = byStudent.get(p.id) || {}, h = byHalaqa.get(e.halaqa_id);
       const ta = assignments.find(a => a.halaqa_id === e.halaqa_id);
@@ -136,6 +145,10 @@ async function adminLoad(user) {
     put('#admin-halaqa-management-body', halaqas.map(h => renderHalaqaRow(h, true)).join(''),
       '<tr><td colspan="5">No halaqas configured yet.</td></tr>');
     const activeHalaqaCount = halaqas.filter(h => h.is_active).length;
+    const totalHalaqaNode = $('#admin-halaqa-total'); if (totalHalaqaNode) totalHalaqaNode.textContent = String(halaqas.length);
+    const activeHalaqaNode = $('#admin-halaqa-active'); if (activeHalaqaNode) activeHalaqaNode.textContent = String(activeHalaqaCount);
+    const upcomingHalaqaNode = $('#admin-halaqa-upcoming'); if (upcomingHalaqaNode) upcomingHalaqaNode.textContent = String(halaqas.filter(h => String(h.status || '').toLowerCase() === 'upcoming').length);
+    const completedHalaqaNode = $('#admin-halaqa-completed'); if (completedHalaqaNode) completedHalaqaNode.textContent = String(halaqas.filter(h => String(h.status || '').toLowerCase() === 'completed').length);
     const halaqaSummary = $('#admin-halaqa-summary');
     if (halaqaSummary) halaqaSummary.textContent = 'Manage all ' + activeHalaqaCount + ' active halaqas, their assigned Ablas and enrolled students.';
     const halaqaBadge = $('#admin-halaqa-badge');
@@ -157,6 +170,9 @@ async function adminLoad(user) {
       attendanceRate + '% ' + (attendance.length ? Math.round((presentCount+absentCount)/attendance.length*100) : 0) + '%,#edf1f6 0 100%)';
     const textValue = (selector,value) => { const node = $(selector); if (node) node.textContent = value; };
     textValue('#admin-attendance-percent', attendance.length ? attendanceRate + '%' : '—');
+    textValue('#admin-admission-received', enroll.length);
+    textValue('#admin-admission-approved', approvedEnrollments.length);
+    textValue('#admin-admission-rate', enroll.length ? Math.round(approvedEnrollments.length / enroll.length * 100) + '%' : '—');
     textValue('#admin-attendance-present', presentCount);
     textValue('#admin-attendance-absent', absentCount);
     textValue('#admin-attendance-other', otherCount);
@@ -194,6 +210,17 @@ async function adminLoad(user) {
 }
 
 async function initAdmin(user) {
+  const { data: profile, error: profileError } = await supabase
+    .from('profiles')
+    .select('id,role,status,admin_level')
+    .eq('id', user.id)
+    .maybeSingle();
+  if (profileError) fail(profileError);
+  if (!profile || profile.role !== 'admin' || profile.status !== 'approved') {
+    await supabase.auth.signOut();
+    window.location.replace('/portal/admin/login.html');
+    return;
+  }
   await adminLoad(user);
   document.addEventListener('click', async (event) => {
     try {
@@ -406,6 +433,10 @@ async function teacherLoad(user) {
     if (role === 'teacher') await teacherLoad(user);
   } catch (error) {
     const role = document.body.dataset.urwaRole;
+    if (role === 'admin' && /sign in again|not approved|profile is not ready/i.test(error.message || '')) {
+      window.location.replace('/portal/admin/login.html');
+      return;
+    }
     status(role === 'student' ? 'student-live-overview' : role === 'teacher' ? 'teacher-live-overview' : 'admin-live-status',
       'Could not load records', error.message, true);
   }
