@@ -78,6 +78,8 @@ async function adminLoad(user) {
     const pendingTeachers = teachers.filter(p => p.status === 'pending');
     const studentCountNode = $('#admin-total-students');
     if (studentCountNode) studentCountNode.textContent = String(students.filter(p => (byStudent.get(p.id)?.status || p.status) === 'approved').length);
+    const ablaCountNode = $('#admin-total-ablas');
+    if (ablaCountNode) ablaCountNode.textContent = String(teachers.filter(p => p.status === 'approved').length);
     const applicationCountNode = $('#admin-new-applications');
     if (applicationCountNode) applicationCountNode.textContent = String(pending.length + pendingTeachers.length);
     const studentPendingLabel = $('#admin-student-pending-label');
@@ -126,6 +128,9 @@ async function adminLoad(user) {
       programmeCounts.set(name, (programmeCounts.get(name) || 0) + 1);
     });
     const programmeEntries = [...programmeCounts.entries()].sort((a,b) => b[1]-a[1]).slice(0,6);
+    put('#admin-programme-management-body', [...programmeCounts.entries()].sort((a,b) => a[0].localeCompare(b[0])).map(([name,count]) =>
+      '<tr><td>' + esc(name) + '</td><td>—</td><td>—</td><td>' + count + '</td><td><span class="status">Active</span></td></tr>'
+    ).join(''), '<tr><td colspan="5">No programme enrolments have been recorded yet.</td></tr>');
     const maxProgramme = Math.max(1, ...programmeEntries.map(x => x[1]));
     put('#admin-programme-chart', programmeEntries.length ? programmeEntries.map(([name,count]) =>
       '<div class="admin-bar-item"><strong>' + count + '</strong><div class="admin-bar-track"><i class="admin-bar-fill" style="height:' +
