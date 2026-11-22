@@ -14,30 +14,6 @@
     }, 4500);
   };
 
-  document.querySelectorAll(".js-demo-form").forEach((form) => {
-    form.addEventListener("submit", (event) => {
-      event.preventDefault();
-      showToast(form.dataset.message || "This form is a preview and is not connected yet.");
-      form.reset();
-    });
-  });
-
-  // The public enquiry form opens the visitor's email application with a prefilled message.
-  const enquiryForm = document.getElementById("cf");
-  if (enquiryForm) {
-    enquiryForm.addEventListener("submit", (event) => {
-      event.preventDefault();
-      const fields = enquiryForm.querySelectorAll("input, select, textarea");
-      const [name, email, enquiryType, phone, message] = fields;
-      const subject = encodeURIComponent(`URWA enquiry: ${enquiryType.value}`);
-      const body = encodeURIComponent(
-        `Name: ${name.value.trim()}\nEmail: ${email.value.trim()}\nPhone/WhatsApp: ${phone.value.trim() || "Not provided"}\nEnquiry: ${enquiryType.value}\n\nMessage:\n${message.value.trim()}`
-      );
-      window.location.href = `mailto:urwatulwuthqa@gmail.com?subject=${subject}&body=${body}`;
-      showToast("Your email application should open with your enquiry ready to send. Please send it there.");
-    });
-  }
-
   // Homepage monthly calendar beside “Never miss a session”.
   const calendarGrid = document.getElementById("cg");
   const monthLabel = document.getElementById("ml");
