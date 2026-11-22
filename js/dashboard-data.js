@@ -86,7 +86,7 @@ async function adminLoad(user) {
       const assessmentPeople = new Map(people.map(p => [p.id, p]));
       learningPanel.innerHTML = '<div class="panel-header"><h2>Learning Levels &amp; Assessments</h2></div>' +
         (activeCycle
-          ? '<p>Active cycle: <b>' + esc(activeCycle.cycle_name) + '</b> · ' + date(activeCycle.starts_on) + ' – ' + date(activeCycle.ends_on) + '</p>'
+          ? '<p>Active cycle: <b>' + esc(activeCycle.cycle_name) + '</b> · ' + date(activeCycle.starts_on) + ' – ' + date(activeCycle.ends_on) + ' <button class="primary-btn" type="button" data-complete-learning-cycle="' + activeCycle.id + '">Complete cycle</button></p>'
           : '<p>No active four-month cycle. Create one before educators can submit assessments.</p>') +
         (!activeCycle ? '<div class="table-controls"><input id="learning-cycle-name" placeholder="Cycle name (e.g. Jan–Apr 2027)"><input id="learning-cycle-start" type="date" aria-label="Cycle start date"><input id="learning-cycle-end" type="date" aria-label="Cycle end date"><button class="primary-btn" type="button" data-create-learning-cycle>Create active cycle</button></div>' : '') +
         (activeCycle ? '<h3>Educator level assignments · current cycle</h3><div class="table-wrapper"><table><thead><tr><th>Educator</th><th>Assigned level</th><th>Save</th></tr></thead><tbody>' +
@@ -295,6 +295,7 @@ async function initAdmin(user) {
       const adminLevel = event.target.closest('[data-admin-level]');
       const learningReview = event.target.closest('[data-learning-review]');
       const createLearningCycle = event.target.closest('[data-create-learning-cycle]');
+      const completeLearningCycle = event.target.closest('[data-complete-learning-cycle]');
       const saveEducatorLevel = event.target.closest('[data-save-educator-level]');
       if (saveEducatorLevel) {
         const cycle = await supabase.from('learning_level_cycles').select('id').eq('status', 'active').maybeSingle();
@@ -315,6 +316,13 @@ async function initAdmin(user) {
           approve_recommendation: approve,
           decision_notes: null
         });
+        if (error) fail(error);
+        await adminLoad(user);
+      }
+      if (completeLearningCycle) {
+        if (!window.confirm('Complete this learning cycle? A new cycle can then be created for the next four months.')) return;
+        const { error } = await supabase.from('learning_level_cycles').update({ status: 'completed' })
+          .eq('id', completeLearningCycle.dataset.completeLearningCycle).eq('status', 'active');
         if (error) fail(error);
         await adminLoad(user);
       }
