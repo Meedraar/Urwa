@@ -53,11 +53,32 @@ function render() {
 
     const actions = document.createElement('td');
     if (item.status === 'pending' && item.department_review_status === 'recommended') {
+      const halaqaSelect = document.createElement('select');
+      halaqaSelect.className = 'action';
+      halaqaSelect.setAttribute('aria-label', 'Choose Halaqa for ' + item.full_name);
+      const placeholder = document.createElement('option');
+      placeholder.value = '';
+      placeholder.textContent = 'Choose Halaqa';
+      halaqaSelect.append(placeholder);
+      halaqas.forEach((halaqa) => {
+        const option = document.createElement('option');
+        option.value = halaqa.id;
+        option.textContent = halaqa.name;
+        if (item.halaqa_id === halaqa.id) option.selected = true;
+        halaqaSelect.append(option);
+      });
       const approve = document.createElement('button');
       approve.type = 'button';
       approve.className = 'action';
       approve.textContent = 'Final approve';
-      approve.addEventListener('click', () => decide(item, 'approved', approve));
+      approve.addEventListener('click', () => {
+        if (!halaqaSelect.value) {
+          window.alert('Choose an active Halaqa before approving this student.');
+          halaqaSelect.focus();
+          return;
+        }
+        decide(item, 'approved', approve, halaqaSelect.value);
+      });
 
       const decline = document.createElement('button');
       decline.type = 'button';
@@ -65,7 +86,7 @@ function render() {
       decline.style.marginLeft = '5px';
       decline.textContent = 'Final decline';
       decline.addEventListener('click', () => decide(item, 'declined', decline));
-      actions.append(approve, decline);
+      actions.append(halaqaSelect, approve, decline);
     } else if (item.status === 'pending') {
       actions.textContent = 'Awaiting Admissions recommendation';
     } else {
@@ -76,7 +97,7 @@ function render() {
   });
 }
 
-async function decide(item, decision, button) {
+async function decide(item, decision, button, halaqaId = null) {
   const prompt = decision === 'approved'
     ? 'Approve the recommended application from ' + item.full_name + '?'
     : 'Decline the recommended application from ' + item.full_name + '?';
@@ -84,10 +105,10 @@ async function decide(item, decision, button) {
 
   button.disabled = true;
   try {
-    const { error } = await supabase.rpc('finalize_urwa_application', {
+    const { error } = await supabase.rpc('finalize_urwa_student_admission', {
       target_profile: item.student_id,
-      target_type: 'student',
       final_decision: decision,
+      target_halaqa: halaqaId,
       decision_note: null
     });
     if (error) throw error;
