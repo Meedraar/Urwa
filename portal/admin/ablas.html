@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>URWA | Ablas / Teachers</title>
+<title>URWA | Educators</title>
 
 <style>
 :root {
@@ -518,7 +518,7 @@ td {
       <a href="admin-dashboard.html"><span class="ico">▦</span>Dashboard</a>
       <a href="halaqas.html"><span class="ico">▤</span>Halaqas</a>
       <a href="students.html"><span class="ico">♙</span>Students</a>
-      <a class="active" href="ablas.html"><span class="ico">♙</span>Ablas / Teachers</a>
+      <a class="active" href="ablas.html"><span class="ico">♙</span>Educators</a>
       <a href="attendance.html"><span class="ico">♧</span>Attendance</a>
       <a href="programmes.html"><span class="ico">▣</span>Programmes</a>
       <a href="admissions.html"><span class="ico">♧</span>Admissions</a>
@@ -553,7 +553,7 @@ td {
       <div class="search">
         <span>⌕</span>
         <input id="topSearch"
-               placeholder="Search Ablas, programmes, halaqas...">
+               placeholder="Search educators, programmes, halaqas...">
         <span>⌘ K</span>
       </div>
 
@@ -581,15 +581,15 @@ td {
 
       <div class="page-heading">
         <div>
-          <h1 class="page-title">Ablas </h1>
+          <h1 class="page-title">Educators</h1>
           <p class="page-subtitle">
-            Manage registered Ablas, teaching programmes and halaqa assignments.
+            Manage educators, their programmes and halaqa assignments.
           </p>
         </div>
 
         <button class="primary-btn"
-                onclick="alert('Connect this button to your Abla registration workflow.')">
-          + Add Abla
+                onclick="alert('Connect this button to the educator registration workflow.')">
+          + Add Educator
         </button>
       </div>
 
@@ -598,13 +598,13 @@ td {
 
         <div class="stat-card">
           <span class="stat-icon">♙</span>
-          <div class="stat-label">Total Ablas</div>
+          <div class="stat-label">Total Educators</div>
           <div class="stat-value" id="totalAblas">—</div>
         </div>
 
         <div class="stat-card">
           <span class="stat-icon">✓</span>
-          <div class="stat-label">Active Ablas</div>
+          <div class="stat-label">Active Educators</div>
           <div class="stat-value" id="activeAblas">—</div>
         </div>
 
@@ -626,15 +626,15 @@ td {
       <section class="panel">
 
         <div class="panel-header">
-          <h2>Registered Ablas</h2>
-          <span id="ablaCount">Loading Ablas...</span>
+          <h2>Registered Educators</h2>
+          <span id="ablaCount">Loading educators...</span>
         </div>
 
         <div class="table-controls">
 
           <input type="search"
                  id="ablaSearch"
-                 placeholder="Search by Abla name or email...">
+                 placeholder="Search by educator name or email...">
 
           <select id="statusFilter">
             <option value="">All statuses</option>
@@ -658,7 +658,7 @@ td {
           <table>
             <thead>
               <tr>
-                <th>Abla Name</th>
+                <th>Educator</th>
                 <th>Email</th>
                 <th>Programme</th>
                 <th>Assigned Halaqas</th>
