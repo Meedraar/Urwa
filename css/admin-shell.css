@@ -1,0 +1,156 @@
+/* URWA shared Admin dashboard shell
+   Shared chrome only: page-specific content and functionality remain untouched. */
+:root{
+  --brand:#0e4a40;--brand-2:#176354;--accent:#e0a526;--accent-text:#98752e;
+  --canvas:#fbf6e9;--tint:#e3f0ea;--ink:#173c37;--muted:#71817c;
+  --line:#e7dfcf;--green:#287b63;--red:#c86f67;
+}
+html{scroll-behavior:smooth}
+body[data-urwa-role="admin"]{
+  margin:0!important;min-width:320px;background:var(--canvas)!important;color:var(--ink)!important;
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif!important;font-size:13px;
+}
+body[data-urwa-role="admin"] *{box-sizing:border-box}
+body[data-urwa-role="admin"] button,
+body[data-urwa-role="admin"] input,
+body[data-urwa-role="admin"] select,
+body[data-urwa-role="admin"] textarea{font:inherit}
+body[data-urwa-role="admin"] .app,
+body[data-urwa-role="admin"] .layout{
+  min-height:100vh;display:grid!important;grid-template-columns:220px minmax(0,1fr)!important;
+  background:var(--canvas)!important;
+}
+body[data-urwa-role="admin"] .app:has(.rightbar){grid-template-columns:220px minmax(0,1fr) 250px!important}
+body[data-urwa-role="admin"] .sidebar{
+  width:auto!important;min-width:0;min-height:100vh;height:100vh;position:sticky!important;inset:0 auto auto 0;
+  overflow-y:auto;background:var(--brand)!important;color:#e6e9ef!important;
+  border:0!important;border-right:0!important;padding:16px 12px!important;
+  display:flex!important;flex-direction:column;z-index:30;
+}
+body[data-urwa-role="admin"] .brand{
+  display:flex;align-items:center;gap:10px;padding:2px 5px 16px!important;
+  border-bottom:1px solid #ffffff30!important;margin:0!important;
+}
+body[data-urwa-role="admin"] .brand img,
+body[data-urwa-role="admin"] .brand-logo{
+  width:42px!important;height:42px!important;min-width:42px;object-fit:contain!important;
+  border-radius:50%!important;background:#fff!important;
+}
+body[data-urwa-role="admin"] .brand-mark{width:42px!important;height:42px!important;min-width:42px;background:#fff!important;border-radius:50%!important;overflow:hidden}
+body[data-urwa-role="admin"] .brand-name{font-size:16px!important;font-weight:800!important;letter-spacing:.12em!important;color:#fff!important;white-space:nowrap}
+body[data-urwa-role="admin"] .brand-sub{font-size:8px!important;line-height:1.4!important;color:#c9d9d3!important}
+body[data-urwa-role="admin"] .nav{
+  display:flex!important;flex-direction:column;gap:2px!important;margin:8px 0 0!important;
+}
+body[data-urwa-role="admin"] .nav a,
+body[data-urwa-role="admin"] .nav-link{
+  display:flex;align-items:center;gap:10px;text-decoration:none!important;
+  color:#e3eee9!important;padding:8px 9px!important;min-height:34px;
+  border:0!important;border-radius:8px!important;font-size:11px!important;font-weight:500;
+  background:transparent;transition:background .15s ease,color .15s ease;
+}
+body[data-urwa-role="admin"] .nav a .ico,
+body[data-urwa-role="admin"] .nav-icon{width:17px;min-width:17px;text-align:center;color:var(--accent)!important}
+body[data-urwa-role="admin"] .nav a:hover,
+body[data-urwa-role="admin"] .nav-link:hover{background:#ffffff14!important;color:#fff!important}
+body[data-urwa-role="admin"] .nav a.active,
+body[data-urwa-role="admin"] .nav-link.active{
+  background:var(--tint)!important;color:var(--brand)!important;font-weight:700!important;
+  box-shadow:inset 3px 0 var(--accent)!important;
+}
+body[data-urwa-role="admin"] .nav a.active .ico,
+body[data-urwa-role="admin"] .nav-link.active .nav-icon{color:var(--brand)!important}
+body[data-urwa-role="admin"] .nav-label{
+  color:var(--accent)!important;font-size:9px!important;font-weight:800!important;
+  letter-spacing:1.1px!important;padding:13px 9px 4px!important;
+}
+body[data-urwa-role="admin"] .sidebar-bottom{margin-top:auto!important;padding-top:14px!important}
+body[data-urwa-role="admin"] .ai-mini{
+  border:1px solid #ffffff30!important;background:var(--brand-2)!important;
+  border-radius:10px!important;padding:12px!important;margin-top:12px!important;
+}
+body[data-urwa-role="admin"] .ai-mini strong{display:block;color:var(--accent)!important;font-size:11px!important;margin-bottom:4px}
+body[data-urwa-role="admin"] .ai-mini p{font-size:10px!important;color:#e6e9ef!important;margin:0 0 9px!important}
+body[data-urwa-role="admin"] .ai-mini button,
+body[data-urwa-role="admin"] .ai-mini a{background:var(--accent)!important;color:var(--brand)!important;border:0!important;border-radius:7px;padding:8px 10px!important;font-size:10px;font-weight:700}
+body[data-urwa-role="admin"] .main{min-width:0!important;margin:0!important;width:auto!important}
+body[data-urwa-role="admin"] .topbar{
+  height:64px!important;min-height:64px;position:sticky;top:0;z-index:20;
+  display:flex;align-items:center;gap:14px;padding:0 22px!important;
+  background:#fff!important;border:0!important;border-bottom:1px solid var(--line)!important;
+}
+body[data-urwa-role="admin"] .search{
+  height:38px;display:flex;align-items:center;gap:8px;padding:0 11px!important;
+  border:1px solid var(--line)!important;border-radius:8px!important;background:#fff;
+  max-width:500px;flex:1;color:var(--muted);
+}
+body[data-urwa-role="admin"] .search input{border:0!important;outline:0;min-width:0;background:transparent;color:var(--ink);flex:1}
+body[data-urwa-role="admin"] .top-spacer,
+body[data-urwa-role="admin"] .spacer{flex:1}
+body[data-urwa-role="admin"] .icon-btn{width:36px;height:36px;border:1px solid var(--line)!important;background:#fff!important;border-radius:8px;color:var(--brand)}
+body[data-urwa-role="admin"] .avatar{width:36px;height:36px;min-width:36px;border-radius:50%!important;background:var(--tint)!important;color:var(--brand)!important;display:grid;place-items:center;padding:0!important;font-weight:800}
+body[data-urwa-role="admin"] .user{display:flex;align-items:center;gap:9px;white-space:nowrap}
+body[data-urwa-role="admin"] .user strong,
+body[data-urwa-role="admin"] .topbar b{display:block;font-size:12px;color:var(--ink)}
+body[data-urwa-role="admin"] .user small,
+body[data-urwa-role="admin"] .topbar small{color:var(--muted)!important;font-size:10px}
+body[data-urwa-role="admin"] .content{
+  width:100%;max-width:1500px!important;margin:0 auto!important;
+  padding:18px 22px 30px!important;
+}
+body[data-urwa-role="admin"] .heading,
+body[data-urwa-role="admin"] .page-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
+body[data-urwa-role="admin"] .heading h1,
+body[data-urwa-role="admin"] .page-title{font:500 1.6rem Georgia,"Times New Roman",serif!important;color:var(--brand)!important;margin:0}
+body[data-urwa-role="admin"] .sub,
+body[data-urwa-role="admin"] .page-subtitle,
+body[data-urwa-role="admin"] .lead{color:var(--muted)!important;font-size:11px;margin:4px 0 0}
+body[data-urwa-role="admin"] .panel,
+body[data-urwa-role="admin"] .stat,
+body[data-urwa-role="admin"] .stat-card,
+body[data-urwa-role="admin"] .kpi,
+body[data-urwa-role="admin"] .quick{
+  background:#fff!important;border:1px solid var(--line)!important;border-radius:12px!important;
+}
+body[data-urwa-role="admin"] .rightbar{
+  background:#fff!important;border-left:1px solid var(--line)!important;padding:16px 13px!important;
+}
+body[data-urwa-role="admin"] .btn,
+body[data-urwa-role="admin"] .primary-btn{
+  background:var(--brand)!important;color:#fff!important;border:1px solid var(--brand)!important;
+  border-radius:8px!important;padding:9px 13px!important;font-size:11px;font-weight:700;text-decoration:none;
+}
+body[data-urwa-role="admin"] .btn:hover,
+body[data-urwa-role="admin"] .primary-btn:hover{background:var(--brand-2)!important}
+body[data-urwa-role="admin"] table{color:var(--ink)}
+body[data-urwa-role="admin"] th{color:var(--muted)!important;border-color:var(--line)!important}
+body[data-urwa-role="admin"] td{border-color:#f1ede2!important}
+body[data-urwa-role="admin"] input:focus,
+body[data-urwa-role="admin"] select:focus,
+body[data-urwa-role="admin"] textarea:focus{outline:2px solid #e0a52655;outline-offset:1px}
+@media(max-width:1200px){
+  body[data-urwa-role="admin"] .app:has(.rightbar){grid-template-columns:200px minmax(0,1fr)!important}
+  body[data-urwa-role="admin"] .rightbar{grid-column:2;border-left:0!important;border-top:1px solid var(--line);display:grid;grid-template-columns:1fr 1fr;gap:18px}
+}
+@media(max-width:900px){
+  body[data-urwa-role="admin"] .content{padding:16px!important}
+  body[data-urwa-role="admin"] .stats,
+  body[data-urwa-role="admin"] .kpis{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:760px){
+  body[data-urwa-role="admin"] .app,
+  body[data-urwa-role="admin"] .layout,
+  body[data-urwa-role="admin"] .app:has(.rightbar){display:block!important}
+  body[data-urwa-role="admin"] .sidebar{
+    position:fixed!important;left:0;top:0;bottom:0;width:250px!important;height:100dvh;min-height:100dvh;
+    transform:translateX(-105%);transition:transform .22s ease;box-shadow:8px 0 28px #0003;z-index:50;
+  }
+  body[data-urwa-role="admin"].admin-menu-open .sidebar{transform:translateX(0)}
+  body[data-urwa-role="admin"].admin-menu-open:after{content:"";position:fixed;inset:0;background:#101a1880;z-index:45}
+  body[data-urwa-role="admin"] .topbar{height:60px!important;min-height:60px;padding:0 12px!important}
+  body[data-urwa-role="admin"] .content{padding:14px 12px!important}
+  body[data-urwa-role="admin"] .rightbar{display:block!important}
+  body[data-urwa-role="admin"] .admin-shell-menu{display:grid!important}
+  body[data-urwa-role="admin"] .user>div{display:none}
+}
+@media(prefers-reduced-motion:reduce){body[data-urwa-role="admin"] *{scroll-behavior:auto!important;transition:none!important}}
