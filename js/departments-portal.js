@@ -213,12 +213,17 @@ function openReview(app,people){
 async function reviewApplication(status){
   const app=state.selectedApplication;if(!app)return;
   const note=$('reviewNote').value.trim();
-  if(status==='approved'){
-    const {error:memberError}=await supabase.from('department_memberships').insert({profile_id:app.applicant_id,department_id:app.department_id,position_id:app.position_id,membership_status:'active',appointed_by:state.user.id,source_application_id:app.id});
-    if(memberError)throw memberError;
-  }
-  const {error}=await supabase.from('department_applications').update({status,reviewed_by:state.user.id,review_notes:note||null,reviewed_at:new Date().toISOString()}).eq('id',app.id);
-  if(error)throw error;$('reviewDialog').close();notify(status==='approved'?'Application approved and membership activated.':'Application updated: '+status.replaceAll('_',' '));await loadAdmin();
+  try{
+    const {error}=await supabase.rpc('review_department_application',{
+      target_application:app.id,
+      review_decision:status,
+      review_note:note||null
+    });
+    if(error)throw error;
+    $('reviewDialog').close();
+    notify(status==='approved'?'Application approved and membership activated.':'Application updated: '+status.replaceAll('_',' '));
+    await loadAdmin();
+  }catch(err){notify(err.message||'Unable to save the department application decision.',true);}
 }
 async function appointLeader(e){
   e.preventDefault();const button=e.submitter;button.disabled=true;
