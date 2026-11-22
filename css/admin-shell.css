@@ -154,3 +154,119 @@ body[data-urwa-role="admin"] textarea:focus{outline:2px solid #e0a52655;outline-
   body[data-urwa-role="admin"] .user>div{display:none}
 }
 @media(prefers-reduced-motion:reduce){body[data-urwa-role="admin"] *{scroll-behavior:auto!important;transition:none!important}}
+
+
+/* Final shared-shell normalization: applied after every page's legacy inline styles. */
+body[data-urwa-role="admin"] .app,
+body[data-urwa-role="admin"] .layout {
+  display:grid!important;
+  grid-template-columns:220px minmax(0,1fr)!important;
+  min-height:100vh!important;
+  gap:0!important;
+}
+body[data-urwa-role="admin"] .app:has(.rightbar) {
+  grid-template-columns:220px minmax(0,1fr) 250px!important;
+}
+body[data-urwa-role="admin"] .sidebar {
+  width:220px!important;
+  min-width:220px!important;
+  max-width:220px!important;
+  height:100vh!important;
+  min-height:100vh!important;
+  margin:0!important;
+  position:sticky!important;
+  top:0!important;
+  left:auto!important;
+  padding:16px 12px!important;
+  background:var(--brand)!important;
+}
+body[data-urwa-role="admin"] .main {
+  width:auto!important;
+  max-width:none!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:0!important;
+}
+body[data-urwa-role="admin"] .topbar {
+  width:100%!important;
+  min-height:64px!important;
+  height:64px!important;
+  margin:0!important;
+  padding:0 22px!important;
+  border-radius:0!important;
+}
+body[data-urwa-role="admin"] .content {
+  width:100%!important;
+  max-width:1500px!important;
+  margin:0 auto!important;
+  padding:18px 22px 30px!important;
+}
+body[data-urwa-role="admin"] .admin-shell-menu,
+body[data-urwa-role="admin"] .menu-btn {
+  display:none;
+  flex:0 0 38px;
+  width:38px!important;
+  height:38px!important;
+  place-items:center;
+  border:1px solid var(--line)!important;
+  border-radius:8px!important;
+  background:var(--tint)!important;
+  color:var(--brand)!important;
+  cursor:pointer;
+}
+body[data-urwa-role="admin"] .nav { margin-top:8px!important; }
+body[data-urwa-role="admin"] .nav a { min-height:34px!important; }
+body[data-urwa-role="admin"] .nav-label {
+  display:block!important;
+  color:var(--accent)!important;
+  padding:13px 9px 4px!important;
+}
+@media(max-width:1200px) {
+  body[data-urwa-role="admin"] .sidebar { width:200px!important;min-width:200px!important;max-width:200px!important; }
+  body[data-urwa-role="admin"] .app,
+  body[data-urwa-role="admin"] .layout { grid-template-columns:200px minmax(0,1fr)!important; }
+  body[data-urwa-role="admin"] .app:has(.rightbar) { grid-template-columns:200px minmax(0,1fr)!important; }
+}
+@media(max-width:760px) {
+  body[data-urwa-role="admin"] .app,
+  body[data-urwa-role="admin"] .layout,
+  body[data-urwa-role="admin"] .app:has(.rightbar) {
+    display:block!important;
+    min-height:100vh!important;
+  }
+  body[data-urwa-role="admin"] .sidebar {
+    position:fixed!important;
+    inset:0 auto 0 0!important;
+    width:250px!important;
+    min-width:250px!important;
+    max-width:250px!important;
+    height:100dvh!important;
+    min-height:100dvh!important;
+    transform:translateX(-105%);
+    transition:transform .22s ease;
+    z-index:60!important;
+  }
+  body[data-urwa-role="admin"].admin-menu-open .sidebar { transform:translateX(0); }
+  body[data-urwa-role="admin"].admin-menu-open::after {
+    content:"";
+    position:fixed;
+    inset:0;
+    background:rgba(10,20,17,.48);
+    z-index:55;
+  }
+  body[data-urwa-role="admin"] .topbar {
+    position:sticky!important;
+    top:0!important;
+    z-index:40!important;
+    height:60px!important;
+    min-height:60px!important;
+    padding:0 12px!important;
+    margin:0!important;
+  }
+  body[data-urwa-role="admin"] .admin-shell-menu,
+  body[data-urwa-role="admin"] .menu-btn { display:grid!important; }
+  body[data-urwa-role="admin"] .content { padding:14px 12px 24px!important; }
+  body[data-urwa-role="admin"] .rightbar { display:block!important; }
+  body[data-urwa-role="admin"] .user>div,
+  body[data-urwa-role="admin"] .admin-profile>div:last-child { display:none!important; }
+}
