@@ -222,7 +222,7 @@ async function adminLoad(user) {
     status('admin-live-status', 'Supabase connection active',
       (isSuperAdmin ? 'Super Admin access · ' : 'Standard Admin access · ') +
       students.length + ' students · ' + pending.length + ' pending applications · ' +
-      teachers.length + ' Ablas · ' + halaqas.length + ' halaqas.');
+      teachers.length + ' educators · ' + halaqas.length + ' halaqas.');
   } catch (error) {
     status('admin-live-status', 'Unable to load URWA records', error.message, true);
   }
@@ -337,7 +337,7 @@ async function studentLoad(user) {
   const panel = $('#student-assignments-list');
   if (panel) panel.innerHTML = assignments.length ? assignments.map(a =>
     '<article><b>' + esc(a.title) + '</b><p>' + esc(a.assignment_type || 'Learning task') +
-    ' · Due ' + date(a.due_date) + '</p><p>' + esc(a.instructions || 'Follow your Abla’s instructions.') +
+    ' · Due ' + date(a.due_date) + '</p><p>' + esc(a.instructions || 'Follow your educator’s instructions.') +
     '</p></article>').join('') : '<b>No assignments yet</b><p>Your educator’s assignments will appear here.</p>';
   const attendance = attendanceQ.data || [];
   const rate = attendance.length ? Math.round(attendance.filter(a => ['present', 'late'].includes(a.status)).length / attendance.length * 100) + '%' : 'No records';
