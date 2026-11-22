@@ -35,7 +35,7 @@ begin
 
   v_status := case when decision = 'approve' then 'approved' else 'cancelled' end;
 
-  update public.profiles set status = v_status, updated_at = now()
+  update public.profiles set status = v_status::public.account_status, updated_at = now()
   where id = target_user_id;
 
   if v_profile.role = 'student' then
