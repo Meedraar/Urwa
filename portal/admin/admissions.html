@@ -14,5 +14,5 @@
 <script type="module" src="../../js/admin-enquiries.js"></script>
 <script>
 document.querySelectorAll('.nav a').forEach(a=>a.classList.toggle('active',a.getAttribute('href')===location.pathname.split('/').pop()));
-document.getElementById('topSearch').addEventListener('input',e=>document.getElementById('search').value=e.target.value);
+document.getElementById('topSearch').addEventListener('input',e=>{const search=document.getElementById('search');search.value=e.target.value;search.dispatchEvent(new Event('input'));});
 </script></body></html>
