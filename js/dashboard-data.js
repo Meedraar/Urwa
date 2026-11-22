@@ -29,17 +29,18 @@ async function currentUser() {
 
 async function adminLoad(user) {
   try {
-    const [peopleQ, enrollQ, halaqaQ, assignmentQ, attendanceQ, teacherAppsQ] = await Promise.all([
+    const [peopleQ, enrollQ, halaqaQ, assignmentQ, attendanceQ, teacherAppsQ, departmentAppsQ] = await Promise.all([
       supabase.from('profiles').select('id,full_name,email,role,status,admin_level,created_at'),
       supabase.from('student_enrollments').select('*'),
       supabase.from('halaqas').select('*').order('name'),
       supabase.from('teacher_assignments').select('*'),
       supabase.from('attendance').select('id,status'),
-      supabase.from('teacher_applications').select('id,area_of_interest,teaching_background,availability')
+      supabase.from('teacher_applications').select('id,area_of_interest,teaching_background,availability,status,admin_decision'),
+      supabase.from('department_applications').select('id,applicant_id,department_id,position_id,status,admin_decision,created_at,departments(name),department_positions(title)')
     ]);
-    [peopleQ, enrollQ, halaqaQ, assignmentQ, attendanceQ, teacherAppsQ].forEach(q => { if (q.error) fail(q.error); });
+    [peopleQ, enrollQ, halaqaQ, assignmentQ, attendanceQ, teacherAppsQ, departmentAppsQ].forEach(q => { if (q.error) fail(q.error); });
     const people = peopleQ.data || [], enroll = enrollQ.data || [], halaqas = halaqaQ.data || [];
-    const assignments = assignmentQ.data || [], attendance = attendanceQ.data || [], teacherApps = teacherAppsQ.data || [];
+    const assignments = assignmentQ.data || [], attendance = attendanceQ.data || [], teacherApps = teacherAppsQ.data || [], departmentApps = departmentAppsQ.data || [];
     const students = people.filter(p => p.role === 'student');
     const teachers = people.filter(p => p.role === 'teacher');
     const byStudent = new Map(enroll.map(e => [e.student_id, e]));
@@ -64,6 +65,41 @@ async function adminLoad(user) {
     put('#admin-account-status-body', accountRows, '<tr><td colspan="5">No accounts found.</td></tr>');
 
     const pending = students.filter(p => (byStudent.get(p.id)?.status || p.status) === 'pending');
+
+    // One central approval queue. Departmental reviewers cannot activate accounts.
+    let centralApprovalPanel = $('#admin-central-approvals');
+    if (!centralApprovalPanel && $('#admin-admissions-body')) {
+      centralApprovalPanel = document.createElement('section');
+      centralApprovalPanel.id = 'admin-central-approvals';
+      centralApprovalPanel.className = 'panel';
+      $('#admin-admissions-body').closest('section')?.before(centralApprovalPanel);
+    }
+    const pendingMembers = people.filter(p =>
+      ['student','teacher','department_member'].includes(p.role) && p.status === 'pending'
+    );
+    if (centralApprovalPanel) {
+      const centralRows = pendingMembers.map(p => {
+        const enrollment = byStudent.get(p.id) || {};
+        const teacherApplication = teacherApps.find(a => a.id === p.id) || {};
+        const departmentApplication = departmentApps.find(a => a.applicant_id === p.id);
+        const kind = p.role === 'student' ? 'Student' : p.role === 'teacher' ? 'Educator' : 'Departmental member';
+        const details = p.role === 'student'
+          ? (enrollment.programme || 'Student admission')
+          : p.role === 'teacher'
+            ? (teacherApplication.area_of_interest || 'Educator application')
+            : (departmentApplication?.departments?.name || 'Department application') +
+              (departmentApplication?.department_positions?.title ? ' · ' + departmentApplication.department_positions.title : '');
+        return '<tr><td><b>' + esc(p.full_name || '—') + '</b><small>' + esc(p.email || '') +
+          '</small></td><td>' + kind + '</td><td>' + esc(details) + '</td><td>Pending</td><td>' +
+          '<button class="urwa-btn urwa-btn-primary urwa-btn-small" type="button" data-central-review="' + p.id + '" data-decision="approve">Approve</button> ' +
+          '<button class="urwa-btn urwa-btn-outline urwa-btn-small" type="button" data-central-review="' + p.id + '" data-decision="reject">Reject</button></td></tr>';
+      }).join('');
+      centralApprovalPanel.innerHTML = '<div class="panel-header"><h2>Central Membership Approvals</h2></div>' +
+        '<p>All student, educator and departmental membership applications are approved by URWA Admin. Departmental roles and educators cannot activate accounts or approve applicants.</p>' +
+        '<div class="table-wrapper"><table><thead><tr><th>Applicant</th><th>Application type</th><th>Details</th><th>Status</th><th>Admin decision</th></tr></thead><tbody>' +
+        (centralRows || '<tr><td colspan="5">No pending membership applications.</td></tr>') +
+        '</tbody></table></div>';
+    }
 
     // Learning level cycle and assessment recommendation review (admin only).
     let learningPanel = $('#learning-level-management');
@@ -337,23 +373,33 @@ async function initAdmin(user) {
         if (error) fail(error);
         await adminLoad(user);
       }
+      const centralReview = event.target.closest('[data-central-review]');
+      if (centralReview) {
+        const { error } = await supabase.rpc('admin_review_membership_application', {
+          target_user_id: centralReview.dataset.centralReview,
+          decision: centralReview.dataset.decision,
+          decision_notes: null
+        });
+        if (error) fail(error);
+        await adminLoad(user);
+      }
       if (accept || decline) {
         const id = (accept || decline).dataset[accept ? 'accept' : 'decline'];
-        const halaqaId = $('[data-admission-halaqa="' + id + '"]')?.value || null;
-        if (accept && !halaqaId) throw new Error('Choose a halaqa before accepting.');
-        const next = accept ? 'approved' : 'cancelled';
-        const { error } = await supabase.from('student_enrollments').update({
-          status: next, halaqa_id: halaqaId, reviewed_by: user.id, reviewed_at: new Date().toISOString()
-        }).eq('student_id', id);
+        const { error } = await supabase.rpc('admin_review_membership_application', {
+          target_user_id: id,
+          decision: accept ? 'approve' : 'reject',
+          decision_notes: null
+        });
         if (error) fail(error);
-        const profileUpdate = await supabase.from('profiles').update({ status: next }).eq('id', id);
-        if (profileUpdate.error) fail(profileUpdate.error);
         await adminLoad(user);
       }
       if (approve || cancelTeacher) {
         const teacherId = approve ? approve.dataset.approveTeacher : cancelTeacher.dataset.cancelTeacher;
-        const nextStatus = approve ? 'approved' : 'cancelled';
-        const { error } = await supabase.from('profiles').update({ status: nextStatus }).eq('id', teacherId);
+        const { error } = await supabase.rpc('admin_review_membership_application', {
+          target_user_id: teacherId,
+          decision: approve ? 'approve' : 'reject',
+          decision_notes: null
+        });
         if (error) fail(error);
         await adminLoad(user);
       }
