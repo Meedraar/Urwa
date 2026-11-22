@@ -1,24 +1,537 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
   <title>About URWA | Urwatul Wuthqaa</title>
-  <meta name="description" content="Discover the story, vision, mission and values of URWA – Urwatul Wuthqaa, a Qur’an learning community rooted in connection and service.">
+  <meta name="description" content="Discover the story, vision and journey of URWA – Urwatul Wuthqaa, a Qur'an learning community rooted in knowledge, connection and sisterhood.">
+
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/pages.css">
   <link rel="stylesheet" href="/css/urwa-theme.css?v=7">
+
+  <style>
+    /* ======================================
+       URWA ABOUT PAGE
+    ====================================== */
+
+    :root {
+      --about-green: #0e4a40;
+      --about-deep: #092f29;
+      --about-gold: #e0a526;
+      --about-gold-light: #f2c94c;
+      --about-cream: #fbf6e9;
+      --about-mint: #e3f0ea;
+      --about-text: #53645c;
+      --about-white: #ffffff;
+    }
+
+    body {
+      background: var(--about-white);
+    }
+
+    .about-page {
+      overflow: hidden;
+    }
+
+    .about-page .section-wrap {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    /* HERO */
+
+    .about-hero {
+      position: relative;
+      overflow: hidden;
+      padding: 105px 20px 110px;
+      color: var(--about-cream);
+      background:
+        radial-gradient(circle at 85% 20%, rgba(224,165,38,.12), transparent 30%),
+        linear-gradient(135deg, var(--about-green), var(--about-deep));
+      text-align: center;
+    }
+
+    .about-hero::before,
+    .about-hero::after {
+      content: "";
+      position: absolute;
+      border: 1px solid rgba(242,201,76,.2);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .about-hero::before {
+      width: 430px;
+      height: 430px;
+      top: -240px;
+      right: -100px;
+    }
+
+    .about-hero::after {
+      width: 350px;
+      height: 350px;
+      bottom: -230px;
+      left: -90px;
+    }
+
+    .about-hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 850px;
+      margin: auto;
+    }
+
+    .about-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--about-gold-light);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+
+    .about-eyebrow::before,
+    .about-eyebrow::after {
+      content: "";
+      width: 25px;
+      height: 1px;
+      background: var(--about-gold);
+    }
+
+    .about-hero h1 {
+      color: var(--about-cream);
+      font-family: Georgia, serif;
+      font-size: clamp(39px, 6vw, 66px);
+      font-weight: 500;
+      line-height: 1.15;
+      margin: 0 0 20px;
+    }
+
+    .about-hero .hero-subtitle {
+      color: var(--about-gold-light);
+      font-family: Georgia, serif;
+      font-size: clamp(16px, 2vw, 20px);
+      font-style: italic;
+      margin: 0 0 25px;
+    }
+
+    .about-hero .hero-description {
+      max-width: 730px;
+      margin: auto;
+      color: rgba(251,246,233,.88);
+      font-size: 16px;
+      line-height: 1.95;
+    }
+
+    .hero-decoration {
+      width: 55px;
+      height: 3px;
+      margin: 28px auto 0;
+      background: var(--about-gold);
+      border-radius: 5px;
+    }
+
+    /* DISCOVER */
+
+    .about-discover {
+      padding: 82px 20px;
+      background: var(--about-cream);
+      text-align: center;
+    }
+
+    .about-section-label {
+      color: #a97b1b;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .about-discover h2,
+    .about-beginning h2,
+    .about-timeline-section h2 {
+      color: var(--about-green);
+      font-family: Georgia, serif;
+      font-size: clamp(30px, 4vw, 43px);
+      font-weight: 500;
+      line-height: 1.25;
+      margin: 0 0 18px;
+    }
+
+    .discover-description {
+      max-width: 680px;
+      margin: 0 auto 30px;
+      color: var(--about-text);
+      font-size: 16px;
+      line-height: 1.85;
+    }
+
+    .about-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .about-action {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 48px;
+      padding: 13px 25px;
+      border-radius: 7px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      transition: .25s ease;
+    }
+
+    .about-action.gold {
+      background: var(--about-gold);
+      color: #172d25;
+      border: 1px solid var(--about-gold);
+    }
+
+    .about-action.gold:hover {
+      background: var(--about-gold-light);
+      transform: translateY(-3px);
+    }
+
+    .about-action.outline {
+      background: transparent;
+      color: var(--about-green);
+      border: 1px solid var(--about-green);
+    }
+
+    .about-action.outline:hover {
+      background: var(--about-green);
+      color: white;
+      transform: translateY(-3px);
+    }
+
+    /* BEGINNING */
+
+    .about-beginning {
+      padding: 90px 20px 85px;
+      background: #fff;
+    }
+
+    .beginning-heading {
+      max-width: 800px;
+      margin-bottom: 35px;
+    }
+
+    .beginning-heading h2 {
+      margin-bottom: 15px;
+    }
+
+    .beginning-heading h3 {
+      color: var(--about-green);
+      font-family: Georgia, serif;
+      font-size: 23px;
+      font-weight: 500;
+      line-height: 1.5;
+      margin: 0 0 15px;
+    }
+
+    .beginning-heading p {
+      color: var(--about-text);
+      font-size: 16px;
+      line-height: 1.95;
+      margin: 0;
+    }
+
+    .beginning-ornament {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 0 0 30px;
+    }
+
+    .beginning-ornament span {
+      width: 42px;
+      height: 2px;
+      background: var(--about-gold);
+    }
+
+    .beginning-ornament i {
+      width: 8px;
+      height: 8px;
+      background: var(--about-gold);
+      transform: rotate(45deg);
+    }
+
+    /* STATISTICS */
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 20px;
+      margin: 40px 0 75px;
+    }
+
+    .about-stat-card {
+      position: relative;
+      overflow: hidden;
+      padding: 32px 20px 28px;
+      background: var(--about-cream);
+      border: 1px solid #eee5d2;
+      border-bottom: 4px solid var(--about-gold);
+      border-radius: 13px;
+      text-align: center;
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    .about-stat-card::before {
+      content: "";
+      position: absolute;
+      width: 90px;
+      height: 90px;
+      top: -52px;
+      right: -40px;
+      border: 1px solid rgba(224,165,38,.25);
+      border-radius: 50%;
+    }
+
+    .about-stat-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 15px 30px rgba(14,74,64,.10);
+    }
+
+    .about-stat-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 43px;
+      height: 43px;
+      margin: 0 auto 14px;
+      border-radius: 50%;
+      background: var(--about-mint);
+      color: var(--about-green);
+      font-size: 19px;
+    }
+
+    .about-stat-number {
+      color: var(--about-green);
+      font-family: Georgia, serif;
+      font-size: 39px;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 9px;
+    }
+
+    .about-stat-card h4 {
+      color: var(--about-green);
+      font-size: 15px;
+      margin: 0 0 9px;
+    }
+
+    .about-stat-card p {
+      color: #737c75;
+      font-size: 13px;
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    /* TIMELINE */
+
+    .about-timeline-section {
+      padding-top: 5px;
+    }
+
+    .timeline-intro {
+      color: var(--about-text);
+      font-size: 15px;
+      line-height: 1.8;
+      margin: 0 0 32px;
+    }
+
+    .about-timeline {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 15px;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding: 23px 17px;
+      background: #f5f8f5;
+      border: 1px solid #e3f0ea;
+      border-radius: 11px;
+      transition: .25s ease;
+    }
+
+    .timeline-item:hover {
+      border-color: var(--about-gold);
+      transform: translateY(-4px);
+    }
+
+    .timeline-dot {
+      width: 13px;
+      height: 13px;
+      background: var(--about-gold);
+      border: 3px solid white;
+      border-radius: 50%;
+      box-shadow: 0 0 0 2px var(--about-gold);
+      margin-bottom: 18px;
+    }
+
+    .timeline-item b {
+      color: var(--about-green);
+      font-family: Georgia, serif;
+      font-size: 22px;
+    }
+
+    .timeline-item p {
+      color: #68736c;
+      font-size: 13px;
+      line-height: 1.75;
+      margin: 10px 0 0;
+    }
+
+    /* FINAL CTA */
+
+    .about-final-section {
+      padding: 35px 20px 85px;
+      background: #fff;
+    }
+
+    .about-final-cta {
+      position: relative;
+      overflow: hidden;
+      padding: 65px 30px;
+      background:
+        radial-gradient(circle at 95% 10%, rgba(224,165,38,.13), transparent 30%),
+        linear-gradient(120deg, var(--about-green), var(--about-deep));
+      border-radius: 17px;
+      text-align: center;
+    }
+
+    .about-final-cta .about-section-label {
+      color: var(--about-gold-light);
+    }
+
+    .about-final-cta h2 {
+      color: var(--about-cream);
+      font-family: Georgia, serif;
+      font-size: clamp(29px, 4vw, 42px);
+      font-weight: 500;
+      margin: 10px 0 15px;
+    }
+
+    .about-final-cta p {
+      max-width: 620px;
+      margin: 0 auto 26px;
+      color: rgba(251,246,233,.85);
+      font-size: 15px;
+      line-height: 1.85;
+    }
+
+    .about-final-cta .about-action.outline {
+      color: var(--about-cream);
+      border-color: rgba(251,246,233,.65);
+    }
+
+    .about-final-cta .about-action.outline:hover {
+      background: var(--about-cream);
+      color: var(--about-green);
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 900px) {
+      .about-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .about-timeline {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 600px) {
+      .about-hero {
+        padding: 75px 20px 85px;
+      }
+
+      .about-discover {
+        padding: 65px 20px;
+      }
+
+      .about-beginning {
+        padding: 65px 20px;
+      }
+
+      .about-stats {
+        gap: 12px;
+      }
+
+      .about-stat-card {
+        padding: 24px 12px;
+      }
+
+      .about-stat-number {
+        font-size: 32px;
+      }
+
+      .about-stat-card h4 {
+        font-size: 13px;
+      }
+
+      .about-stat-card p {
+        font-size: 12px;
+      }
+
+      .about-timeline {
+        grid-template-columns: 1fr;
+      }
+
+      .timeline-item {
+        padding: 20px;
+      }
+
+      .about-final-cta {
+        padding: 45px 20px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .about-actions {
+        flex-direction: column;
+      }
+
+      .about-action {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
+
 <body>
+
+  <!-- HEADER -->
   <header>
     <div class="wrap bar">
+
       <a class="brand" href="index.html" aria-label="URWA home">
         <img src="assets/logo.jpg" alt="URWA logo">
-        <span><b>URWA</b><small>URWATUL WUTHQAA</small></span>
+        <span>
+          <b>URWA</b>
+          <small>URWATUL WUTHQAA</small>
+        </span>
       </a>
+
       <nav id="nav" aria-label="Main navigation">
         <a href="index.html">Home</a>
         <a href="about.html" aria-current="page">About Us</a>
+
         <details>
           <summary>Programmes</summary>
           <div class="dd">
@@ -26,153 +539,252 @@
             <a href="classes.html">Classes and schedules</a>
           </div>
         </details>
+
         <a href="teachers.html">Our Educators</a>
         <a href="events.html">Events</a>
         <a href="contact.html">Contact</a>
       </nav>
+
       <div class="acts">
-        <a class="btn gold" href="portal/student/index.html" style="padding:9px 16px">Join Us</a>
-        <button id="burger" aria-label="Open navigation" aria-expanded="false" type="button">☰</button>
+        <a class="btn gold" href="portal/student/index.html" style="padding:9px 16px">
+          Join Us
+        </a>
+
+        <button
+          id="burger"
+          aria-label="Open navigation"
+          aria-expanded="false"
+          type="button">
+          ☰
+        </button>
       </div>
+
     </div>
   </header>
 
-  <main>
-    <section class="page-hero">
-      <div class="wrap">
-        <h2>The story behind the sisterhood</h2>
-        <div class="kicker"> One faith. One sisterhood. One journey towards Allah.</div>
+
+  <main class="about-page">
+
+    <!-- 1. OUR STORY HERO -->
+    <section class="about-hero">
+      <div class="about-hero-inner">
+
+        <h1>The story behind our beginning</h1>
+
+        <p class="hero-description">
+            URWA began with five sisters who wanted the Qur’an to stay
+            part of everyday life, not only Ramadan. In Shawwal 1442,
+            twelve sisters gathered for the first halaqah. Brothers’
+            halaqahs were established in 1446 AH, and now include
+            several halaqahs. By Allah’s permission, that beginning
+            grew into a wider family connected by the Book of Allah.
+        </p>
+
         
-        <p class="lead">
-          URWA Sisterhood was born from a vision of bringing Muslim women together through the love of Allah and His Qur’an. A space where sisters learn, grow, support one another and build friendships rooted in faith.
-          More than a community, URWA is an amanah — a shared journey of knowledge, sisterhood and service, creating a lasting legacy for generations to come.
-         
-        <div class="row">
-          <a class="btn gold" href="programmes.html">Explore our programmes</a>
-          <a class="btn line" href="enroll.html">Become part of URWA</a>
+        <div class="about-actions">
+          <a class="about-action gold" href="programmes.html">
+            Explore our programmes
+          </a>
+
+          <a class="about-action outline" href="enroll.html">
+            Become part of URWA
+          </a>
         </div>
+        <div class="hero-decoration"></div>
+        
+
       </div>
     </section>
 
-    <section>
-      <div class="wrap">
-        <div class="section-heading">
-          <h2>Our beginning</h2>
-          <div class="kicker">A small circle with a shared intention.</div>
-          <p class="lead">URWA began with five sisters who wanted the Qur’an to remain part of everyday life, not only Ramadan. In Shawwal 1442, it grew into twelve sisters gathering for their first halaqah by the permission of Allah, that beginning grew into a wider community connected by the Book of Allah.</p>
-        </div>
-        <div class="about-stats grid g3">
-           <article class="card"><div class="big">5</div><h3>Founding sisters</h3><p>The founding sisters in 2021.</p></article>
-          <article class="card"><div class="big">12</div><h3>First halaqah</h3><p>The first halaqah gathered in 2021.</p></article>
-          <article class="card"><div class="big">600+</div><h3>Community members</h3><p>A growing community learning and serving together.</p></article>
-          <article class="card"><div class="big">1,000+</div><h3>Lives touched</h3><p>People reached through the URWA journey.</p></article>
-          <article class="card"><div class="big">32</div><h3>Sisters’ halaqahs</h3><p>Learning circles supported by dedicated educators.</p></article>
-        </div>
-        <p class="form-note about-stat-note">Community figures are carried over from the existing URWA website draft and should be confirmed before publication.</p>
+
       </div>
     </section>
 
-    <section class="alt">
-      <div class="wrap">
-        <div class="section-heading">
-          <h2>Our journey</h2>
-          <div class="kicker">One step at a time.</div>
-          <p class="lead">From the first gathering to a wider learning community, each stage has been an opportunity to learn, serve and grow.</p>
-        </div>
-        <div class="about-timeline">
-          <article class="about-milestone"><span>2021</span><h3>The first halaqah</h3><p>Twelve sisters gathered for the first URWA halaqah.</p></article>
-          <article class="about-milestone"><span>2022</span><h3>A growing circle</h3><p>The community grew to approximately fifty members.</p></article>
-          <article class="about-milestone"><span>2023–2024</span><h3>Learning and gathering</h3><p>Activities included the Day of Arafah, Eid celebrations, Memorise and Rise, and December retreats.</p></article>
-          <article class="about-milestone"><span>2025</span><h3>More structure</h3><p>Structured learning levels, teams and brothers’ halaqahs became part of the journey.</p></article>
-          <article class="about-milestone"><span>2026</span><h3>A wider community</h3><p>The URWA community continued growing, reaching more than six hundred members.</p></article>
-        </div>
-      </div>
-    </section>
 
-    <section>
-      <div class="wrap">
-        <div class="section-heading">
-          <h2>Our foundation</h2>
-          <div class="kicker">Guided by the character of the Messenger ﷺ.</div>
-          <p class="lead">Our values are inspired by the qualities described in Surah At-Tawbah, verse 128.</p>
-        </div>
-        <div class="verse about-verse">
-          <div class="ar" lang="ar" dir="rtl">لَقَدْ جَاءَكُمْ رَسُولٌ مِّنْ أَنفُسِكُمْ عَزِيزٌ عَلَيْهِ مَا عَنِتُّمْ حَرِيصٌ عَلَيْكُم بِالْمُؤْمِنِينَ رَءُوفٌ رَّحِيمٌ</div>
-          <p class="verse-reference">Surah At-Tawbah, 9:128</p>
-        </div>
-        <div class="grid g5 about-values">
-          <article class="card val"><div class="ar" lang="ar" dir="rtl">مِّنْ أَنفُسِكُمْ</div><b>Belonging</b><p>A community where people feel connected and included.</p></article>
-          <article class="card val"><div class="ar" lang="ar" dir="rtl">عَزِيزٌ عَلَيْهِ مَا عَنِتُّمْ</div><b>Empathy</b><p>Recognising difficulty and responding with care.</p></article>
-          <article class="card val"><div class="ar" lang="ar" dir="rtl">حَرِيصٌ عَلَيْكُم</div><b>Concern</b><p>Sincere concern for one another’s well-being.</p></article>
-          <article class="card val"><div class="ar" lang="ar" dir="rtl">رَءُوفٌ</div><b>Kindness</b><p>Choosing gentleness in our words and actions.</p></article>
-          <article class="card val"><div class="ar" lang="ar" dir="rtl">رَّحِيمٌ</div><b>Compassion</b><p>Showing mercy through practical support.</p></article>
-        </div>
-      </div>
-    </section>
+    <!-- 3. OUR BEGINNING -->
+    <section class="about-beginning" id="story">
+      <div class="section-wrap">
 
-    <section class="alt">
-      <div class="wrap">
-        <div class="section-heading">
-          <h2>Our direction</h2>
-          <div class="kicker">Our vision, mission and purpose.</div>
-        </div>
-        <div class="grid g3 about-purpose">
-          <article class="card"><h3>Our vision</h3><p>Creating meaningful connections with the Qur’an and its people, fostering growth and empowering a community that lives by its teachings.</p></article>
-          <article class="card"><h3>Our mission</h3><p>To have the Qur’an recited in every Muslim home in Kenya, touching homes around the globe and transforming them into stars on earth.</p></article>
-          <article class="card"><h3>Our purpose</h3><p>To bring people together through Qur’an learning, beneficial knowledge and a shared commitment to living by its guidance.</p></article>
-        </div>
-      </div>
-    </section>
+        <div class="beginning-heading">
+        <!-- 4. STATISTICS -->
+        <div class="about-stats">
 
-    <section>
-      <div class="wrap">
-        <div class="section-heading">
-          <h2>What we stand for</h2>
-          <div class="kicker">Principles that shape our community.</div>
-        </div>
-        <div class="grid g5">
-          <article class="card"><h3>Qur’an-centred lives</h3><p>Keeping recitation, reflection and connection with the Qur’an at the heart of everyday life.</p></article>
-          <article class="card"><h3>Ikhlas</h3><p>Striving to make our efforts sincere and for the sake of Allah.</p></article>
-          <article class="card"><h3>Community and unity</h3><p>Encouraging one another and growing through beneficial companionship.</p></article>
-          <article class="card"><h3>Inclusivity</h3><p>Welcoming learners at different stages, backgrounds and locations.</p></article>
-          <article class="card"><h3>Personal growth</h3><p>Making space for continuous learning, reflection and improvement.</p></article>
-        </div>
-      </div>
-    </section>
-
-    <section class="alt">
-      <div class="wrap">
-        <div class="band about-cta">
-          <div>
-            <div class="kicker about-cta-kicker">Your journey can begin here</div>
-            <h2>There is a place for you in the circle.</h2>
-            <p>Explore the learning opportunities at URWA and take your next step with the Qur’an.</p>
+          <div class="about-stat-card">
+            <div class="about-stat-icon">✦</div>
+            <div class="about-stat-number">12</div>
+            <h4>Founding Sisters</h4>
+            <p>The first halaqah launched in May 2021.</p>
           </div>
-          <div class="row about-cta-actions">
-            <a class="btn gold" href="enroll.html">Join Us</a>
-            <a class="btn line about-cta-line" href="contact.html">Get in touch</a>
+
+          <div class="about-stat-card">
+            <div class="about-stat-icon">♡</div>
+            <div class="about-stat-number">600+</div>
+            <h4>Active Members</h4>
+            <p>Sisters and brothers learning together in regular halaqahs.</p>
           </div>
+
+          <div class="about-stat-card">
+            <div class="about-stat-icon">✧</div>
+            <div class="about-stat-number">1,000+</div>
+            <h4>Lives Touched</h4>
+            <p>Sisters and brothers who have been part of the journey.</p>
+          </div>
+
+          <div class="about-stat-card">
+            <div class="about-stat-icon">❋</div>
+            <div class="about-stat-number">30+</div>
+            <h4>Halaqahs</h4>
+            <p>Supported by dedicated educators and administrators.</p>
+          </div>
+
         </div>
+
+
+        <!-- 5. OUR JOURNEY -->
+        <section class="about-timeline-section">
+
+          <div class="about-section-label">Our milestones</div>
+
+          <h2>Our journey through the years</h2>
+
+          <p class="timeline-intro">
+            Every milestone represents the dedication, growth and
+            efforts of the people who have helped build this community.
+          </p>
+
+          <div class="about-timeline">
+
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <b>2021</b>
+              <p>Our first halaqah began with twelve sisters.</p>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <b>2022</b>
+              <p>Our community grew to approximately fifty members.</p>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <b>2023–2024</b>
+              <p>Day of Arafah, Eid celebrations, Memorise and Rise, and December retreats.</p>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <b>2025</b>
+              <p>Structured learning levels, teams and brothers’ halaqahs.</p>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <b>2026</b>
+              <p>Our community grew to over six hundred members.</p>
+            </div>
+
+          </div>
+
+        </section>
+
       </div>
     </section>
+
+
+    <!-- 6. FINAL CALL TO ACTION -->
+    <section class="about-final-section">
+      <div class="section-wrap">
+
+        <div class="about-final-cta">
+
+          <div class="about-section-label">
+            Your journey can begin here
+          </div>
+
+          <h2>There is a place for you in the circle.</h2>
+
+          <p>
+            Explore the learning opportunities at URWA and take your
+            next step with the Qur’an. Join a community built on
+            knowledge, sincerity, sisterhood and service.
+          </p>
+
+          <div class="about-actions">
+
+            <a class="about-action gold" href="enroll.html">
+              Join URWA
+            </a>
+
+            <a class="about-action outline" href="contact.html">
+              Get in touch
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
   </main>
 
+
+  <!-- FOOTER -->
   <footer>
     <div class="wrap">
+
       <div class="fg">
+
         <div>
-          <a class="brand" href="index.html"><img src="assets/logo.jpg" alt="URWA logo"><span><b>URWA</b><small>URWATUL WUTHQAA</small></span></a>
-          <p class="footer-intro">A Qur’an learning community nurturing meaningful connections with the Qur’an and its people.</p>
+          <a class="brand" href="index.html">
+            <img src="assets/logo.jpg" alt="URWA logo">
+            <span>
+              <b>URWA</b>
+              <small>URWATUL WUTHQAA</small>
+            </span>
+          </a>
+
+          <p class="footer-intro">
+            A Qur’an learning community nurturing meaningful connections
+            with the Qur’an and its people.
+          </p>
         </div>
-        <div><h4>Explore</h4><a href="about.html">About Us</a><a href="programmes.html">Programmes</a><a href="classes.html">Classes</a><a href="teachers.html">Our Educators</a></div>
-        <div><h4>Get involved</h4><a href="enroll.html">Join Us</a><a href="become-teacher.html">Become an educator</a><a href="events.html">Events</a><a href="contact.html">Contact us</a></div>
-        <div><h4>Student portal</h4><a href="portal/student/index.html">Portal login</a><a href="contact.html">Ask a question</a></div>
+
+        <div>
+          <h4>Explore</h4>
+          <a href="about.html">About Us</a>
+          <a href="programmes.html">Programmes</a>
+          <a href="classes.html">Classes</a>
+          <a href="teachers.html">Our Educators</a>
+        </div>
+
+        <div>
+          <h4>Get involved</h4>
+          <a href="enroll.html">Join Us</a>
+          <a href="become-teacher.html">Become an educator</a>
+          <a href="events.html">Events</a>
+          <a href="contact.html">Contact us</a>
+        </div>
+
+        <div>
+          <h4>Student portal</h4>
+          <a href="portal/student/index.html">Portal login</a>
+          <a href="contact.html">Ask a question</a>
+        </div>
+
       </div>
-      <div class="copy">© <span id="yr"></span> URWA – Urwatul Wuthqaa. All rights reserved.</div>
+
+      <div class="copy">
+        © <span id="yr"></span> URWA – Urwatul Wuthqaa. All rights reserved.
+      </div>
+
     </div>
   </footer>
 
+
   <script src="js/navigation.js" defer></script>
   <script src="js/main.js" defer></script>
+
 </body>
 </html>
