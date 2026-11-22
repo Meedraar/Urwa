@@ -73,5 +73,5 @@ async function loadQueues(){
 }
 async function reviewStudent(id,decision){const r=await supabase.rpc('review_student_admission',{target_enrollment:id,review_decision:decision,review_note:''});if(r.error)fail(r.error);else{say('Admissions recommendation saved.');await loadQueues();}}
 async function reviewAbla(id,stage,decision){const r=await supabase.rpc('review_abla_application',{target_profile:id,review_stage:stage,review_decision:decision,review_note:''});if(r.error)fail(r.error);else{say(stage+' recommendation saved.');await loadQueues();}}
-async function finalize(id,type,decision){const r=await supabase.rpc('finalize_urwa_application',{target_profile:id,target_type:type,final_decision:decision,decision_note:''});if(r.error)fail(r.error);else{say('Final decision recorded.');await loadQueues();}}
+async function finalize(id,type,decision){const r=type==='student'?await supabase.rpc('finalize_urwa_student_admission',{target_profile:id,final_decision:decision,target_halaqa:null,decision_note:''}):await supabase.rpc('finalize_urwa_application',{target_profile:id,target_type:type,final_decision:decision,decision_note:''});if(r.error)fail(r.error);else{say('Final decision recorded.');await loadQueues();}}
 boot().catch(fail);
