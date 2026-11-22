@@ -113,11 +113,11 @@ Our vision extends beyond the recitation of verses; we aspire to cultivate heart
 <section id="contact"><div class="wrap"><div class="band" style="margin-bottom:44px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap"><div><h2 style="margin:0 0 6px">Ready to start?</h2><p style="margin:0">Your journey with the Qur’an can begin today.</p></div><a class="btn gold" href="#enquiry">Join today</a></div>
 <h2 id="enquiry">We’d love to hear from you.</h2>
 <p class="lead">Ask about programmes, teaching applications, events or supporting URWA.</p>
-<form class="card" id="cf" style="margin-top:24px"><div class="form">
-<input required aria-label="Your name" placeholder="Your name"><input required type="email" aria-label="Email address" placeholder="Email address">
-<select aria-label="Enquiry type"><option>General enquiry</option><option>Programme registration</option><option>Become a teacher</option><option>Events</option><option>Books and journals</option><option>Support URWA</option></select>
-<input aria-label="Phone or WhatsApp" placeholder="Phone or WhatsApp (optional)">
-<textarea required aria-label="Message" placeholder="How can we help?"></textarea></div>
+<form class="card" id="cf" data-urwa-enquiry="general" style="margin-top:24px"><div class="form">
+<input required name="name" aria-label="Your name" placeholder="Your name" autocomplete="name"><input required name="email" type="email" aria-label="Email address" placeholder="Email address" autocomplete="email">
+<select name="type" aria-label="Enquiry type"><option>General enquiry</option><option>Programme registration</option><option>Become a teacher</option><option>Events</option><option>Books and journals</option><option>Support URWA</option></select>
+<input name="phone" type="tel" aria-label="Phone or WhatsApp" placeholder="Phone or WhatsApp (optional)" autocomplete="tel">
+<textarea required name="message" aria-label="Message" placeholder="How can we help?"></textarea></div>
 <button class="btn gold" type="submit" style="margin-top:14px">Send enquiry</button></form></div></section>
 </main>
 
@@ -137,4 +137,5 @@ Our vision extends beyond the recitation of verses; we aspire to cultivate heart
 
 <script src="js/navigation.js" defer></script>
 <script src="js/main.js" defer></script>
+<script type="module" src="js/public-forms.js"></script>
 </body></html>
