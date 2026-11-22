@@ -9,7 +9,7 @@ create table if not exists public.learning_level_cycles (
   status text not null default 'planned' check (status in ('planned','active','completed')),
   created_by uuid references auth.users(id) on delete set null,
   created_at timestamptz not null default now(),
-  check (ends_on > starts_on),
+  check (ends_on = (starts_on + interval '4 months' - interval '1 day')::date),
   unique (cycle_name)
 );
 
