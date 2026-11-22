@@ -56,7 +56,7 @@ async function adminLoad(user) {
     const accountRows = people.map(p => {
       const enrollment = byStudent.get(p.id);
       const accountStatus = enrollment?.status || p.status || 'pending';
-      const roleLabel = p.role === 'teacher' ? 'Abla / Teacher' : p.role === 'admin' ? 'Administrator' : 'Student';
+      const roleLabel = p.role === 'teacher' ? 'Abla / Teacher' : p.role === 'admin' ? 'Administrator' : p.role === 'department_member' ? 'Department Applicant / Member' : 'Student';
       return '<tr><td><b>' + esc(p.full_name || '—') + '</b></td><td>' + esc(p.email || '—') +
         '</td><td>' + roleLabel + '</td><td>' + esc(accountStatus.charAt(0).toUpperCase() + accountStatus.slice(1)) +
         '</td><td>' + date(p.created_at) + '</td></tr>';
@@ -76,12 +76,13 @@ async function adminLoad(user) {
     }).join(''), '<tr><td colspan="5">No pending student applications.</td></tr>');
 
     const pendingTeachers = teachers.filter(p => p.status === 'pending');
+    const pendingDepartmentApplicants = people.filter(p => p.role === 'department_member' && p.status === 'pending');
     const studentCountNode = $('#admin-total-students');
     if (studentCountNode) studentCountNode.textContent = String(students.filter(p => (byStudent.get(p.id)?.status || p.status) === 'approved').length);
     const ablaCountNode = $('#admin-total-ablas');
     if (ablaCountNode) ablaCountNode.textContent = String(teachers.filter(p => p.status === 'approved').length);
     const applicationCountNode = $('#admin-new-applications');
-    if (applicationCountNode) applicationCountNode.textContent = String(pending.length + pendingTeachers.length);
+    if (applicationCountNode) applicationCountNode.textContent = String(pending.length + pendingTeachers.length + pendingDepartmentApplicants.length);
     const studentPendingLabel = $('#admin-student-pending-label');
     if (studentPendingLabel) studentPendingLabel.textContent = pending.length + ' pending';
     const ablaPendingLabel = $('#admin-abla-pending-label');
@@ -160,7 +161,7 @@ async function adminLoad(user) {
     if (halaqaBadge) halaqaBadge.textContent = activeHalaqaCount + ' active halaqas';
     const recentPeople = [...people].sort((a,b) => new Date(b.created_at || 0)-new Date(a.created_at || 0)).slice(0,5);
     put('#admin-recent-activity', recentPeople.map(p => {
-      const role = p.role === 'teacher' ? 'Abla / Teacher' : p.role === 'admin' ? 'Administrator' : 'Student';
+      const role = p.role === 'teacher' ? 'Abla / Teacher' : p.role === 'admin' ? 'Administrator' : p.role === 'department_member' ? 'Department Applicant / Member' : 'Student';
       const initials = (p.full_name || 'U').split(/\s+/).slice(0,2).map(x => x[0]).join('').toUpperCase();
       return '<div class="admin-activity-row"><span class="admin-activity-avatar">' + esc(initials) +
         '</span><div><b>' + esc(p.full_name || 'New account') + '</b><small>' + role + ' · ' +
@@ -187,7 +188,7 @@ async function adminLoad(user) {
     textValue('#admin-attendance-rate-module', attendance.length ? attendanceRate + '%' : '—');
     textValue('#admin-report-students', students.filter(p => (byStudent.get(p.id)?.status || p.status) === 'approved').length);
     textValue('#admin-report-ablas', teachers.filter(p => p.status === 'approved').length);
-    textValue('#admin-report-pending', pending.length + pendingTeachers.length);
+    textValue('#admin-report-pending', pending.length + pendingTeachers.length + pendingDepartmentApplicants.length);
     textValue('#admin-report-halaqas', halaqas.length);
     put('#admin-programmes-module-body', [...programmeCounts.entries()].sort((a,b) => a[0].localeCompare(b[0])).map(([name,count]) =>
       '<tr><td>' + esc(name) + '</td><td>' + count + '</td></tr>'
