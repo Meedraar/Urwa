@@ -63,8 +63,20 @@ async function boot(){
  const halaqaPanel=$('#halaqa .panel');
  if(halaqaPanel) halaqaPanel.innerHTML='<div class="panel-heading"><h2>My Halaqas</h2></div>'+halaqas.map(h=>'<div class="activity"><div class="date-box">◎</div><div><strong>'+esc(h.name)+'</strong><small>'+esc(h.description||'Assigned teaching group')+'</small></div></div>').join('');
  const studentTable=$('#students .table-wrap');
- if(studentTable) studentTable.innerHTML='<table><thead><tr><th>Student</th><th>Halaqa</th><th>Programme</th><th>Attendance</th><th>Status</th></tr></thead><tbody>'+
- enrollments.map(e=>{const p=peopleById.get(e.student_id)||{};const records=attendance.filter(a=>a.student_id===e.student_id);const rate=records.length?Math.round(records.filter(a=>['present','late'].includes(a.status)).length/records.length*100)+'%':'—';return '<tr><td><b>'+esc(p.full_name||'Student')+'</b><small>'+esc(p.email||'')+'</small></td><td>'+esc(halaqaById.get(e.halaqa_id)?.name||'—')+'</td><td>'+esc(e.programme||e.level||'—')+'</td><td>'+rate+'</td><td>Approved</td></tr>';}).join('')+'</tbody></table>';
+ if(studentTable) studentTable.innerHTML='<table><thead><tr><th>Student</th><th>Halaqa</th><th>Programme</th><th>Learning level</th><th>Attendance</th><th>Assessment score</th><th>Action</th></tr></thead><tbody>'+
+ enrollments.map(e=>{const p=peopleById.get(e.student_id)||{};const records=attendance.filter(a=>a.student_id===e.student_id);const rate=records.length?Math.round(records.filter(a=>['present','late'].includes(a.status)).length/records.length*100)+'%':'—';return '<tr><td><b>'+esc(p.full_name||'Student')+'</b><small>'+esc(p.email||'')+'</small></td><td>'+esc(halaqaById.get(e.halaqa_id)?.name||'—')+'</td><td>'+esc(e.programme||'—')+'</td><td>'+esc(e.level||'Qaida')+'</td><td>'+rate+'</td><td><input type="number" min="0" max="100" step="0.01" aria-label="Assessment score for '+esc(p.full_name||'student')+'" data-assessment-score="'+e.id+'" style="width:88px" placeholder="0–100"></td><td><button class="primary-btn" type="button" data-record-assessment="'+e.id+'">Submit assessment</button></td></tr>';}).join('')+'</tbody></table><p id="abla-assessment-message" role="status">Assessment recommendations are sent to URWA administration for review. Current levels do not change until approved.</p>';
+ studentTable?.querySelectorAll('[data-record-assessment]').forEach(button=>button.addEventListener('click',async()=>{
+  button.disabled=true;
+  try{
+   const enrollmentId=button.dataset.recordAssessment;
+   const score=Number($('[data-assessment-score="'+enrollmentId+'"]',studentTable)?.value);
+   if(!Number.isFinite(score)||score<0||score>100)throw new Error('Enter an assessment score between 0 and 100.');
+   const {data:assessmentId,error}=await supabase.rpc('record_learning_assessment',{target_enrollment_id:enrollmentId,assessment_score:score,assessment_notes:null,assessment_day:new Date().toISOString().slice(0,10)});
+   if(error)throw error;
+   say($('#abla-assessment-message'),'Assessment saved and sent to administration for review.');
+   $('[data-assessment-score="'+enrollmentId+'"]',studentTable).value='';
+  }catch(e){say($('#abla-assessment-message'),e.message,true);}finally{button.disabled=false;}
+ }));
  const attendancePanel=$('#attendance .panel');
  if(attendancePanel){
   attendancePanel.innerHTML='<div class="panel-heading"><h2>Record Attendance</h2></div><div class="form-group"><label for="attendance-date">Class date</label><input type="date" id="attendance-date" value="'+new Date().toISOString().slice(0,10)+'"></div><div class="table-wrap" id="abla-attendance-roster"></div><button class="primary-btn" type="button" id="abla-save-attendance">Save attendance</button><p id="abla-attendance-message" role="status"></p>';

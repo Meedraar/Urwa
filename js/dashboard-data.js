@@ -65,6 +65,50 @@ async function adminLoad(user) {
 
     const pending = students.filter(p => (byStudent.get(p.id)?.status || p.status) === 'pending');
 
+    // Learning level cycle and assessment recommendation review (admin only).
+    let learningPanel = $('#learning-level-management');
+    if (!learningPanel && $('#admin-students-body')) {
+      learningPanel = document.createElement('section');
+      learningPanel.id = 'learning-level-management';
+      learningPanel.className = 'panel';
+      $('#admin-students-body').closest('section')?.before(learningPanel);
+    }
+    if (learningPanel) {
+      const [cycleQ, assessmentQ, educatorLevelsQ] = await Promise.all([
+        supabase.from('learning_level_cycles').select('*').order('starts_on', { ascending: false }),
+        supabase.from('learning_assessments').select('id,student_id,educator_id,assessed_level,score,assessment_date,recommendation,recommended_level,review_status,notes,created_at').in('review_status', ['pending','review_required']).order('created_at', { ascending: false }),
+        supabase.from('educator_level_assignments').select('educator_id,cycle_id,level')
+      ]);
+      [cycleQ, assessmentQ].forEach(q => { if (q.error) fail(q.error); });
+      const activeCycle = (cycleQ.data || []).find(x => x.status === 'active');
+      if (educatorLevelsQ.error) fail(educatorLevelsQ.error);
+      const educatorLevels = educatorLevelsQ.data || [];
+      const assessmentPeople = new Map(people.map(p => [p.id, p]));
+      learningPanel.innerHTML = '<div class="panel-header"><h2>Learning Levels &amp; Assessments</h2></div>' +
+        (activeCycle
+          ? '<p>Active cycle: <b>' + esc(activeCycle.cycle_name) + '</b> · ' + date(activeCycle.starts_on) + ' – ' + date(activeCycle.ends_on) + ' <button class="primary-btn" type="button" data-complete-learning-cycle="' + activeCycle.id + '">Complete cycle</button></p>'
+          : '<p>No active four-month cycle. Create one before educators can submit assessments.</p>') +
+        (!activeCycle ? '<div class="table-controls"><input id="learning-cycle-name" placeholder="Cycle name (e.g. Jan–Apr 2027)"><input id="learning-cycle-start" type="date" aria-label="Cycle start date"><input id="learning-cycle-end" type="date" aria-label="Cycle end date"><button class="primary-btn" type="button" data-create-learning-cycle>Create active cycle</button></div>' : '') +
+        (activeCycle ? '<h3>Educator level assignments · current cycle</h3><div class="table-wrapper"><table><thead><tr><th>Educator</th><th>Assigned level</th><th>Save</th></tr></thead><tbody>' +
+          teachers.filter(t => t.status === 'approved').map(t => {
+            const current = educatorLevels.find(x => x.educator_id === t.id && x.cycle_id === activeCycle.id);
+            return '<tr><td>' + esc(t.full_name) + '</td><td><select data-educator-level="' + t.id + '">' +
+              ['Qaida','Level 1 – Foundation','Level 2 – Growth','Level 3 – Mastery'].map(level => '<option value="' + esc(level) + '" ' + (current?.level === level ? 'selected' : '') + '>' + esc(level) + '</option>').join('') +
+              '</select></td><td><button class="primary-btn" type="button" data-save-educator-level="' + t.id + '">Save level</button></td></tr>';
+          }).join('') + '</tbody></table></div>' : '') +
+        '<h3>Recommendations awaiting review</h3>' +
+        ((assessmentQ.data || []).length ? '<div class="table-wrapper"><table><thead><tr><th>Student</th><th>Educator</th><th>Current level</th><th>Score</th><th>Recommendation</th><th>Decision</th></tr></thead><tbody>' +
+          assessmentQ.data.map(a => {
+            const student = assessmentPeople.get(a.student_id), educator = assessmentPeople.get(a.educator_id);
+            const detail = a.recommendation === 'promote' ? 'Move to ' + a.recommended_level : a.recommendation === 'demote' ? 'Move to ' + a.recommended_level : a.recommendation === 'educator_review' ? 'Review educator assignment (top level)' : a.recommendation === 'admin_review' ? 'Admin placement review required' : 'Remain at current level';
+            const canApprove = !!a.recommended_level && !['admin_review','educator_review'].includes(a.recommendation);
+            return '<tr><td>' + esc(student?.full_name || 'Student') + '</td><td>' + esc(educator?.full_name || 'Educator') + '</td><td>' + esc(a.assessed_level) + '</td><td>' + Number(a.score).toFixed(2) + '%</td><td>' + esc(detail) + (a.review_status === 'review_required' ? ' · Requires review' : '') + '</td><td>' +
+              (canApprove ? '<button class="primary-btn" type="button" data-learning-review="' + a.id + '" data-decision="approve">Approve</button> ' : '') +
+              '<button class="primary-btn" type="button" data-learning-review="' + a.id + '" data-decision="reject">Reject</button></td></tr>';
+          }).join('') + '</tbody></table></div>' : '<p>No assessment recommendations are awaiting review.</p>') +
+        '<p>Only approval changes a student’s level. Qaida/Level 1 results below 80% and Level 3 results above 85% require an administrator decision.</p>';
+    }
+
     put('#admin-admissions-body', pending.map(p => {
       const e = byStudent.get(p.id) || {};
       return '<tr><td><b>' + esc(p.full_name) + '</b><small>' + esc(p.email) +
@@ -249,6 +293,50 @@ async function initAdmin(user) {
       const cancelTeacher = event.target.closest('[data-cancel-teacher]');
       const assign = event.target.closest('[data-assign]');
       const adminLevel = event.target.closest('[data-admin-level]');
+      const learningReview = event.target.closest('[data-learning-review]');
+      const createLearningCycle = event.target.closest('[data-create-learning-cycle]');
+      const completeLearningCycle = event.target.closest('[data-complete-learning-cycle]');
+      const saveEducatorLevel = event.target.closest('[data-save-educator-level]');
+      if (saveEducatorLevel) {
+        const cycle = await supabase.from('learning_level_cycles').select('id').eq('status', 'active').maybeSingle();
+        if (cycle.error) fail(cycle.error);
+        if (!cycle.data) throw new Error('Create an active learning cycle first.');
+        const level = $('[data-educator-level="' + saveEducatorLevel.dataset.saveEducatorLevel + '"]')?.value;
+        const { error } = await supabase.from('educator_level_assignments').upsert({
+          educator_id: saveEducatorLevel.dataset.saveEducatorLevel,
+          cycle_id: cycle.data.id, level, assigned_by: user.id
+        }, { onConflict: 'educator_id,cycle_id' });
+        if (error) fail(error);
+        await adminLoad(user);
+      }
+      if (learningReview) {
+        const approve = learningReview.dataset.decision === 'approve';
+        const { error } = await supabase.rpc('review_learning_assessment', {
+          target_assessment_id: learningReview.dataset.learningReview,
+          approve_recommendation: approve,
+          decision_notes: null
+        });
+        if (error) fail(error);
+        await adminLoad(user);
+      }
+      if (completeLearningCycle) {
+        if (!window.confirm('Complete this learning cycle? A new cycle can then be created for the next four months.')) return;
+        const { error } = await supabase.from('learning_level_cycles').update({ status: 'completed' })
+          .eq('id', completeLearningCycle.dataset.completeLearningCycle).eq('status', 'active');
+        if (error) fail(error);
+        await adminLoad(user);
+      }
+      if (createLearningCycle) {
+        const name = $('#learning-cycle-name')?.value.trim();
+        const starts = $('#learning-cycle-start')?.value;
+        const ends = $('#learning-cycle-end')?.value;
+        if (!name || !starts || !ends || ends <= starts) throw new Error('Enter a cycle name and a valid four-month date range.');
+        const { error } = await supabase.from('learning_level_cycles').insert({
+          cycle_name: name, starts_on: starts, ends_on: ends, status: 'active', created_by: user.id
+        });
+        if (error) fail(error);
+        await adminLoad(user);
+      }
       if (accept || decline) {
         const id = (accept || decline).dataset[accept ? 'accept' : 'decline'];
         const halaqaId = $('[data-admission-halaqa="' + id + '"]')?.value || null;
