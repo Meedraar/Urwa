@@ -118,6 +118,16 @@ h1,h2,h3{margin:0}
 .module-form input,.module-form textarea,.module-form select{width:100%;border:1px solid var(--line);border-radius:8px;padding:8px;background:#fff;color:var(--ink);font:inherit}
 .module-form button{justify-self:start;padding:8px 12px}
 
+#admin-central-approvals{margin:0 0 14px;scroll-margin-top:18px}
+#admin-central-approvals .panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+#admin-central-approvals .panel-header h2{font-size:14px;color:var(--brand)}
+#admin-central-approvals>p{font-size:11px;color:var(--muted);margin:0 0 10px}
+#admin-central-approvals .table-wrapper{width:100%;overflow-x:auto}
+#admin-central-approvals table{width:100%;min-width:620px;border-collapse:collapse;font-size:11px}
+#admin-central-approvals th{text-align:left;color:var(--muted);font-weight:700;padding:8px;border-bottom:1px solid var(--line)}
+#admin-central-approvals td{padding:9px 8px;border-bottom:1px solid #f1ede2;vertical-align:middle}
+#admin-central-approvals td small{display:block;color:var(--muted);font-size:10px}
+#admin-central-approvals .urwa-btn-outline{color:var(--brand)}
 /* Responsive */
 @media(max-width:1200px){
  .app{grid-template-columns:200px minmax(0,1fr)}
@@ -194,6 +204,8 @@ h1,h2,h3{margin:0}
           <a class="action" href="communication.html"><span class="action-ico">✧</span>Send a notice</a>
         </div>
       </section>
+
+      <section id="admin-central-approvals" class="panel" aria-live="polite"><div class="panel-header"><h2>Membership approvals</h2></div><p>Loading pending student, educator and departmental applications…</p></section>
 
       <section class="grid2">
         <article class="panel">
