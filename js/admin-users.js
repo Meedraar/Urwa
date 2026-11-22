@@ -159,7 +159,6 @@ async function init() {
       return;
     }
     currentUserId = user.id;
-    isSuperAdmin = current?.admin_level === 'super_admin';
     const { data: current, error: currentError } = await supabase
       .from('profiles').select('role,status,admin_level').eq('id', user.id).maybeSingle();
     if (currentError) throw currentError;
@@ -168,6 +167,7 @@ async function init() {
       location.replace('/portal/admin/login.html');
       return;
     }
+    isSuperAdmin = current.admin_level === 'super_admin';
 
     const [peopleQ, membershipQ] = await Promise.all([
       supabase.from('profiles').select('id,full_name,email,phone,role,status,admin_level,created_at').order('created_at', { ascending: false }),
@@ -186,6 +186,7 @@ async function init() {
     if (stats[1]) stats[1].textContent = String(profiles.filter((p) => p.role === 'student').length);
     if (stats[2]) stats[2].textContent = String(profiles.filter((p) => p.role === 'teacher').length);
     if (stats[3]) stats[3].textContent = String(profiles.filter((p) => p.role === 'department_member').length);
+    renderPendingAdminApplications();
     render();
   } catch (error) {
     console.error('Unable to load URWA user management:', error);
