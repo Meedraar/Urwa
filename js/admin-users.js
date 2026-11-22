@@ -73,6 +73,69 @@ function render() {
 }
 
 let currentUserId = null;
+let isSuperAdmin = false;
+async function reviewAdminApplication(profile, decision, button) {
+  const action = decision === 'approved' ? 'approve' : 'decline';
+  if (!window.confirm((decision === 'approved'
+    ? 'Approve ' + profile.full_name + ' as a Standard Admin?'
+    : 'Decline the administrator application from ' + profile.full_name + '?'))) return;
+  button.disabled = true;
+  try {
+    const { error } = await supabase.rpc('review_admin_application', {
+      target_user_id: profile.id,
+      final_decision: decision
+    });
+    if (error) throw error;
+    await init();
+  } catch (error) {
+    window.alert('Could not ' + action + ' administrator application: ' + error.message);
+    button.disabled = false;
+  }
+}
+
+function renderPendingAdminApplications() {
+  const panel = document.getElementById('pending-admin-applications');
+  const target = document.getElementById('pending-admin-applications-body');
+  if (!panel || !target) return;
+  panel.hidden = !isSuperAdmin;
+  if (!isSuperAdmin) return;
+  const pending = profiles.filter((profile) => profile.role === 'admin' && profile.status === 'pending');
+  const count = document.getElementById('pending-admin-count');
+  if (count) count.textContent = pending.length + ' pending';
+  target.replaceChildren();
+  if (!pending.length) {
+    const tr = document.createElement('tr');
+    const cell = document.createElement('td');
+    cell.colSpan = 5;
+    cell.className = 'empty';
+    cell.textContent = 'No pending administrator applications.';
+    tr.append(cell);
+    target.append(tr);
+    return;
+  }
+  pending.forEach((profile) => {
+    const tr = document.createElement('tr');
+    tr.append(td(profile.full_name), td(profile.email), td(profile.phone),
+      td(profile.created_at ? new Date(profile.created_at).toLocaleDateString() : '—'));
+    const action = document.createElement('td');
+    const approve = document.createElement('button');
+    approve.type = 'button';
+    approve.className = 'btn';
+    approve.textContent = 'Approve as Standard Admin';
+    approve.addEventListener('click', () => reviewAdminApplication(profile, 'approved', approve));
+    const decline = document.createElement('button');
+    decline.type = 'button';
+    decline.className = 'btn';
+    decline.textContent = 'Decline';
+    decline.style.marginLeft = '6px';
+    decline.style.background = '#a64b43';
+    decline.addEventListener('click', () => reviewAdminApplication(profile, 'cancelled', decline));
+    action.append(approve, decline);
+    tr.append(action);
+    target.append(tr);
+  });
+}
+
 async function updateStatus(profile, status, button) {
   if (!window.confirm((status === 'approved' ? 'Approve' : 'Decline') + ' department applicant ' + profile.full_name + '?')) return;
   button.disabled = true;
@@ -80,6 +143,7 @@ async function updateStatus(profile, status, button) {
     const { error } = await supabase.from('profiles').update({ status }).eq('id', profile.id).eq('role', 'department_member');
     if (error) throw error;
     profile.status = status;
+    renderPendingAdminApplications();
     render();
   } catch (error) {
     window.alert('Could not update account status: ' + error.message);
@@ -96,16 +160,17 @@ async function init() {
     }
     currentUserId = user.id;
     const { data: current, error: currentError } = await supabase
-      .from('profiles').select('role,status').eq('id', user.id).maybeSingle();
+      .from('profiles').select('role,status,admin_level').eq('id', user.id).maybeSingle();
     if (currentError) throw currentError;
     if (!current || current.role !== 'admin' || current.status !== 'approved') {
       await supabase.auth.signOut();
       location.replace('/portal/admin/login.html');
       return;
     }
+    isSuperAdmin = current.admin_level === 'super_admin';
 
     const [peopleQ, membershipQ] = await Promise.all([
-      supabase.from('profiles').select('id,full_name,email,phone,role,status,created_at').order('created_at', { ascending: false }),
+      supabase.from('profiles').select('id,full_name,email,phone,role,status,admin_level,created_at').order('created_at', { ascending: false }),
       supabase.from('department_memberships').select('profile_id,department_id,membership_status,departments(name)')
     ]);
     if (peopleQ.error) throw peopleQ.error;
@@ -121,6 +186,7 @@ async function init() {
     if (stats[1]) stats[1].textContent = String(profiles.filter((p) => p.role === 'student').length);
     if (stats[2]) stats[2].textContent = String(profiles.filter((p) => p.role === 'teacher').length);
     if (stats[3]) stats[3].textContent = String(profiles.filter((p) => p.role === 'department_member').length);
+    renderPendingAdminApplications();
     render();
   } catch (error) {
     console.error('Unable to load URWA user management:', error);
