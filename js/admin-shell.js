@@ -19,7 +19,7 @@
     <a href="library.html" data-admin-nav><span class="ico">▱</span>Library</a>
     <div class="nav-label">People</div>
     <a href="students.html" data-admin-nav><span class="ico">♙</span>Students</a>
-    <a href="ablas.html" data-admin-nav><span class="ico">♙</span>Ustadh/Ustadhas</a>
+    <a href="ablas.html" data-admin-nav><span class="ico">♙</span>Educators</a>
     <a href="admissions.html" data-admin-nav><span class="ico">✚</span>Admissions</a>
     <a href="users.html" data-admin-nav><span class="ico">♙</span>User management</a>
     <div class="nav-label">Operations</div>

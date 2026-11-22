@@ -8,7 +8,7 @@ let profiles = [];
 let memberships = [];
 
 function labelRole(role) {
-  return ({ admin: 'Administrator', teacher: 'Abla / Teacher', student: 'Student', department_member: 'Department applicant / member' })[role] || role;
+  return ({ admin: 'Administrator', teacher: 'Educator', student: 'Student', department_member: 'Department applicant / member' })[role] || role;
 }
 function labelStatus(status) {
   return ({ approved: 'Approved', pending: 'Pending', suspended: 'Suspended', cancelled: 'Cancelled' })[status] || status;

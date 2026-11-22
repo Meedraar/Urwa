@@ -17,7 +17,7 @@ async function boot(){
  if(!profile||profile.role!=='teacher'||profile.status!=='approved'){
    await supabase.auth.signOut(); location.replace('/portal/abla/teacher-login.html'); return;
  }
- $$('[data-profile-name]').forEach(n=>n.textContent=profile.full_name||'Abla');
+ $$('[data-profile-name]').forEach(n=>n.textContent=profile.full_name||'Educator');
  $$('[data-profile-email]').forEach(n=>n.textContent=profile.email||user.email||'');
  const statusNode=document.createElement('p');statusNode.id='abla-live-status';statusNode.setAttribute('role','status');
  statusNode.style.cssText='font-size:11px;color:#71817a;margin:0 0 12px';

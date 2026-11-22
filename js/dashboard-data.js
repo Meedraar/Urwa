@@ -56,7 +56,7 @@ async function adminLoad(user) {
     const accountRows = people.map(p => {
       const enrollment = byStudent.get(p.id);
       const accountStatus = enrollment?.status || p.status || 'pending';
-      const roleLabel = p.role === 'teacher' ? 'Abla / Teacher' : p.role === 'admin' ? 'Administrator' : p.role === 'department_member' ? 'Department Applicant / Member' : 'Student';
+      const roleLabel = p.role === 'teacher' ? 'Educator' : p.role === 'admin' ? 'Administrator' : p.role === 'department_member' ? 'Department Applicant / Member' : 'Student';
       return '<tr><td><b>' + esc(p.full_name || '—') + '</b></td><td>' + esc(p.email || '—') +
         '</td><td>' + roleLabel + '</td><td>' + esc(accountStatus.charAt(0).toUpperCase() + accountStatus.slice(1)) +
         '</td><td>' + date(p.created_at) + '</td></tr>';
@@ -114,7 +114,7 @@ async function adminLoad(user) {
         '<div class="urwa-admin-actions"><select data-teacher-halaqa="' + p.id + '">' +
         options('') + '</select><button class="urwa-btn urwa-btn-outline urwa-btn-small" data-assign="' +
         p.id + '">Assign</button></div></td></tr>';
-    }).join(''), '<tr><td colspan="5">No Abla accounts. Staff accounts must be created through a trusted administrator workflow.</td></tr>');
+    }).join(''), '<tr><td colspan="5">No educator accounts. Educator accounts must be created through a trusted administrator workflow.</td></tr>');
 
     const stats = $('.admin-kpi .urwa-stat-value');
     if (stats[0]) stats[0].textContent = students.filter(p => (byStudent.get(p.id)?.status || p.status) === 'approved').length;
@@ -158,12 +158,12 @@ async function adminLoad(user) {
     const upcomingHalaqaNode = $('#admin-halaqa-upcoming'); if (upcomingHalaqaNode) upcomingHalaqaNode.textContent = String(halaqas.filter(h => String(h.status || '').toLowerCase() === 'upcoming').length);
     const completedHalaqaNode = $('#admin-halaqa-completed'); if (completedHalaqaNode) completedHalaqaNode.textContent = String(halaqas.filter(h => String(h.status || '').toLowerCase() === 'completed').length);
     const halaqaSummary = $('#admin-halaqa-summary');
-    if (halaqaSummary) halaqaSummary.textContent = 'Manage all ' + activeHalaqaCount + ' active halaqas, their assigned Ablas and enrolled students.';
+    if (halaqaSummary) halaqaSummary.textContent = 'Manage all ' + activeHalaqaCount + ' active halaqas, their assigned educators and enrolled students.';
     const halaqaBadge = $('#admin-halaqa-badge');
     if (halaqaBadge) halaqaBadge.textContent = activeHalaqaCount + ' active halaqas';
     const recentPeople = [...people].sort((a,b) => new Date(b.created_at || 0)-new Date(a.created_at || 0)).slice(0,5);
     put('#admin-recent-activity', recentPeople.map(p => {
-      const role = p.role === 'teacher' ? 'Abla / Teacher' : p.role === 'admin' ? 'Administrator' : p.role === 'department_member' ? 'Department Applicant / Member' : 'Student';
+      const role = p.role === 'teacher' ? 'Educator' : p.role === 'admin' ? 'Administrator' : p.role === 'department_member' ? 'Department Applicant / Member' : 'Student';
       const initials = (p.full_name || 'U').split(/\s+/).slice(0,2).map(x => x[0]).join('').toUpperCase();
       return '<div class="admin-activity-row"><span class="admin-activity-avatar">' + esc(initials) +
         '</span><div><b>' + esc(p.full_name || 'New account') + '</b><small>' + role + ' · ' +
@@ -222,7 +222,7 @@ async function adminLoad(user) {
     status('admin-live-status', 'Supabase connection active',
       (isSuperAdmin ? 'Super Admin access · ' : 'Standard Admin access · ') +
       students.length + ' students · ' + pending.length + ' pending applications · ' +
-      teachers.length + ' Ablas · ' + halaqas.length + ' halaqas.');
+      teachers.length + ' educators · ' + halaqas.length + ' halaqas.');
   } catch (error) {
     status('admin-live-status', 'Unable to load URWA records', error.message, true);
   }
@@ -337,8 +337,8 @@ async function studentLoad(user) {
   const panel = $('#student-assignments-list');
   if (panel) panel.innerHTML = assignments.length ? assignments.map(a =>
     '<article><b>' + esc(a.title) + '</b><p>' + esc(a.assignment_type || 'Learning task') +
-    ' · Due ' + date(a.due_date) + '</p><p>' + esc(a.instructions || 'Follow your Abla’s instructions.') +
-    '</p></article>').join('') : '<b>No assignments yet</b><p>Your Abla’s assignments will appear here.</p>';
+    ' · Due ' + date(a.due_date) + '</p><p>' + esc(a.instructions || 'Follow your educator’s instructions.') +
+    '</p></article>').join('') : '<b>No assignments yet</b><p>Your educator’s assignments will appear here.</p>';
   const attendance = attendanceQ.data || [];
   const rate = attendance.length ? Math.round(attendance.filter(a => ['present', 'late'].includes(a.status)).length / attendance.length * 100) + '%' : 'No records';
   status('student-live-overview', 'Your live learning overview',
