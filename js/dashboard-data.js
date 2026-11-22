@@ -81,6 +81,8 @@ async function adminLoad(user) {
     if (studentCountNode) studentCountNode.textContent = String(students.filter(p => (byStudent.get(p.id)?.status || p.status) === 'approved').length);
     const ablaCountNode = $('#admin-total-ablas');
     if (ablaCountNode) ablaCountNode.textContent = String(teachers.filter(p => p.status === 'approved').length);
+    const departmentCountNode = $('#admin-total-department');
+    if (departmentCountNode) departmentCountNode.textContent = String(people.filter(p => p.role === 'department_member' && p.status === 'approved').length);
     const applicationCountNode = $('#admin-new-applications');
     if (applicationCountNode) applicationCountNode.textContent = String(pending.length + pendingTeachers.length + pendingDepartmentApplicants.length);
     const studentPendingLabel = $('#admin-student-pending-label');

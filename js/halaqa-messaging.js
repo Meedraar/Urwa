@@ -8,9 +8,10 @@ else boot().catch(err => console.error('[URWA messaging]', err));
 async function boot() {
   const { data:{user}, error:authError } = await supabase.auth.getUser();
   if (authError || !user) return;
-  // Keep the admin management views focused on records; retain the Halaqa overview on the main admin dashboard.
+  // Keep admin pages free of the injected Community/Halaqa Messages panel.
+  // Student and Abla dashboards retain their private and group class messaging.
   const adminPage = window.location.pathname.split('/').pop();
-  if (role === 'admin' && ['students.html', 'ablas.html'].includes(adminPage)) return;
+  if (role === 'admin' && ['admin-dashboard.html', 'students.html', 'ablas.html'].includes(adminPage)) return;
   const { data:profile, error:profileError } = await supabase.from('profiles').select('id,full_name,role,status').eq('id',user.id).maybeSingle();
   if (profileError || !profile || profile.role !== role || profile.status !== 'approved') return;
 
