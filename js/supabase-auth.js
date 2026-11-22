@@ -374,3 +374,45 @@ document.querySelectorAll('[data-urwa-logout]').forEach((button) => {
     location.replace('/');
   });
 });
+
+
+// Administrator registration is a separate, owner-reviewed request.
+// The signup metadata selects only the pending admin-applicant path; it never grants approval.
+const adminRegistration = $('adminRegistrationForm');
+if (adminRegistration) adminRegistration.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const button = adminRegistration.querySelector('[type="submit"]');
+  const password = $('password')?.value || '';
+  if (password.length < 8) return showMessage(adminRegistration, 'Use a password with at least 8 characters.');
+  if (password !== $('confirmPassword')?.value) return showMessage(adminRegistration, 'Your passwords do not match.');
+  if (button) button.disabled = true;
+  try {
+    const fullName = $('fullName')?.value.trim() || '';
+    const email = $('email')?.value.trim().toLowerCase() || '';
+    const phone = $('phone')?.value.trim() || '';
+    if (!fullName || !email || !phone) throw new Error('Enter your name, email and phone number.');
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: location.origin + '/portal/admin/login.html',
+        data: { full_name: fullName, phone, account_type: 'admin_applicant' }
+      }
+    });
+    if (error) throw error;
+    if (!data.user) throw new Error('Registration could not be completed. Please try again.');
+    if (data.session) await supabase.auth.signOut();
+    showMessage(
+      adminRegistration,
+      data.session
+        ? 'Your administrator access request has been submitted. The URWA project owner must approve it before you can sign in.'
+        : 'Your request has been submitted. Verify your email, then wait for the URWA project owner to approve administrator access.',
+      false
+    );
+    adminRegistration.reset();
+  } catch (error) {
+    showMessage(adminRegistration, error.message || 'Administrator registration could not be completed.');
+  } finally {
+    if (button) button.disabled = false;
+  }
+});
