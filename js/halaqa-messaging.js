@@ -26,7 +26,7 @@ async function boot() {
     ? (document.querySelector('.content') || document.querySelector('.urwa-content'))
     : role === 'student'
       ? document.querySelector('.discussion-section')
-      : document.querySelector('.center-column');
+      : (document.querySelector('.portal-section#communication .panel') || document.querySelector('.center-column'));
   if (!target) return;
   if (role === 'student') {
     target.querySelector('.discussion-layout')?.remove();
