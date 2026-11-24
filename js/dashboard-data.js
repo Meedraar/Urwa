@@ -100,6 +100,7 @@ async function adminLoad(user) {
               const selected = (enrollment.programme || 'Quran Halaqa') === programme.key;
               return '<fieldset class="urwa-programme-placement"><label><input type="checkbox" data-student-programme="' + p.id + '" value="' + programme.key + '" ' + (selected ? 'checked' : '') + '> ' + programme.label + '</label>' +
                 '<small>' + programme.schedule + '</small>' +
+                (programme.key === 'Quran Halaqa' ? '<select aria-label="Qur’an Halaqa session" data-student-session="' + p.id + '" data-programme-key="' + programme.key + '"><option value="Morning">Morning</option><option value="Evening">Evening</option></select>' : '') +
                 '<select aria-label="' + programme.label + ' Halaqa" data-student-halaqa="' + p.id + '" data-programme-key="' + programme.key + '">' +
                 '<option value="">Choose Halaqa</option>' + halaqas.filter(h => h.is_active).map(h => '<option value="' + h.id + '">' + esc(h.name) + '</option>').join('') + '</select>' +
                 '<select aria-label="' + programme.label + ' Abla" data-student-abla="' + p.id + '" data-programme-key="' + programme.key + '">' +
@@ -440,6 +441,12 @@ async function initAdmin(user) {
           decision_notes: null
         });
         if (error) fail(error);
+        if (applicant?.role === 'student' && decision === 'approve') {
+          const { error: programmeApprovalError } = await supabase.from('student_programme_enrollments')
+            .update({ status: 'approved', reviewed_by: user.id, reviewed_at: new Date().toISOString() })
+            .eq('student_id', targetId).eq('status', 'pending');
+          if (programmeApprovalError) fail(programmeApprovalError);
+        }
         await adminLoad(user);
       }
       if (accept || decline) {
@@ -505,25 +512,31 @@ async function initAdmin(user) {
 }
 
 async function studentLoad(user) {
-  const [enrollmentQ, attendanceQ, assignmentQ, hifdhQ, murajaahQ] = await Promise.all([
+  const [enrollmentQ, programmeQ, attendanceQ, assignmentQ, hifdhQ, murajaahQ] = await Promise.all([
     supabase.from('student_enrollments').select('*').eq('student_id', user.id).maybeSingle(),
+    supabase.from('student_programme_enrollments').select('id,programme,halaqa_id,teacher_id,schedule,status').eq('student_id', user.id).eq('status', 'approved'),
     supabase.from('attendance').select('status').eq('student_id', user.id),
     supabase.from('assignments').select('*').order('created_at', { ascending: false }),
     supabase.from('hifdh_records').select('id').eq('student_id', user.id),
     supabase.from('murajaah_records').select('id').eq('student_id', user.id)
   ]);
-  [enrollmentQ, attendanceQ, assignmentQ, hifdhQ, murajaahQ].forEach(q => { if (q.error) fail(q.error); });
+  [enrollmentQ, programmeQ, attendanceQ, assignmentQ, hifdhQ, murajaahQ].forEach(q => { if (q.error) fail(q.error); });
   const enrollment = enrollmentQ.data || {};
-  const assignments = (assignmentQ.data || []).filter(a => a.halaqa_id === enrollment.halaqa_id);
-  let halaqaName = 'Not assigned';
-  if (enrollment.halaqa_id) {
-    const { data, error } = await supabase.from('halaqas').select('name').eq('id', enrollment.halaqa_id).maybeSingle();
-    if (error) fail(error);
-    if (data) halaqaName = data.name;
-  }
+  const programmeEnrollments = programmeQ.data || [];
+  const halaqaIds = programmeEnrollments.map(e => e.halaqa_id).filter(Boolean);
+  const assignments = (assignmentQ.data || []).filter(a => halaqaIds.includes(a.halaqa_id));
+  const { data: studentHalaqas, error: studentHalaqaError } = halaqaIds.length
+    ? await supabase.from('halaqas').select('id,name').in('id', halaqaIds)
+    : { data: [], error: null };
+  if (studentHalaqaError) fail(studentHalaqaError);
+  const programmeSummary = programmeEnrollments.map(e => {
+    const h = (studentHalaqas || []).find(x => x.id === e.halaqa_id);
+    return e.programme + ' · ' + (h?.name || 'Halaqa not assigned') + ' · ' + e.schedule;
+  });
+  const halaqaName = programmeSummary.join(' | ') || 'Not assigned';
   const announcementsQ = await supabase.from('announcements').select('id,title,message,audience,halaqa_id,published_at').or('audience.eq.all,audience.eq.students').order('published_at', { ascending: false });
   if (announcementsQ.error) fail(announcementsQ.error);
-  const visibleAnnouncements = (announcementsQ.data || []).filter(x => !x.halaqa_id || x.halaqa_id === enrollment.halaqa_id);
+  const visibleAnnouncements = (announcementsQ.data || []).filter(x => !x.halaqa_id || halaqaIds.includes(x.halaqa_id));
   const renderFeed = items => items.length ? items.map(x => '<article class="urwa-announcement-item"><div class="urwa-announcement-meta">' + date(x.published_at) + (x.halaqa_id ? ' · Your level' : ' · URWA') + '</div><h4>' + esc(x.title) + '</h4><p>' + esc(x.message) + '</p></article>').join('') : '<div class="urwa-empty"><strong>No updates yet</strong>New messages from URWA will appear here.</div>';
   const communityFeed = $('#student-community-feed'); if (communityFeed) communityFeed.innerHTML = renderFeed(visibleAnnouncements.filter(x => x.halaqa_id));
   const announcementFeed = $('#student-announcements-feed'); if (announcementFeed) announcementFeed.innerHTML = renderFeed(visibleAnnouncements);
@@ -535,7 +548,7 @@ async function studentLoad(user) {
   const attendance = attendanceQ.data || [];
   const rate = attendance.length ? Math.round(attendance.filter(a => ['present', 'late'].includes(a.status)).length / attendance.length * 100) + '%' : 'No records';
   status('student-live-overview', 'Your live learning overview',
-    (enrollment.programme || 'Programme awaiting confirmation') + ' · ' + halaqaName +
+    (programmeSummary.join(' | ') || enrollment.programme || 'Programme awaiting confirmation') + ' · ' + halaqaName +
     ' · Admission: ' + (enrollment.status || 'not submitted') + ' · Attendance: ' + rate +
     ' · Assignments: ' + assignments.length + ' · Hifdh entries: ' + hifdhQ.data.length +
     ' · Muraja’ah entries: ' + murajaahQ.data.length);
@@ -552,7 +565,7 @@ async function teacherLoad(user) {
   if (halaqaIds.length) {
     const [h, e, a] = await Promise.all([
       supabase.from('halaqas').select('*').in('id', halaqaIds),
-      supabase.from('student_enrollments').select('*').in('halaqa_id', halaqaIds).eq('status', 'approved'),
+      supabase.from('student_programme_enrollments').select('*').in('halaqa_id', halaqaIds).eq('status', 'approved'),
       supabase.from('attendance').select('*').in('halaqa_id', halaqaIds)
     ]);
     [h, e, a].forEach(q => { if (q.error) fail(q.error); });
