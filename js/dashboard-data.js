@@ -215,7 +215,7 @@ async function adminLoad(user) {
           ' · ' + (teacher?.full_name || 'Abla not assigned') + ' · ' + x.schedule;
       });
       return '<tr><td><b>' + esc(p.full_name) + '</b><small>' + esc(p.email) +
-        '</small></td><td>' + esc(programmeNames.join('<br>') || e.programme || '—') + '</td><td>' +
+        '</small></td><td>' + esc(programmeNames.join('; ') || e.programme || '—') + '</td><td>' +
         esc(programmes.length ? programmes.map(x => byHalaqa.get(x.halaqa_id)?.name || 'Not assigned').join(', ') : 'Not assigned') +
         '</td><td>' + esc(programmes.length ? programmes.map(x => byId.get(x.teacher_id)?.full_name || 'Not assigned').join(', ') : 'Not assigned') +
         '</td><td>' + esc(e.status || p.status) + '</td></tr>';
@@ -444,7 +444,8 @@ async function initAdmin(user) {
             .upsert(placements, { onConflict: 'student_id,programme' });
           if (programmeError) fail(programmeError);
           const { error: placementError } = await supabase.from('student_enrollments')
-            .update({ level }).eq('student_id', targetId).eq('status', 'pending');
+            .update({ level, halaqa_id: placements[0].halaqa_id, programme: placements[0].programme, preferred_session: placements[0].schedule })
+            .eq('student_id', targetId).eq('status', 'pending');
           if (placementError) fail(placementError);
         }
         const { error } = await supabase.rpc('admin_review_membership_application', {
