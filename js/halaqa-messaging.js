@@ -89,8 +89,10 @@ async function loadMember(root,user,profile){
   chats=[];
   (enrollments||[]).forEach(enrollment=>{
    const halaqa=(halaqas||[]).find(h=>h.id===enrollment.halaqa_id);
-   chats.push({kind:'group',label:(halaqa?.name||'My Halaqa')+' · '+enrollment.programme+' · Group',halaqaId:enrollment.halaqa_id});
+   if(!chats.some(chat=>chat.kind==='group'&&chat.halaqaId===enrollment.halaqa_id))
+    chats.push({kind:'group',label:(halaqa?.name||'My Halaqa')+' · Group',halaqaId:enrollment.halaqa_id});
    (assignments||[]).filter(a=>a.halaqa_id===enrollment.halaqa_id).forEach(a=>{
+    if(chats.some(chat=>chat.kind==='private'&&chat.halaqaId===enrollment.halaqa_id&&chat.teacherId===a.teacher_id))return;
     const teacher=(teachers||[]).find(t=>t.id===a.teacher_id);
     chats.push({kind:'private',label:'1-to-1 · '+(teacher?.full_name||'Your Abla')+' · '+(halaqa?.name||''),halaqaId:enrollment.halaqa_id,studentId:user.id,teacherId:a.teacher_id});
    });
@@ -109,7 +111,8 @@ async function loadMember(root,user,profile){
   chats=[];
   (halaqas||[]).forEach(h=>{
    chats.push({kind:'group',label:h.name+' · Group',halaqaId:h.id});
-   (enrollments||[]).filter(e=>e.halaqa_id===h.id).forEach(e=>{const person=roster.find(p=>p.id===e.student_id);chats.push({kind:'private',label:'1-to-1 · '+(person?.full_name||'Student'),halaqaId:h.id,studentId:e.student_id,teacherId:user.id});});
+   const students=[...new Set((enrollments||[]).filter(e=>e.halaqa_id===h.id).map(e=>e.student_id))];
+   students.forEach(studentId=>{const person=roster.find(p=>p.id===studentId);chats.push({kind:'private',label:'1-to-1 · '+(person?.full_name||'Student'),halaqaId:h.id,studentId,teacherId:user.id});});
   });
   info.textContent='You can participate in your halaqa group chats and privately message students assigned to your classes.';
  }
