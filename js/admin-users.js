@@ -51,7 +51,20 @@ function render() {
     tr.append(td(profile.created_at ? new Date(profile.created_at).toLocaleDateString() : '—'));
 
     const action = document.createElement('td');
-    if (profile.role === 'department_member' && profile.status === 'pending') {
+    if (profile.role === 'teacher' && profile.status === 'pending') {
+      const approve = document.createElement('button');
+      approve.type = 'button';
+      approve.className = 'action';
+      approve.textContent = 'Approve educator';
+      approve.addEventListener('click', () => reviewMembershipApplication(profile, 'approve', approve));
+      const decline = document.createElement('button');
+      decline.type = 'button';
+      decline.className = 'action';
+      decline.textContent = 'Decline';
+      decline.style.marginLeft = '5px';
+      decline.addEventListener('click', () => reviewMembershipApplication(profile, 'reject', decline));
+      action.append(approve, decline);
+    } else if (profile.role === 'department_member' && profile.status === 'pending') {
       const approve = document.createElement('button');
       approve.type = 'button';
       approve.className = 'action';
@@ -134,6 +147,23 @@ function renderPendingAdminApplications() {
     tr.append(action);
     target.append(tr);
   });
+}
+
+async function reviewMembershipApplication(profile, decision, button) {
+  const verb = decision === 'approve' ? 'approve' : 'decline';
+  if (!window.confirm((decision === 'approve' ? 'Approve educator ' : 'Decline educator application from ') + profile.full_name + '?')) return;
+  button.disabled = true;
+  try {
+    const { error } = await supabase.rpc('admin_review_membership_application', {
+      target_user_id: profile.id,
+      decision
+    });
+    if (error) throw error;
+    await init();
+  } catch (error) {
+    window.alert('Could not ' + verb + ' educator application: ' + error.message);
+    button.disabled = false;
+  }
 }
 
 async function updateStatus(profile, status, button) {
