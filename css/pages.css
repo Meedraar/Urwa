@@ -413,3 +413,22 @@
   }
 
 }
+
+
+/* URWA unified design system — aligned with events.html */
+:root{
+  --gold:#e0a526!important;--goldtx:#9a6a08!important;
+  --emerald:#0e4a40!important;--head:#0e4a40!important;
+  --green:#0e4a40!important;--green2:#09372f!important;
+  --green-dark:#09372f!important;--brand:#0e4a40!important;
+  --cream:#fbf6e9!important;--bg:#fbf6e9!important;
+  --mint:#e3f0ea!important;--green-light:#e3f0ea!important;
+  --gold-light:#f2c94c!important;
+}
+html,body{font-family:"DM Sans",system-ui,sans-serif!important}
+body,button,input,select,textarea,table,th,td,label,a,p,li,small,span{
+  font-family:"DM Sans",system-ui,sans-serif!important
+}
+h1,h2,h3,h4,h5,h6,.page-title,.section-title,.brand-name{
+  font-family:"Playfair Display",Georgia,serif!important
+}
