@@ -29,17 +29,18 @@ async function currentUser() {
 
 async function adminLoad(user) {
   try {
-    const [peopleQ, enrollQ, halaqaQ, assignmentQ, attendanceQ, teacherAppsQ, departmentAppsQ] = await Promise.all([
+    const [peopleQ, enrollQ, programmeEnrollQ, halaqaQ, assignmentQ, attendanceQ, teacherAppsQ, departmentAppsQ] = await Promise.all([
       supabase.from('profiles').select('id,full_name,email,role,status,admin_level,created_at'),
       supabase.from('student_enrollments').select('*'),
+      supabase.from('student_programme_enrollments').select('*'),
       supabase.from('halaqas').select('*').order('name'),
       supabase.from('teacher_assignments').select('*'),
       supabase.from('attendance').select('id,status'),
       supabase.from('teacher_applications').select('id,area_of_interest,teaching_background,availability,status,admin_decision'),
       supabase.from('department_applications').select('id,applicant_id,department_id,position_id,status,admin_decision,created_at,departments(name),department_positions(title)')
     ]);
-    [peopleQ, enrollQ, halaqaQ, assignmentQ, attendanceQ, teacherAppsQ, departmentAppsQ].forEach(q => { if (q.error) fail(q.error); });
-    const people = peopleQ.data || [], enroll = enrollQ.data || [], halaqas = halaqaQ.data || [];
+    [peopleQ, enrollQ, programmeEnrollQ, halaqaQ, assignmentQ, attendanceQ, teacherAppsQ, departmentAppsQ].forEach(q => { if (q.error) fail(q.error); });
+    const people = peopleQ.data || [], enroll = enrollQ.data || [], programmeEnrollments = programmeEnrollQ.data || [], halaqas = halaqaQ.data || [];
     const assignments = assignmentQ.data || [], attendance = attendanceQ.data || [], teacherApps = teacherAppsQ.data || [], departmentApps = departmentAppsQ.data || [];
     const students = people.filter(p => p.role === 'student');
     const teachers = people.filter(p => p.role === 'teacher');
@@ -205,12 +206,18 @@ async function adminLoad(user) {
     const ablaPendingLabel = $('#admin-abla-pending-label');
     if (ablaPendingLabel) ablaPendingLabel.textContent = pendingTeachers.length + ' pending';
     put('#admin-students-body', students.map(p => {
-      const e = byStudent.get(p.id) || {}, h = byHalaqa.get(e.halaqa_id);
-      const ta = assignments.find(a => a.halaqa_id === e.halaqa_id);
-      const teacher = ta ? byId.get(ta.teacher_id) : null;
+      const e = byStudent.get(p.id) || {};
+      const programmes = programmeEnrollments.filter(x => x.student_id === p.id);
+      const programmeNames = programmes.map(x => {
+        const h = byHalaqa.get(x.halaqa_id);
+        const teacher = x.teacher_id ? byId.get(x.teacher_id) : null;
+        return (x.programme || 'Programme') + ' · ' + (h?.name || 'Halaqa not assigned') +
+          ' · ' + (teacher?.full_name || 'Abla not assigned') + ' · ' + x.schedule;
+      });
       return '<tr><td><b>' + esc(p.full_name) + '</b><small>' + esc(p.email) +
-        '</small></td><td>' + esc(e.programme || '—') + '</td><td>' +
-        esc(h?.name || 'Not assigned') + '</td><td>' + esc(teacher?.full_name || 'Not assigned') +
+        '</small></td><td>' + esc(programmeNames.join('<br>') || e.programme || '—') + '</td><td>' +
+        esc(programmes.length ? programmes.map(x => byHalaqa.get(x.halaqa_id)?.name || 'Not assigned').join(', ') : 'Not assigned') +
+        '</td><td>' + esc(programmes.length ? programmes.map(x => byId.get(x.teacher_id)?.full_name || 'Not assigned').join(', ') : 'Not assigned') +
         '</td><td>' + esc(e.status || p.status) + '</td></tr>';
     }).join(''), '<tr><td colspan="5">No student accounts yet.</td></tr>');
 
@@ -218,7 +225,7 @@ async function adminLoad(user) {
       const application = teacherApps.find(a => a.id === p.id) || {};
       const assigned = assignments.filter(a => a.teacher_id === p.id);
       const names = assigned.map(a => byHalaqa.get(a.halaqa_id)?.name).filter(Boolean);
-      const learnerCount = enroll.filter(e => e.status === 'approved' &&
+      const learnerCount = programmeEnrollments.filter(e => e.status === 'approved' &&
         assigned.some(a => a.halaqa_id === e.halaqa_id)).length;
       return '<tr><td><b>' + esc(p.full_name) + '</b><small>' + esc(p.email) +
         '</small></td><td>' + esc(application.area_of_interest || 'Not specified') +
@@ -239,7 +246,7 @@ async function adminLoad(user) {
     if (stats[4]) stats[4].textContent = attendance.length
       ? Math.round(attendance.filter(a => ['present', 'late'].includes(a.status)).length / attendance.length * 100) + '%' : '—';
     // Populate the detailed admin dashboard from the same live Supabase records.
-    const approvedEnrollments = enroll.filter(e => e.status === 'approved');
+    const approvedEnrollments = programmeEnrollments.filter(e => e.status === 'approved');
     const programmeCounts = new Map();
     approvedEnrollments.forEach(e => {
       const name = (e.programme || 'Programme not specified').trim();
