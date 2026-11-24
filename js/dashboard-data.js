@@ -114,8 +114,8 @@ async function adminLoad(user) {
         return '<tr><td><b>' + esc(p.full_name || '—') + '</b><small>' + esc(p.email || '') +
           '</small></td><td>' + kind + '</td><td>' + esc(details) + '</td><td>Pending</td><td>' +
           placement +
-          '<button class="urwa-btn urwa-btn-primary urwa-btn-small" type="button" data-central-review="' + p.id + '" data-decision="approve">Approve</button> ' +
-          '<button class="urwa-btn urwa-btn-outline urwa-btn-small" type="button" data-central-review="' + p.id + '" data-decision="reject">Reject</button></td></tr>';
+          '<button class="urwa-btn urwa-btn-primary urwa-btn-small" type="button" data-central-review="' + p.id + '" data-applicant-role="' + p.role + '" data-decision="approve">Approve</button> ' +
+          '<button class="urwa-btn urwa-btn-outline urwa-btn-small" type="button" data-central-review="' + p.id + '" data-applicant-role="' + p.role + '" data-decision="reject">Reject</button></td></tr>';
       }).join('');
       centralApprovalPanel.innerHTML = '<div class="panel-header"><h2>Central Membership Approvals</h2></div>' +
         '<p>All student, educator and departmental membership applications are approved by URWA Admin. Departmental roles and educators cannot activate accounts or approve applicants.</p>' +
@@ -419,22 +419,27 @@ async function initAdmin(user) {
       if (centralReview) {
         const targetId = centralReview.dataset.centralReview;
         const decision = centralReview.dataset.decision;
-        const applicant = people.find(p => p.id === targetId);
-        if (applicant?.role === 'student' && decision === 'approve') {
-          const level = $('[data-student-level="' + targetId + '"]')?.value;
-          const selectedProgrammes = [...centralApprovalPanel.querySelectorAll('[data-student-programme="' + targetId + '"]:checked')];
+        const applicantRole = centralReview.dataset.applicantRole;
+        const approvalPanel = $('#admin-central-approvals');
+        if (applicantRole === 'student' && decision === 'approve') {
+          const level = approvalPanel?.querySelector('[data-student-level="' + targetId + '"]')?.value;
+          const selectedProgrammes = [...(approvalPanel?.querySelectorAll('[data-student-programme="' + targetId + '"]:checked') || [])];
           if (!level || !selectedProgrammes.length) throw new Error('Choose at least one programme and a learning level before approving.');
           const placements = selectedProgrammes.map(input => {
             const key = input.value;
-            const halaqaId = centralApprovalPanel.querySelector('[data-student-halaqa="' + targetId + '"][data-programme-key="' + key + '"]')?.value;
-            const teacherId = centralApprovalPanel.querySelector('[data-student-abla="' + targetId + '"][data-programme-key="' + key + '"]')?.value;
+            const halaqaId = approvalPanel.querySelector('[data-student-halaqa="' + targetId + '"][data-programme-key="' + key + '"]')?.value;
+            const teacherId = approvalPanel.querySelector('[data-student-abla="' + targetId + '"][data-programme-key="' + key + '"]')?.value;
             const schedule = key === 'Quran Halaqa'
-              ? (centralApprovalPanel.querySelector('[data-student-session="' + targetId + '"][data-programme-key="' + key + '"]')?.value || 'Morning')
+              ? (approvalPanel.querySelector('[data-student-session="' + targetId + '"][data-programme-key="' + key + '"]')?.value || 'Morning')
               : key === 'Tajweed' ? 'Saturday & Sunday' : 'Sunday';
             if (!halaqaId || !teacherId) throw new Error('Choose a Halaqa and an assigned Abla for ' + key + '.');
-            if (!assignments.some(a => a.teacher_id === teacherId && a.halaqa_id === halaqaId)) throw new Error('The selected Abla is not assigned to the chosen Halaqa.');
             return { student_id: targetId, programme: key, halaqa_id: halaqaId, teacher_id: teacherId, schedule, status: 'pending' };
           });
+          const { data: teacherLinks, error: teacherLinksError } = await supabase.from('teacher_assignments').select('teacher_id,halaqa_id');
+          if (teacherLinksError) fail(teacherLinksError);
+          if (placements.some(x => !(teacherLinks || []).some(a => a.teacher_id === x.teacher_id && a.halaqa_id === x.halaqa_id))) {
+            throw new Error('One of the selected Ablas is not assigned to the chosen Halaqa. Check the Halaqa assignments first.');
+          }
           const { error: programmeError } = await supabase.from('student_programme_enrollments')
             .upsert(placements, { onConflict: 'student_id,programme' });
           if (programmeError) fail(programmeError);
@@ -448,7 +453,7 @@ async function initAdmin(user) {
           decision_notes: null
         });
         if (error) fail(error);
-        if (applicant?.role === 'student' && decision === 'approve') {
+        if (applicantRole === 'student' && decision === 'approve') {
           const { error: programmeApprovalError } = await supabase.from('student_programme_enrollments')
             .update({ status: 'approved', reviewed_by: user.id, reviewed_at: new Date().toISOString() })
             .eq('student_id', targetId).eq('status', 'pending');
