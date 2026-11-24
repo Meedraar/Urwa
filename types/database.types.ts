@@ -59,6 +59,47 @@ export type Database = {
           },
         ]
       }
+      application_review_events: {
+        Row: {
+          application_id: string
+          application_type: string
+          created_at: string
+          decision: string
+          id: string
+          notes: string | null
+          reviewer_id: string
+          stage: string
+        }
+        Insert: {
+          application_id: string
+          application_type: string
+          created_at?: string
+          decision: string
+          id?: string
+          notes?: string | null
+          reviewer_id: string
+          stage: string
+        }
+        Update: {
+          application_id?: string
+          application_type?: string
+          created_at?: string
+          decision?: string
+          id?: string
+          notes?: string | null
+          reviewer_id?: string
+          stage?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "application_review_events_reviewer_id_fkey"
+            columns: ["reviewer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       assignments: {
         Row: {
           assignment_type: string | null
@@ -216,9 +257,15 @@ export type Database = {
       department_applications: {
         Row: {
           additional_information: string | null
+          admin_decided_at: string | null
+          admin_decided_by: string | null
+          admin_decision: string
           applicant_id: string
           availability: string | null
           created_at: string
+          department_head_review_status: string
+          department_head_reviewed_at: string | null
+          department_head_reviewed_by: string | null
           department_id: string
           id: string
           leadership_experience: string | null
@@ -233,9 +280,15 @@ export type Database = {
         }
         Insert: {
           additional_information?: string | null
+          admin_decided_at?: string | null
+          admin_decided_by?: string | null
+          admin_decision?: string
           applicant_id: string
           availability?: string | null
           created_at?: string
+          department_head_review_status?: string
+          department_head_reviewed_at?: string | null
+          department_head_reviewed_by?: string | null
           department_id: string
           id?: string
           leadership_experience?: string | null
@@ -250,9 +303,15 @@ export type Database = {
         }
         Update: {
           additional_information?: string | null
+          admin_decided_at?: string | null
+          admin_decided_by?: string | null
+          admin_decision?: string
           applicant_id?: string
           availability?: string | null
           created_at?: string
+          department_head_review_status?: string
+          department_head_reviewed_at?: string | null
+          department_head_reviewed_by?: string | null
           department_id?: string
           id?: string
           leadership_experience?: string | null
@@ -267,8 +326,22 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "department_applications_admin_decided_by_fkey"
+            columns: ["admin_decided_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "department_applications_applicant_id_fkey"
             columns: ["applicant_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "department_applications_department_head_reviewed_by_fkey"
+            columns: ["department_head_reviewed_by"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
@@ -428,6 +501,69 @@ export type Database = {
           },
           {
             foreignKeyName: "department_events_department_id_fkey"
+            columns: ["department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      department_goals: {
+        Row: {
+          created_at: string
+          created_by: string
+          department_id: string
+          description: string | null
+          due_date: string | null
+          id: string
+          start_date: string | null
+          status: string
+          target_metric: string | null
+          target_value: number | null
+          title: string
+          unit: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          department_id: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          start_date?: string | null
+          status?: string
+          target_metric?: string | null
+          target_value?: number | null
+          title: string
+          unit?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          department_id?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          start_date?: string | null
+          status?: string
+          target_metric?: string | null
+          target_value?: number | null
+          title?: string
+          unit?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "department_goals_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "department_goals_department_id_fkey"
             columns: ["department_id"]
             isOneToOne: false
             referencedRelation: "departments"
@@ -602,6 +738,332 @@ export type Database = {
           {
             foreignKeyName: "department_positions_department_id_fkey"
             columns: ["department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      department_project_meeting_notes: {
+        Row: {
+          created_at: string
+          created_by: string
+          id: string
+          meeting_at: string | null
+          notes: string
+          project_id: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          id?: string
+          meeting_at?: string | null
+          notes: string
+          project_id: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          id?: string
+          meeting_at?: string | null
+          notes?: string
+          project_id?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "department_project_meeting_notes_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "department_project_meeting_notes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "department_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      department_project_members: {
+        Row: {
+          home_department_id: string
+          joined_at: string
+          member_role: string
+          profile_id: string
+          project_id: string
+        }
+        Insert: {
+          home_department_id: string
+          joined_at?: string
+          member_role?: string
+          profile_id: string
+          project_id: string
+        }
+        Update: {
+          home_department_id?: string
+          joined_at?: string
+          member_role?: string
+          profile_id?: string
+          project_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "department_project_members_home_department_id_fkey"
+            columns: ["home_department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "department_project_members_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "department_project_members_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "department_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      department_project_messages: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          project_id: string
+          sender_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          project_id: string
+          sender_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          project_id?: string
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "department_project_messages_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "department_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "department_project_messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      department_project_requests: {
+        Row: {
+          created_at: string
+          id: string
+          message: string | null
+          project_id: string
+          requested_by: string
+          requested_profile_id: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+          target_department_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message?: string | null
+          project_id: string
+          requested_by: string
+          requested_profile_id: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          target_department_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message?: string | null
+          project_id?: string
+          requested_by?: string
+          requested_profile_id?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          target_department_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "department_project_requests_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "department_projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "department_project_requests_requested_by_fkey"
+            columns: ["requested_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "department_project_requests_requested_profile_id_fkey"
+            columns: ["requested_profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "department_project_requests_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "department_project_requests_target_department_id_fkey"
+            columns: ["target_department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      department_project_tasks: {
+        Row: {
+          assigned_to: string | null
+          created_at: string
+          created_by: string
+          description: string | null
+          due_at: string | null
+          id: string
+          priority: string
+          project_id: string
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          created_at?: string
+          created_by: string
+          description?: string | null
+          due_at?: string | null
+          id?: string
+          priority?: string
+          project_id: string
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          assigned_to?: string | null
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          due_at?: string | null
+          id?: string
+          priority?: string
+          project_id?: string
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "department_project_tasks_assigned_to_fkey"
+            columns: ["assigned_to"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "department_project_tasks_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "department_project_tasks_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "department_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      department_projects: {
+        Row: {
+          created_at: string
+          created_by: string
+          description: string | null
+          due_on: string | null
+          id: string
+          lead_department_id: string
+          starts_on: string | null
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          description?: string | null
+          due_on?: string | null
+          id?: string
+          lead_department_id: string
+          starts_on?: string | null
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          due_on?: string | null
+          id?: string
+          lead_department_id?: string
+          starts_on?: string | null
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "department_projects_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "department_projects_lead_department_id_fkey"
+            columns: ["lead_department_id"]
             isOneToOne: false
             referencedRelation: "departments"
             referencedColumns: ["id"]
@@ -853,6 +1315,90 @@ export type Database = {
           },
         ]
       }
+      department_staff_invitations: {
+        Row: {
+          auth_user_id: string | null
+          created_at: string
+          department_id: string
+          email: string
+          expires_at: string | null
+          full_name: string
+          id: string
+          invited_by: string
+          position_id: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          auth_user_id?: string | null
+          created_at?: string
+          department_id: string
+          email: string
+          expires_at?: string | null
+          full_name: string
+          id?: string
+          invited_by: string
+          position_id: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          auth_user_id?: string | null
+          created_at?: string
+          department_id?: string
+          email?: string
+          expires_at?: string | null
+          full_name?: string
+          id?: string
+          invited_by?: string
+          position_id?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "department_staff_invitations_auth_user_id_fkey"
+            columns: ["auth_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "department_staff_invitations_department_id_fkey"
+            columns: ["department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "department_staff_invitations_invited_by_fkey"
+            columns: ["invited_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "department_staff_invitations_position_id_fkey"
+            columns: ["position_id"]
+            isOneToOne: false
+            referencedRelation: "department_positions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "department_staff_invitations_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       department_task_assignees: {
         Row: {
           assigned_at: string
@@ -1058,6 +1604,136 @@ export type Database = {
         }
         Relationships: []
       }
+      educator_level_assignments: {
+        Row: {
+          assigned_at: string
+          assigned_by: string | null
+          cycle_id: string
+          educator_id: string
+          id: string
+          level: string
+        }
+        Insert: {
+          assigned_at?: string
+          assigned_by?: string | null
+          cycle_id: string
+          educator_id: string
+          id?: string
+          level: string
+        }
+        Update: {
+          assigned_at?: string
+          assigned_by?: string | null
+          cycle_id?: string
+          educator_id?: string
+          id?: string
+          level?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "educator_level_assignments_cycle_id_fkey"
+            columns: ["cycle_id"]
+            isOneToOne: false
+            referencedRelation: "learning_level_cycles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "educator_level_assignments_educator_id_fkey"
+            columns: ["educator_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      halaqa_chats: {
+        Row: {
+          chat_type: string
+          created_at: string
+          halaqa_id: string
+          id: string
+          student_id: string | null
+          teacher_id: string | null
+        }
+        Insert: {
+          chat_type: string
+          created_at?: string
+          halaqa_id: string
+          id?: string
+          student_id?: string | null
+          teacher_id?: string | null
+        }
+        Update: {
+          chat_type?: string
+          created_at?: string
+          halaqa_id?: string
+          id?: string
+          student_id?: string | null
+          teacher_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "halaqa_chats_halaqa_id_fkey"
+            columns: ["halaqa_id"]
+            isOneToOne: false
+            referencedRelation: "halaqas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "halaqa_chats_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "halaqa_chats_teacher_id_fkey"
+            columns: ["teacher_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      halaqa_messages: {
+        Row: {
+          body: string
+          chat_id: string
+          created_at: string
+          id: string
+          sender_id: string
+        }
+        Insert: {
+          body: string
+          chat_id: string
+          created_at?: string
+          id?: string
+          sender_id: string
+        }
+        Update: {
+          body?: string
+          chat_id?: string
+          created_at?: string
+          id?: string
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "halaqa_messages_chat_id_fkey"
+            columns: ["chat_id"]
+            isOneToOne: false
+            referencedRelation: "halaqa_chats"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "halaqa_messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       halaqas: {
         Row: {
           created_at: string
@@ -1135,6 +1811,139 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      learning_assessments: {
+        Row: {
+          assessed_level: string
+          assessment_date: string
+          created_at: string
+          cycle_id: string
+          educator_id: string
+          enrollment_id: string
+          halaqa_id: string
+          id: string
+          notes: string | null
+          recommendation: string
+          recommended_level: string | null
+          review_notes: string | null
+          review_status: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          score: number
+          student_id: string
+        }
+        Insert: {
+          assessed_level: string
+          assessment_date?: string
+          created_at?: string
+          cycle_id: string
+          educator_id: string
+          enrollment_id: string
+          halaqa_id: string
+          id?: string
+          notes?: string | null
+          recommendation: string
+          recommended_level?: string | null
+          review_notes?: string | null
+          review_status?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          score: number
+          student_id: string
+        }
+        Update: {
+          assessed_level?: string
+          assessment_date?: string
+          created_at?: string
+          cycle_id?: string
+          educator_id?: string
+          enrollment_id?: string
+          halaqa_id?: string
+          id?: string
+          notes?: string | null
+          recommendation?: string
+          recommended_level?: string | null
+          review_notes?: string | null
+          review_status?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          score?: number
+          student_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "learning_assessments_cycle_id_fkey"
+            columns: ["cycle_id"]
+            isOneToOne: false
+            referencedRelation: "learning_level_cycles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "learning_assessments_educator_id_fkey"
+            columns: ["educator_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "learning_assessments_enrollment_id_fkey"
+            columns: ["enrollment_id"]
+            isOneToOne: false
+            referencedRelation: "student_enrollments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "learning_assessments_halaqa_id_fkey"
+            columns: ["halaqa_id"]
+            isOneToOne: false
+            referencedRelation: "halaqas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "learning_assessments_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "learning_assessments_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      learning_level_cycles: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          cycle_name: string
+          ends_on: string
+          id: string
+          starts_on: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          cycle_name: string
+          ends_on: string
+          id?: string
+          starts_on: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          cycle_name?: string
+          ends_on?: string
+          id?: string
+          starts_on?: string
+          status?: string
+        }
+        Relationships: []
       }
       murajaah_records: {
         Row: {
@@ -1226,11 +2035,58 @@ export type Database = {
         }
         Relationships: []
       }
-      student_enrollments: {
+      public_enquiries: {
         Row: {
           created_at: string
+          email: string
+          enquiry_type: string
+          full_name: string
+          id: string
+          message: string
+          metadata: Json
+          phone: string | null
+          source: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          enquiry_type?: string
+          full_name: string
+          id?: string
+          message: string
+          metadata?: Json
+          phone?: string | null
+          source?: string
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          enquiry_type?: string
+          full_name?: string
+          id?: string
+          message?: string
+          metadata?: Json
+          phone?: string | null
+          source?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      student_enrollments: {
+        Row: {
+          admin_decided_at: string | null
+          admin_decided_by: string | null
+          admin_decision: string
+          created_at: string
+          department_review_notes: string | null
+          department_review_status: string
+          department_reviewed_at: string | null
+          department_reviewed_by: string | null
           halaqa_id: string | null
           id: string
+          learning_cycle_id: string | null
           level: string | null
           preferred_session: string | null
           programme: string | null
@@ -1240,9 +2096,17 @@ export type Database = {
           student_id: string
         }
         Insert: {
+          admin_decided_at?: string | null
+          admin_decided_by?: string | null
+          admin_decision?: string
           created_at?: string
+          department_review_notes?: string | null
+          department_review_status?: string
+          department_reviewed_at?: string | null
+          department_reviewed_by?: string | null
           halaqa_id?: string | null
           id?: string
+          learning_cycle_id?: string | null
           level?: string | null
           preferred_session?: string | null
           programme?: string | null
@@ -1252,9 +2116,17 @@ export type Database = {
           student_id: string
         }
         Update: {
+          admin_decided_at?: string | null
+          admin_decided_by?: string | null
+          admin_decision?: string
           created_at?: string
+          department_review_notes?: string | null
+          department_review_status?: string
+          department_reviewed_at?: string | null
+          department_reviewed_by?: string | null
           halaqa_id?: string | null
           id?: string
+          learning_cycle_id?: string | null
           level?: string | null
           preferred_session?: string | null
           programme?: string | null
@@ -1265,10 +2137,31 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "student_enrollments_admin_decided_by_fkey"
+            columns: ["admin_decided_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "student_enrollments_department_reviewed_by_fkey"
+            columns: ["department_reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "student_enrollments_halaqa_id_fkey"
             columns: ["halaqa_id"]
             isOneToOne: false
             referencedRelation: "halaqas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "student_enrollments_learning_cycle_id_fkey"
+            columns: ["learning_cycle_id"]
+            isOneToOne: false
+            referencedRelation: "learning_level_cycles"
             referencedColumns: ["id"]
           },
           {
@@ -1282,6 +2175,74 @@ export type Database = {
             foreignKeyName: "student_enrollments_student_id_fkey"
             columns: ["student_id"]
             isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      student_programme_enrollments: {
+        Row: {
+          created_at: string
+          halaqa_id: string | null
+          id: string
+          programme: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          schedule: string
+          status: Database["public"]["Enums"]["account_status"]
+          student_id: string
+          teacher_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          halaqa_id?: string | null
+          id?: string
+          programme: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          schedule: string
+          status?: Database["public"]["Enums"]["account_status"]
+          student_id: string
+          teacher_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          halaqa_id?: string | null
+          id?: string
+          programme?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          schedule?: string
+          status?: Database["public"]["Enums"]["account_status"]
+          student_id?: string
+          teacher_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_programme_enrollments_halaqa_id_fkey"
+            columns: ["halaqa_id"]
+            isOneToOne: false
+            referencedRelation: "halaqas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "student_programme_enrollments_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "student_programme_enrollments_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "student_programme_enrollments_teacher_id_fkey"
+            columns: ["teacher_id"]
+            isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
@@ -1410,27 +2371,84 @@ export type Database = {
       }
       teacher_applications: {
         Row: {
+          academic_review_notes: string | null
+          academic_review_status: string
+          academic_reviewed_at: string | null
+          academic_reviewed_by: string | null
+          admin_decided_at: string | null
+          admin_decided_by: string | null
+          admin_decision: string
           area_of_interest: string | null
           availability: string | null
           created_at: string
+          department_review_notes: string | null
+          department_review_status: string
+          department_reviewed_at: string | null
+          department_reviewed_by: string | null
           id: string
+          status: string
           teaching_background: string | null
         }
         Insert: {
+          academic_review_notes?: string | null
+          academic_review_status?: string
+          academic_reviewed_at?: string | null
+          academic_reviewed_by?: string | null
+          admin_decided_at?: string | null
+          admin_decided_by?: string | null
+          admin_decision?: string
           area_of_interest?: string | null
           availability?: string | null
           created_at?: string
+          department_review_notes?: string | null
+          department_review_status?: string
+          department_reviewed_at?: string | null
+          department_reviewed_by?: string | null
           id: string
+          status?: string
           teaching_background?: string | null
         }
         Update: {
+          academic_review_notes?: string | null
+          academic_review_status?: string
+          academic_reviewed_at?: string | null
+          academic_reviewed_by?: string | null
+          admin_decided_at?: string | null
+          admin_decided_by?: string | null
+          admin_decision?: string
           area_of_interest?: string | null
           availability?: string | null
           created_at?: string
+          department_review_notes?: string | null
+          department_review_status?: string
+          department_reviewed_at?: string | null
+          department_reviewed_by?: string | null
           id?: string
+          status?: string
           teaching_background?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "teacher_applications_academic_reviewed_by_fkey"
+            columns: ["academic_reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "teacher_applications_admin_decided_by_fkey"
+            columns: ["admin_decided_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "teacher_applications_department_reviewed_by_fkey"
+            columns: ["department_reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "teacher_applications_id_fkey"
             columns: ["id"]
@@ -1481,6 +2499,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_review_membership_application: {
+        Args: {
+          decision: string
+          decision_notes?: string
+          target_user_id: string
+        }
+        Returns: undefined
+      }
       admin_set_admin_level: {
         Args: { new_level: string; target_user_id: string }
         Returns: undefined
@@ -1498,6 +2524,24 @@ export type Database = {
         Args: never
         Returns: Database["public"]["Enums"]["urwa_role"]
       }
+      finalize_urwa_application: {
+        Args: {
+          decision_note?: string
+          final_decision: string
+          target_profile: string
+          target_type: string
+        }
+        Returns: undefined
+      }
+      finalize_urwa_student_admission: {
+        Args: {
+          decision_note?: string
+          final_decision: string
+          target_halaqa?: string
+          target_profile: string
+        }
+        Returns: undefined
+      }
       get_department_collaboration_directory: {
         Args: never
         Returns: {
@@ -1505,6 +2549,15 @@ export type Database = {
           department_name: string
           full_name: string
           profile_id: string
+        }[]
+      }
+      get_teacher_student_directory: {
+        Args: never
+        Returns: {
+          email: string
+          full_name: string
+          halaqa_id: string
+          id: string
         }[]
       }
       has_active_department_membership: {
@@ -1524,11 +2577,69 @@ export type Database = {
         Args: { target_department: string }
         Returns: boolean
       }
+      is_department_project_lead: {
+        Args: { target_project: string }
+        Returns: boolean
+      }
+      is_department_project_member: {
+        Args: { target_project: string }
+        Returns: boolean
+      }
+      is_member_of_department_slug: {
+        Args: { target_slug: string }
+        Returns: boolean
+      }
       is_super_admin: { Args: never; Returns: boolean }
+      record_learning_assessment: {
+        Args: {
+          assessment_day?: string
+          assessment_notes?: string
+          assessment_score: number
+          target_enrollment_id: string
+        }
+        Returns: string
+      }
+      review_abla_application: {
+        Args: {
+          review_decision: string
+          review_note?: string
+          review_stage: string
+          target_profile: string
+        }
+        Returns: undefined
+      }
+      review_admin_application: {
+        Args: { final_decision: string; target_user_id: string }
+        Returns: undefined
+      }
+      review_department_application: {
+        Args: {
+          review_decision: string
+          review_note?: string
+          target_application: string
+        }
+        Returns: undefined
+      }
+      review_learning_assessment: {
+        Args: {
+          approve_recommendation: boolean
+          decision_notes?: string
+          target_assessment_id: string
+        }
+        Returns: undefined
+      }
+      review_student_admission: {
+        Args: {
+          review_decision: string
+          review_note?: string
+          target_enrollment: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       account_status: "pending" | "approved" | "suspended" | "cancelled"
-      urwa_role: "student" | "teacher" | "admin"
+      urwa_role: "student" | "teacher" | "admin" | "department_member"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1657,7 +2768,7 @@ export const Constants = {
   public: {
     Enums: {
       account_status: ["pending", "approved", "suspended", "cancelled"],
-      urwa_role: ["student", "teacher", "admin"],
+      urwa_role: ["student", "teacher", "admin", "department_member"],
     },
   },
 } as const

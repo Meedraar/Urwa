@@ -29,17 +29,18 @@ async function currentUser() {
 
 async function adminLoad(user) {
   try {
-    const [peopleQ, enrollQ, halaqaQ, assignmentQ, attendanceQ, teacherAppsQ, departmentAppsQ] = await Promise.all([
+    const [peopleQ, enrollQ, programmeEnrollQ, halaqaQ, assignmentQ, attendanceQ, teacherAppsQ, departmentAppsQ] = await Promise.all([
       supabase.from('profiles').select('id,full_name,email,role,status,admin_level,created_at'),
       supabase.from('student_enrollments').select('*'),
+      supabase.from('student_programme_enrollments').select('*'),
       supabase.from('halaqas').select('*').order('name'),
       supabase.from('teacher_assignments').select('*'),
       supabase.from('attendance').select('id,status'),
       supabase.from('teacher_applications').select('id,area_of_interest,teaching_background,availability,status,admin_decision'),
       supabase.from('department_applications').select('id,applicant_id,department_id,position_id,status,admin_decision,created_at,departments(name),department_positions(title)')
     ]);
-    [peopleQ, enrollQ, halaqaQ, assignmentQ, attendanceQ, teacherAppsQ, departmentAppsQ].forEach(q => { if (q.error) fail(q.error); });
-    const people = peopleQ.data || [], enroll = enrollQ.data || [], halaqas = halaqaQ.data || [];
+    [peopleQ, enrollQ, programmeEnrollQ, halaqaQ, assignmentQ, attendanceQ, teacherAppsQ, departmentAppsQ].forEach(q => { if (q.error) fail(q.error); });
+    const people = peopleQ.data || [], enroll = enrollQ.data || [], programmeEnrollments = programmeEnrollQ.data || [], halaqas = halaqaQ.data || [];
     const assignments = assignmentQ.data || [], attendance = attendanceQ.data || [], teacherApps = teacherAppsQ.data || [], departmentApps = departmentAppsQ.data || [];
     const students = people.filter(p => p.role === 'student');
     const teachers = people.filter(p => p.role === 'teacher');
@@ -89,15 +90,23 @@ async function adminLoad(user) {
             ? (teacherApplication.area_of_interest || 'Educator application')
             : (departmentApplication?.departments?.name || 'Department application') +
               (departmentApplication?.department_positions?.title ? ' · ' + departmentApplication.department_positions.title : '');
+        const programmeChoices = [
+          { key: 'Quran Halaqa', label: 'Qur’an Halaqa', schedule: 'Morning or Evening', sessions: ['Morning','Evening'] },
+          { key: 'Tajweed', label: 'Tajweed', schedule: 'Saturday & Sunday', sessions: ['Saturday & Sunday'] },
+          { key: 'Tafseer', label: 'Tafseer', schedule: 'Sunday', sessions: ['Sunday'] }
+        ];
         const placement = p.role === 'student'
-          ? '<div class="urwa-admin-actions">' +
-            '<select aria-label="Assign Abla for ' + esc(p.full_name || 'student') + '" data-student-abla="' + p.id + '">' +
-            '<option value="">Choose Abla</option>' +
-            teachers.filter(t => t.status === 'approved' && assignments.some(a => a.teacher_id === t.id && halaqas.some(h => h.id === a.halaqa_id && h.is_active)))
-              .map(t => '<option value="' + t.id + '">' + esc(t.full_name || 'Educator') + '</option>').join('') +
-            '</select>' +
-            '<select aria-label="Assign Halaqa for ' + esc(p.full_name || 'student') + '" data-student-halaqa="' + p.id + '">' +
-            '<option value="">Choose Abla first</option></select>' +
+          ? '<div class="urwa-admin-placement">' +
+            programmeChoices.map(programme => {
+              const selected = (enrollment.programme || 'Quran Halaqa') === programme.key;
+              return '<fieldset class="urwa-programme-placement"><label><input type="checkbox" data-student-programme="' + p.id + '" value="' + programme.key + '" ' + (selected ? 'checked' : '') + '> ' + programme.label + '</label>' +
+                '<small>' + programme.schedule + '</small>' +
+                (programme.key === 'Quran Halaqa' ? '<select aria-label="Qur’an Halaqa session" data-student-session="' + p.id + '" data-programme-key="' + programme.key + '"><option value="Morning">Morning</option><option value="Evening">Evening</option></select>' : '') +
+                '<select aria-label="' + programme.label + ' Halaqa" data-student-halaqa="' + p.id + '" data-programme-key="' + programme.key + '">' +
+                '<option value="">Choose Halaqa</option>' + halaqas.filter(h => h.is_active).map(h => '<option value="' + h.id + '">' + esc(h.name) + '</option>').join('') + '</select>' +
+                '<select aria-label="' + programme.label + ' Abla" data-student-abla="' + p.id + '" data-programme-key="' + programme.key + '">' +
+                '<option value="">Choose Abla</option>' + teachers.filter(t => t.status === 'approved').map(t => '<option value="' + t.id + '">' + esc(t.full_name || 'Educator') + '</option>').join('') + '</select></fieldset>';
+            }).join('') +
             '<select aria-label="Assign learning level for ' + esc(p.full_name || 'student') + '" data-student-level="' + p.id + '">' +
             ['Qaida','Level 1 – Foundation','Level 2 – Growth','Level 3 – Mastery'].map(level => '<option value="' + esc(level) + '" ' + ((enrollment.level || 'Qaida') === level ? 'selected' : '') + '>' + esc(level) + '</option>').join('') +
             '</select></div>'
@@ -105,29 +114,15 @@ async function adminLoad(user) {
         return '<tr><td><b>' + esc(p.full_name || '—') + '</b><small>' + esc(p.email || '') +
           '</small></td><td>' + kind + '</td><td>' + esc(details) + '</td><td>Pending</td><td>' +
           placement +
-          '<button class="urwa-btn urwa-btn-primary urwa-btn-small" type="button" data-central-review="' + p.id + '" data-decision="approve">Approve</button> ' +
-          '<button class="urwa-btn urwa-btn-outline urwa-btn-small" type="button" data-central-review="' + p.id + '" data-decision="reject">Reject</button></td></tr>';
+          '<button class="urwa-btn urwa-btn-primary urwa-btn-small" type="button" data-central-review="' + p.id + '" data-applicant-role="' + p.role + '" data-decision="approve">Approve</button> ' +
+          '<button class="urwa-btn urwa-btn-outline urwa-btn-small" type="button" data-central-review="' + p.id + '" data-applicant-role="' + p.role + '" data-decision="reject">Reject</button></td></tr>';
       }).join('');
       centralApprovalPanel.innerHTML = '<div class="panel-header"><h2>Central Membership Approvals</h2></div>' +
         '<p>All student, educator and departmental membership applications are approved by URWA Admin. Departmental roles and educators cannot activate accounts or approve applicants.</p>' +
         '<div class="table-wrapper"><table><thead><tr><th>Applicant</th><th>Application type</th><th>Details</th><th>Status</th><th>Admin decision &amp; placement</th></tr></thead><tbody>' +
         (centralRows || '<tr><td colspan="5">No pending membership applications.</td></tr>') +
         '</tbody></table></div>';
-      centralApprovalPanel.querySelectorAll('[data-student-abla]').forEach(select => {
-        const studentId = select.dataset.studentAbla;
-        const halaqaSelect = centralApprovalPanel.querySelector('[data-student-halaqa="' + studentId + '"]');
-        const refreshHalaqas = () => {
-          const teacherId = select.value;
-          const current = byStudent.get(studentId)?.halaqa_id || '';
-          const available = assignments.filter(a => a.teacher_id === teacherId)
-            .map(a => halaqas.find(h => h.id === a.halaqa_id && h.is_active))
-            .filter(Boolean);
-          halaqaSelect.innerHTML = '<option value="">Choose Halaqa</option>' +
-            available.map(h => '<option value="' + h.id + '" ' + (h.id === current ? 'selected' : '') + '>' + esc(h.name) + '</option>').join('');
-        };
-        select.addEventListener('change', refreshHalaqas);
-        refreshHalaqas();
-      });
+      // Halaqa names are the 32 named URWA groups; choose an approved Abla account separately.
     }
 
     // Learning level cycle and assessment recommendation review (admin only).
@@ -199,12 +194,18 @@ async function adminLoad(user) {
     const ablaPendingLabel = $('#admin-abla-pending-label');
     if (ablaPendingLabel) ablaPendingLabel.textContent = pendingTeachers.length + ' pending';
     put('#admin-students-body', students.map(p => {
-      const e = byStudent.get(p.id) || {}, h = byHalaqa.get(e.halaqa_id);
-      const ta = assignments.find(a => a.halaqa_id === e.halaqa_id);
-      const teacher = ta ? byId.get(ta.teacher_id) : null;
+      const e = byStudent.get(p.id) || {};
+      const programmes = programmeEnrollments.filter(x => x.student_id === p.id);
+      const programmeNames = programmes.map(x => {
+        const h = byHalaqa.get(x.halaqa_id);
+        const teacher = x.teacher_id ? byId.get(x.teacher_id) : null;
+        return (x.programme || 'Programme') + ' · ' + (h?.name || 'Halaqa not assigned') +
+          ' · ' + (teacher?.full_name || 'Abla not assigned') + ' · ' + x.schedule;
+      });
       return '<tr><td><b>' + esc(p.full_name) + '</b><small>' + esc(p.email) +
-        '</small></td><td>' + esc(e.programme || '—') + '</td><td>' +
-        esc(h?.name || 'Not assigned') + '</td><td>' + esc(teacher?.full_name || 'Not assigned') +
+        '</small></td><td>' + esc(programmeNames.join('; ') || e.programme || '—') + '</td><td>' +
+        esc(programmes.length ? programmes.map(x => byHalaqa.get(x.halaqa_id)?.name || 'Not assigned').join(', ') : 'Not assigned') +
+        '</td><td>' + esc(programmes.length ? programmes.map(x => byId.get(x.teacher_id)?.full_name || 'Not assigned').join(', ') : 'Not assigned') +
         '</td><td>' + esc(e.status || p.status) + '</td></tr>';
     }).join(''), '<tr><td colspan="5">No student accounts yet.</td></tr>');
 
@@ -212,7 +213,7 @@ async function adminLoad(user) {
       const application = teacherApps.find(a => a.id === p.id) || {};
       const assigned = assignments.filter(a => a.teacher_id === p.id);
       const names = assigned.map(a => byHalaqa.get(a.halaqa_id)?.name).filter(Boolean);
-      const learnerCount = enroll.filter(e => e.status === 'approved' &&
+      const learnerCount = programmeEnrollments.filter(e => e.status === 'approved' &&
         assigned.some(a => a.halaqa_id === e.halaqa_id)).length;
       return '<tr><td><b>' + esc(p.full_name) + '</b><small>' + esc(p.email) +
         '</small></td><td>' + esc(application.area_of_interest || 'Not specified') +
@@ -233,7 +234,7 @@ async function adminLoad(user) {
     if (stats[4]) stats[4].textContent = attendance.length
       ? Math.round(attendance.filter(a => ['present', 'late'].includes(a.status)).length / attendance.length * 100) + '%' : '—';
     // Populate the detailed admin dashboard from the same live Supabase records.
-    const approvedEnrollments = enroll.filter(e => e.status === 'approved');
+    const approvedEnrollments = programmeEnrollments.filter(e => e.status === 'approved');
     const programmeCounts = new Map();
     approvedEnrollments.forEach(e => {
       const name = (e.programme || 'Programme not specified').trim();
@@ -406,16 +407,33 @@ async function initAdmin(user) {
       if (centralReview) {
         const targetId = centralReview.dataset.centralReview;
         const decision = centralReview.dataset.decision;
-        const applicant = people.find(p => p.id === targetId);
-        if (applicant?.role === 'student' && decision === 'approve') {
-          const ablaId = $('[data-student-abla="' + targetId + '"]')?.value;
-          const halaqaId = $('[data-student-halaqa="' + targetId + '"]')?.value;
-          const level = $('[data-student-level="' + targetId + '"]')?.value;
-          if (!ablaId || !halaqaId || !level) throw new Error('Choose the student’s Abla, Halaqa and learning level before approving.');
-          const validAssignment = assignments.some(a => a.teacher_id === ablaId && a.halaqa_id === halaqaId);
-          if (!validAssignment) throw new Error('The selected Abla is not assigned to that Halaqa. Please check the Halaqas page.');
+        const applicantRole = centralReview.dataset.applicantRole;
+        const approvalPanel = $('#admin-central-approvals');
+        if (applicantRole === 'student' && decision === 'approve') {
+          const level = approvalPanel?.querySelector('[data-student-level="' + targetId + '"]')?.value;
+          const selectedProgrammes = [...(approvalPanel?.querySelectorAll('[data-student-programme="' + targetId + '"]:checked') || [])];
+          if (!level || !selectedProgrammes.length) throw new Error('Choose at least one programme and a learning level before approving.');
+          const placements = selectedProgrammes.map(input => {
+            const key = input.value;
+            const halaqaId = approvalPanel.querySelector('[data-student-halaqa="' + targetId + '"][data-programme-key="' + key + '"]')?.value;
+            const teacherId = approvalPanel.querySelector('[data-student-abla="' + targetId + '"][data-programme-key="' + key + '"]')?.value;
+            const schedule = key === 'Quran Halaqa'
+              ? (approvalPanel.querySelector('[data-student-session="' + targetId + '"][data-programme-key="' + key + '"]')?.value || 'Morning')
+              : key === 'Tajweed' ? 'Saturday & Sunday' : 'Sunday';
+            if (!halaqaId || !teacherId) throw new Error('Choose a Halaqa and an assigned Abla for ' + key + '.');
+            return { student_id: targetId, programme: key, halaqa_id: halaqaId, teacher_id: teacherId, schedule, status: 'pending' };
+          });
+          const teacherLinks = [...new Map(placements.map(x => [x.teacher_id + ':' + x.halaqa_id, {
+            teacher_id: x.teacher_id, halaqa_id: x.halaqa_id
+          }])).values()];
+          const { error: teacherAssignmentError } = await supabase.from('teacher_assignments')
+            .upsert(teacherLinks, { onConflict: 'teacher_id,halaqa_id', ignoreDuplicates: true });
+          if (teacherAssignmentError) fail(teacherAssignmentError);
+          const { error: programmeError } = await supabase.from('student_programme_enrollments')
+            .upsert(placements, { onConflict: 'student_id,programme' });
+          if (programmeError) fail(programmeError);
           const { error: placementError } = await supabase.from('student_enrollments')
-            .update({ halaqa_id: halaqaId, level })
+            .update({ level, halaqa_id: placements[0].halaqa_id, programme: placements[0].programme, preferred_session: placements[0].schedule })
             .eq('student_id', targetId).eq('status', 'pending');
           if (placementError) fail(placementError);
         }
@@ -425,6 +443,12 @@ async function initAdmin(user) {
           decision_notes: null
         });
         if (error) fail(error);
+        if (applicantRole === 'student' && decision === 'approve') {
+          const { error: programmeApprovalError } = await supabase.from('student_programme_enrollments')
+            .update({ status: 'approved', reviewed_by: user.id, reviewed_at: new Date().toISOString() })
+            .eq('student_id', targetId).eq('status', 'pending');
+          if (programmeApprovalError) fail(programmeApprovalError);
+        }
         await adminLoad(user);
       }
       if (accept || decline) {
@@ -490,25 +514,31 @@ async function initAdmin(user) {
 }
 
 async function studentLoad(user) {
-  const [enrollmentQ, attendanceQ, assignmentQ, hifdhQ, murajaahQ] = await Promise.all([
+  const [enrollmentQ, programmeQ, attendanceQ, assignmentQ, hifdhQ, murajaahQ] = await Promise.all([
     supabase.from('student_enrollments').select('*').eq('student_id', user.id).maybeSingle(),
+    supabase.from('student_programme_enrollments').select('id,programme,halaqa_id,teacher_id,schedule,status').eq('student_id', user.id).eq('status', 'approved'),
     supabase.from('attendance').select('status').eq('student_id', user.id),
     supabase.from('assignments').select('*').order('created_at', { ascending: false }),
     supabase.from('hifdh_records').select('id').eq('student_id', user.id),
     supabase.from('murajaah_records').select('id').eq('student_id', user.id)
   ]);
-  [enrollmentQ, attendanceQ, assignmentQ, hifdhQ, murajaahQ].forEach(q => { if (q.error) fail(q.error); });
+  [enrollmentQ, programmeQ, attendanceQ, assignmentQ, hifdhQ, murajaahQ].forEach(q => { if (q.error) fail(q.error); });
   const enrollment = enrollmentQ.data || {};
-  const assignments = (assignmentQ.data || []).filter(a => a.halaqa_id === enrollment.halaqa_id);
-  let halaqaName = 'Not assigned';
-  if (enrollment.halaqa_id) {
-    const { data, error } = await supabase.from('halaqas').select('name').eq('id', enrollment.halaqa_id).maybeSingle();
-    if (error) fail(error);
-    if (data) halaqaName = data.name;
-  }
+  const programmeEnrollments = programmeQ.data || [];
+  const halaqaIds = programmeEnrollments.map(e => e.halaqa_id).filter(Boolean);
+  const assignments = (assignmentQ.data || []).filter(a => halaqaIds.includes(a.halaqa_id));
+  const { data: studentHalaqas, error: studentHalaqaError } = halaqaIds.length
+    ? await supabase.from('halaqas').select('id,name').in('id', halaqaIds)
+    : { data: [], error: null };
+  if (studentHalaqaError) fail(studentHalaqaError);
+  const programmeSummary = programmeEnrollments.map(e => {
+    const h = (studentHalaqas || []).find(x => x.id === e.halaqa_id);
+    return e.programme + ' · ' + (h?.name || 'Halaqa not assigned') + ' · ' + e.schedule;
+  });
+  const halaqaName = programmeSummary.join(' | ') || 'Not assigned';
   const announcementsQ = await supabase.from('announcements').select('id,title,message,audience,halaqa_id,published_at').or('audience.eq.all,audience.eq.students').order('published_at', { ascending: false });
   if (announcementsQ.error) fail(announcementsQ.error);
-  const visibleAnnouncements = (announcementsQ.data || []).filter(x => !x.halaqa_id || x.halaqa_id === enrollment.halaqa_id);
+  const visibleAnnouncements = (announcementsQ.data || []).filter(x => !x.halaqa_id || halaqaIds.includes(x.halaqa_id));
   const renderFeed = items => items.length ? items.map(x => '<article class="urwa-announcement-item"><div class="urwa-announcement-meta">' + date(x.published_at) + (x.halaqa_id ? ' · Your level' : ' · URWA') + '</div><h4>' + esc(x.title) + '</h4><p>' + esc(x.message) + '</p></article>').join('') : '<div class="urwa-empty"><strong>No updates yet</strong>New messages from URWA will appear here.</div>';
   const communityFeed = $('#student-community-feed'); if (communityFeed) communityFeed.innerHTML = renderFeed(visibleAnnouncements.filter(x => x.halaqa_id));
   const announcementFeed = $('#student-announcements-feed'); if (announcementFeed) announcementFeed.innerHTML = renderFeed(visibleAnnouncements);
@@ -520,7 +550,7 @@ async function studentLoad(user) {
   const attendance = attendanceQ.data || [];
   const rate = attendance.length ? Math.round(attendance.filter(a => ['present', 'late'].includes(a.status)).length / attendance.length * 100) + '%' : 'No records';
   status('student-live-overview', 'Your live learning overview',
-    (enrollment.programme || 'Programme awaiting confirmation') + ' · ' + halaqaName +
+    (programmeSummary.join(' | ') || enrollment.programme || 'Programme awaiting confirmation') + ' · ' + halaqaName +
     ' · Admission: ' + (enrollment.status || 'not submitted') + ' · Attendance: ' + rate +
     ' · Assignments: ' + assignments.length + ' · Hifdh entries: ' + hifdhQ.data.length +
     ' · Muraja’ah entries: ' + murajaahQ.data.length);
@@ -537,7 +567,7 @@ async function teacherLoad(user) {
   if (halaqaIds.length) {
     const [h, e, a] = await Promise.all([
       supabase.from('halaqas').select('*').in('id', halaqaIds),
-      supabase.from('student_enrollments').select('*').in('halaqa_id', halaqaIds).eq('status', 'approved'),
+      supabase.from('student_programme_enrollments').select('*').in('halaqa_id', halaqaIds).eq('status', 'approved'),
       supabase.from('attendance').select('*').in('halaqa_id', halaqaIds)
     ]);
     [h, e, a].forEach(q => { if (q.error) fail(q.error); });
