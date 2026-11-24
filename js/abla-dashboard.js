@@ -92,10 +92,10 @@ async function boot(){
   $('#attendance-date').value ||= new Date().toISOString().slice(0,10);
   const renderAttendanceRoster=()=>{
    const classDate=$('#attendance-date').value;
-   roster.innerHTML='<table><thead><tr><th>Student</th><th>Level</th><th>Abla</th><th>Halaqa</th><th>Attendance status</th></tr></thead><tbody>'+enrollments.map(e=>{
+   roster.innerHTML='<table><thead><tr><th>Student name</th><th>Email address</th><th>Level</th><th>Abla</th><th>Halaqa</th><th>Attendance status</th></tr></thead><tbody>'+uniqueRoster.map(e=>{
     const existing=attendance.find(a=>a.student_id===e.student_id&&a.halaqa_id===e.halaqa_id&&a.class_date===classDate);
     const status=existing?.status||'present';
-    return '<tr data-student="'+e.student_id+'" data-halaqa="'+e.halaqa_id+'"><td><strong>'+esc(peopleById.get(e.student_id)?.full_name||'Student')+'</strong></td><td>'+esc(e.level||'—')+'</td><td>'+esc(profile.full_name||'Abla')+'</td><td>'+esc(halaqaById.get(e.halaqa_id)?.name||'')+'</td><td><select data-status aria-label="Attendance for '+esc(peopleById.get(e.student_id)?.full_name||'student')+'"><option value="present" '+(status==='present'?'selected':'')+'>Present</option><option value="absent" '+(status==='absent'?'selected':'')+'>Absent</option><option value="excused" '+(status==='excused'?'selected':'')+'>Excused</option></select></td></tr>';
+    return '<tr data-student="'+e.student_id+'" data-halaqa="'+e.halaqa_id+'"><td><strong>'+esc(peopleById.get(e.student_id)?.full_name||'Student')+'</strong></td><td>'+esc(peopleById.get(e.student_id)?.email||'—')+'</td><td>'+esc(legacyByStudent.get(e.student_id)?.level||'Qaida')+'</td><td>'+esc(profile.full_name||'Abla')+'</td><td>'+esc(halaqaById.get(e.halaqa_id)?.name||'')+'</td><td><select data-status aria-label="Attendance for '+esc(peopleById.get(e.student_id)?.full_name||'student')+'"><option value="present" '+(status==='present'?'selected':'')+'>Present</option><option value="absent" '+(status==='absent'?'selected':'')+'>Absent</option><option value="excused" '+(status==='excused'?'selected':'')+'>Excused</option></select></td></tr>';
    }).join('')+'</tbody></table>';
   };
   renderAttendanceRoster();
