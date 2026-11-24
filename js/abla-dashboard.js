@@ -67,8 +67,8 @@ async function boot(){
  const halaqaPanel=$('#halaqa .panel');
  if(halaqaPanel) halaqaPanel.innerHTML='<div class="panel-heading"><h2>My Halaqa Overview</h2></div>'+halaqas.map(h=>{
   const members=uniqueRoster.filter(e=>e.halaqa_id===h.id);
-  const programmes=[...new Set(members.map(e=>e.programme))].join(', ');
-  return '<article class="activity"><div class="date-box">◎</div><div><strong>'+esc(h.name)+'</strong><small>'+esc(programmes||h.description||'Assigned learning circle')+' · '+members.length+' students</small></div><a href="my-students.html" style="margin-left:auto;color:#0e4a40;font-size:10px">View students</a></article>';
+  const programmes=[...new Set(members.map(e=>e.programme+' ('+e.schedule+')'))].join(', ');
+  return '<article class="activity"><div class="date-box">◎</div><div><strong>'+esc(h.name)+'</strong><small>'+esc(programmes||h.description||'Assigned learning circle')+' · '+members.length+' students</small><small><a href="my-students.html">Students</a> · <a href="attendance.html">Attendance</a> · <a href="timetable.html">Timetable</a> · <a href="communication.html">Messages</a></small></div></article>';
  }).join('')+'<p class="abla-note">Your Halaqa workspace brings together its student roster, programme and level details, attendance history, timetable, assignments, progress records and class conversations.</p>';
  const studentTable=$('#students .table-wrap');
  if(studentTable) studentTable.innerHTML='<table><thead><tr><th>Student name</th><th>Email address</th><th>Halaqa</th><th>Programme</th><th>Learning level</th><th>Attendance</th><th>Assessment score</th><th>Action</th></tr></thead><tbody>'+
