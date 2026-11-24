@@ -1,0 +1,37 @@
+{
+  "bucket": "urwa-events",
+  "upload_note": "Upload the contents of each collection folder into a matching folder in the public urwa-events bucket. Do not upload the top-level ZIP or README.",
+  "collections": {
+    "retreats": [
+      "1000202336.jpg",
+      "1000202338.jpg",
+      "1000202348.jpg",
+      "1000202375.jpg",
+      "1000202372.mp4"
+    ],
+    "tea-tales-and-tadabbur": [
+      "1000202337.jpg",
+      "1000202340.jpg",
+      "1000202378.jpg"
+    ],
+    "memorise-and-rise": [
+      "1000202357.jpg",
+      "1000202360.jpg",
+      "1000202363.jpg",
+      "72812.mp4",
+      "1000202380.mp4"
+    ],
+    "dawah-and-outreach": [
+      "1000202351.jpg",
+      "1000202374.jpg"
+    ],
+    "needs-review": [
+      "1000202354.jpg"
+    ]
+  },
+  "notes": [
+    "Folders are based on visible image/video frames, not event-date or organizer metadata.",
+    "1000202354.jpg is held for review because the image alone does not establish which event collection it belongs to.",
+    "Keep original filenames; the current gallery uses filenames as captions."
+  ]
+}
