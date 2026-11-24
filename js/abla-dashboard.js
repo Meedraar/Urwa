@@ -81,6 +81,7 @@ async function boot(){
  if(attendancePanel){
   attendancePanel.innerHTML='<div class="panel-heading"><h2>Record Attendance</h2></div><div class="form-group"><label for="attendance-date">Class date</label><input type="date" id="attendance-date" value="'+new Date().toISOString().slice(0,10)+'"></div><div class="table-wrap" id="abla-attendance-roster"></div><button class="primary-btn" type="button" id="abla-save-attendance">Save attendance</button><p id="abla-attendance-message" role="status"></p>';
   const roster=$('#abla-attendance-roster');
+  $('#attendance-date').value ||= new Date().toISOString().slice(0,10);
   const renderAttendanceRoster=()=>{
    const classDate=$('#attendance-date').value;
    roster.innerHTML='<table><thead><tr><th>Student</th><th>Abla</th><th>Halaqa</th><th>Attendance status</th></tr></thead><tbody>'+enrollments.map(e=>{
