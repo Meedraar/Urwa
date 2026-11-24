@@ -290,3 +290,31 @@ body,button,input,select,textarea,table,th,td,label,a,p,li,small,span{
 h1,h2,h3,h4,h5,h6,.page-title,.section-title,.brand-name{
   font-family:"Playfair Display",Georgia,serif!important
 }
+
+
+/* Multi-programme student placement controls */
+.urwa-admin-placement {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 10px;
+  min-width: 560px;
+  margin: 8px 0;
+}
+.urwa-programme-placement {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid rgba(14, 74, 64, .18);
+  border-radius: 10px;
+  background: #fbf6e9;
+}
+.urwa-programme-placement > label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #0e4a40;
+  font-weight: 700;
+}
+.urwa-programme-placement > small { color: #64746e; }
+.urwa-admin-placement select { width: 100%; min-width: 0; }
