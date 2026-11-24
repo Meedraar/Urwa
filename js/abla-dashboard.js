@@ -104,7 +104,7 @@ async function boot(){
    const button=$('#abla-save-attendance');button.disabled=true;
    try{
     const classDate=$('#attendance-date').value;
-    const rows=$('[data-student]','#abla-attendance-roster');
+    const rows=$$('[data-student]','#abla-attendance-roster');
     const records=rows.map(row=>({halaqa_id:row.dataset.halaqa,student_id:row.dataset.student,class_date:classDate,status:$('[data-status]',row).value,recorded_by:user.id}));
     if(!classDate||!records.length)throw new Error('Choose a class date and ensure your roster is available.');
     const {error}=await supabase.from('attendance').upsert(records,{onConflict:'halaqa_id,student_id,class_date'});
