@@ -1,0 +1,589 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Community | Urwatul Wuthqaa</title>
+<meta name="description" content="Discover the people and teams that make up the Urwatul Wuthqaa community.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --green:#0e4a40;
+  --dark:#09372f;
+  --gold:#e0a526;
+  --cream:#fbf6e9;
+  --mint:#e3f0ea;
+  --muted:#687771;
+  --white:#fff;
+  --border:#e8e9e1;
+}
+
+* {
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body {
+  font-family:"DM Sans",sans-serif;
+  background:var(--cream);
+  color:var(--dark);
+}
+
+a {
+  color:inherit;
+  text-decoration:none;
+}
+
+.page {
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+/* Navigation */
+.navbar {
+  background:#fff;
+  border-bottom:1px solid var(--border);
+}
+
+.nav-inner {
+  width:min(1240px,94%);
+  min-height:66px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+}
+
+.brand {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-shrink:0;
+}
+
+.brand-logo {
+  width:42px;
+  height:42px;
+  object-fit:contain;
+}
+
+.brand-name {
+  font-family:"Playfair Display",serif;
+  font-size:17px;
+  font-weight:700;
+  color:var(--green);
+}
+
+.brand-tagline {
+  display:block;
+  font-size:9px;
+  letter-spacing:1.6px;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-top:2px;
+}
+
+.nav-links {
+  display:flex;
+  align-items:center;
+  gap:18px;
+  font-size:11px;
+  font-weight:700;
+  color:var(--green);
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color:var(--gold);
+}
+
+.join-button {
+  background:var(--green);
+  color:#fff !important;
+  padding:9px 15px;
+  border-radius:5px;
+}
+
+/* Main */
+main {
+  flex:1;
+  width:min(1160px,94%);
+  margin:auto;
+  padding:18px 0 14px;
+  display:flex;
+  flex-direction:column;
+  gap:13px;
+}
+
+/* Heading */
+.page-heading {
+  text-align:center;
+  padding:5px 0;
+}
+
+.eyebrow {
+  color:#b47d13;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  margin-bottom:5px;
+}
+
+.page-heading h1 {
+  font-family:"Playfair Display",serif;
+  color:var(--green);
+  font-size:clamp(26px,3vw,34px);
+}
+
+.page-heading p {
+  color:var(--muted);
+  font-size:11px;
+  margin-top:4px;
+}
+
+/* Introduction */
+.intro {
+  background:var(--green);
+  color:#fff;
+  border-radius:10px;
+  padding:19px 25px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+
+.intro h2 {
+  font-family:"Playfair Display",serif;
+  font-size:22px;
+  margin-bottom:6px;
+}
+
+.intro p {
+  max-width:850px;
+  margin:auto;
+  color:rgba(255,255,255,.87);
+  font-size:12px;
+  line-height:1.7;
+}
+
+/* Community cards */
+.community-section {
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:17px;
+}
+
+.section-heading {
+  text-align:center;
+  margin-bottom:13px;
+}
+
+.section-heading h2 {
+  font-family:"Playfair Display",serif;
+  color:var(--green);
+  font-size:22px;
+}
+
+.section-heading p {
+  color:var(--muted);
+  font-size:10px;
+  margin-top:3px;
+}
+
+.community-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.community-card {
+  background:var(--cream);
+  border:1px solid #eee8d9;
+  border-radius:8px;
+  padding:13px 15px;
+  transition:.2s ease;
+}
+
+.community-card:hover {
+  border-color:var(--gold);
+  transform:translateY(-2px);
+}
+
+.card-top {
+  display:flex;
+  align-items:center;
+  gap:9px;
+  margin-bottom:7px;
+}
+
+.card-icon {
+  width:30px;
+  height:30px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--mint);
+  color:var(--green);
+  border-radius:50%;
+  font-size:15px;
+  flex-shrink:0;
+}
+
+.community-card h3 {
+  font-family:"Playfair Display",serif;
+  color:var(--green);
+  font-size:16px;
+}
+
+.community-card p {
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.6;
+}
+
+.card-link {
+  display:inline-block;
+  margin-top:7px;
+  color:#a8730e;
+  font-size:10px;
+  font-weight:800;
+}
+
+/* Supporting teams */
+.support-section {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.support-card {
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:9px;
+  padding:16px 19px;
+}
+
+.support-card h2 {
+  font-family:"Playfair Display",serif;
+  color:var(--green);
+  font-size:19px;
+  margin-bottom:6px;
+}
+
+.support-card p {
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.65;
+}
+
+.team-list {
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-top:10px;
+}
+
+.team-list span {
+  background:var(--mint);
+  color:var(--green);
+  border-radius:20px;
+  padding:5px 9px;
+  font-size:9px;
+  font-weight:700;
+}
+
+/* Closing */
+.closing {
+  background:var(--mint);
+  border-radius:9px;
+  padding:15px 18px;
+  text-align:center;
+}
+
+.closing h2 {
+  font-family:"Playfair Display",serif;
+  color:var(--green);
+  font-size:20px;
+  margin-bottom:4px;
+}
+
+.closing p {
+  color:var(--muted);
+  font-size:11px;
+}
+
+.closing-links {
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  margin-top:9px;
+}
+
+.closing-links a {
+  padding:8px 14px;
+  border-radius:5px;
+  font-size:10px;
+  font-weight:800;
+}
+
+.primary {
+  background:var(--green);
+  color:#fff;
+}
+
+.secondary {
+  border:1px solid var(--green);
+  color:var(--green);
+}
+
+/* Footer */
+.footer {
+  background:var(--dark);
+  color:rgba(255,255,255,.75);
+  text-align:center;
+  padding:9px 15px;
+  font-size:10px;
+}
+
+/* Responsive */
+@media(max-width:950px) {
+  .nav-links {
+    gap:10px;
+    font-size:10px;
+  }
+}
+
+@media(max-width:760px) {
+  .nav-inner {
+    flex-direction:column;
+    padding:11px 0;
+    gap:10px;
+  }
+
+  .nav-links {
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:10px 14px;
+  }
+
+  main {
+    padding:15px 0;
+    gap:11px;
+  }
+
+  .community-grid {
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .support-section {
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:420px) {
+  .community-grid {
+    grid-template-columns:1fr;
+  }
+
+  .community-card {
+    padding:14px;
+  }
+
+  .intro {
+    padding:17px;
+  }
+
+  .closing-links {
+    flex-wrap:wrap;
+  }
+}
+
+@media(prefers-reduced-motion:reduce) {
+  * {
+    transition:none !important;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="page">
+
+<header class="navbar">
+  <div class="nav-inner">
+
+    <a href="index.html" class="brand">
+      <img src="assets/logo.jpg" alt="Urwatul Wuthqaa logo" class="brand-logo">
+      <div>
+        <div class="brand-name">Urwatul Wuthqaa</div>
+        <span class="brand-tagline">The Firmest Handhold</span>
+      </div>
+    </a>
+
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="about.html">Our Story</a>
+      <a href="mission-vision.html">Mission &amp; Vision</a>
+      <a href="programmes.html">Programmes</a>
+      <a href="teachers.html">Educators</a>
+      <a href="community.html" class="active">Community</a>
+      <a href="events.html">Events</a>
+      <a href="contact.html">Contact</a>
+      <a href="enroll.html" class="join-button">Join Us</a>
+    </nav>
+
+  </div>
+</header>
+
+<main>
+  <!-- Introduction -->
+  <section class="intro">
+    <h2>Connected by the Qur’an. United in purpose.</h2>
+    <p>
+      At Urwatul Wuthqaa, we bring together students, educators and
+      dedicated teams with one shared purpose: growing closer to Allah
+      through His Book. Every person has a place, every contribution
+      matters, and every step in the journey is valued.
+    </p>
+  </section>
+
+  <!-- Community -->
+  <section class="community-section">
+
+    <div class="section-heading">
+      <h2>Meet Our Community</h2>
+      <p>The people and spaces that make URWA what it is.</p>
+    </div>
+
+    <div class="community-grid">
+
+      <article class="community-card">
+        <div class="card-top">
+          <div class="card-icon">✦</div>
+          <h3>Our Educators</h3>
+        </div>
+        <p>
+          Meet the Ablas and educators who teach, guide and support
+          students throughout their Qur’an journey.
+        </p>
+        <a href="teachers.html" class="card-link">Meet our educators →</a>
+      </article>
+
+      <article class="community-card">
+        <div class="card-top">
+          <div class="card-icon">◈</div>
+          <h3>Our Students</h3>
+        </div>
+        <p>
+          Learners from different backgrounds united by a desire
+          to learn, memorise and understand the Qur’an.
+        </p>
+        <a href="enroll.html" class="card-link">Join our community →</a>
+      </article>
+
+      <article class="community-card">
+        <div class="card-top">
+          <div class="card-icon">⌂</div>
+          <h3>Our Halaqahs</h3>
+        </div>
+        <p>
+          Supportive learning circles for recitation, Tajweed,
+          memorisation, revision and Qur’an study.
+        </p>
+        <a href="classes.html" class="card-link">Explore classes →</a>
+      </article>
+
+      <article class="community-card">
+        <div class="card-top">
+          <div class="card-icon">◇</div>
+          <h3>Our Departments</h3>
+        </div>
+        <p>
+          Dedicated teams coordinating programmes, supporting
+          members and strengthening the work of URWA.
+        </p>
+        <a href="#departments" class="card-link">Discover our teams →</a>
+      </article>
+
+      <article class="community-card">
+        <div class="card-top">
+          <div class="card-icon">❋</div>
+          <h3>Our Gatherings</h3>
+        </div>
+        <p>
+          Educational gatherings, retreats and activities that
+          strengthen our bonds beyond regular classes.
+        </p>
+        <a href="events.html" class="card-link">View our events →</a>
+      </article>
+
+      <article class="community-card">
+        <div class="card-top">
+          <div class="card-icon">♡</div>
+          <h3>Our Volunteers</h3>
+        </div>
+        <p>
+          People who generously contribute their time, skills
+          and effort in service of the community.
+        </p>
+        <a href="contact.html" class="card-link">Get involved →</a>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- Educators and departments -->
+  <section class="support-section">
+
+    <article class="support-card">
+      <h2>Teach & Serve</h2>
+      <p>
+        Teaching the Qur’an is an opportunity to serve a legacy
+        of knowledge. We welcome dedicated individuals who wish
+        to contribute to our teaching team.
+      </p>
+      <a href="become-teacher.html" class="card-link">Become an educator →</a>
+    </article>
+
+    <article class="support-card" id="departments">
+      <h2>Our Departments</h2>
+      <p>
+        Our community is supported by people working across
+        different areas of service and organisation.
+      </p>
+      <div class="team-list">
+        <span>Education</span>
+        <span>Administration</span>
+        <span>Student Affairs</span>
+        <span>Educator Support</span>
+        <span>Events</span>
+        <span>Community Development</span>
+      </div>
+    </article>
+
+  </section>
+
+</main>
+
+<footer class="footer">
+  © <span id="year"></span> Urwatul Wuthqaa · The Firmest Handhold
+</footer>
+
+</div>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
