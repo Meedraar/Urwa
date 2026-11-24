@@ -296,7 +296,7 @@ table{min-width:560px}
 .content>.portal-section{display:none!important}
 .content>.portal-section#attendance{display:block!important}
 </style>
-</head>
+<link rel="stylesheet" href="../../css/abla-refined.css?v=1"></head>
 
 <body data-urwa-role="teacher">
 <div class="ur-dashboard">
@@ -348,221 +348,22 @@ table{min-width:560px}
   </div>
 </header>
 
-<div class="content" id="overview">
-  <h1 class="page-title">Attendance</h1>
-
-  <div class="dashboard-grid">
-    <div class="center-column">
-
-      <div class="welcome-row">
-        <section class="welcome">
-          <div class="welcome-copy">
-            <h1>Assalaamu alaykum, <span data-profile-name>Educator</span>! 🌿</h1>
-            <p>Empower hearts. Nurture knowledge.</p>
-            <p>You are guiding your students on their journey with the Qur'an.</p>
-            <p class="welcome-note">Your teaching is an amanah.</p>
-            <a href="#students" class="welcome-button">View My Students →</a>
-          </div>
-          <div class="welcome-arabic" lang="ar" dir="rtl">رَبِّ زِدْنِي عِلْمًا</div>
-        </section>
-
-        <div class="ai-cards">
-          <article class="ai-card">
-            <div><h3>✧ Teaching Planner</h3><p>Organise your halaqa lessons and prepare your teaching schedule.</p></div>
-            <a href="#timetable">View Timetable →</a>
-          </article>
-          <article class="ai-card purple">
-            <div><h3>▤ Learning Materials</h3><p>Prepare learning resources and share them with your students.</p></div>
-            <a href="#assignments">Create Assignment →</a>
-          </article>
-        </div>
-      </div>
-
-      <section class="stats">
-        <article class="stat">
-          <div class="stat-top"><h3>My Students</h3><span class="stat-icon">♙</span></div>
-          <strong>—</strong><small>Students assigned to your halaqa</small>
-          <div class="sparkline"><i></i><i></i><i></i><i></i><i></i></div>
-        </article>
-        <article class="stat green">
-          <div class="stat-top"><h3>Attendance</h3><span class="stat-icon">✓</span></div>
-          <strong>—</strong><small>Attendance records submitted</small>
-          <div class="sparkline"><i></i><i></i><i></i><i></i><i></i></div>
-        </article>
-        <article class="stat purple">
-          <div class="stat-top"><h3>Assignments</h3><span class="stat-icon">▤</span></div>
-          <strong>—</strong><small>Active assignments</small>
-          <div class="sparkline"><i></i><i></i><i></i><i></i><i></i></div>
-        </article>
-        <article class="stat gold">
-          <div class="stat-top"><h3>Pending Reviews</h3><span class="stat-icon">⇧</span></div>
-          <strong>—</strong><small>Student work awaiting feedback</small>
-          <div class="sparkline"><i></i><i></i><i></i><i></i><i></i></div>
-        </article>
-      </section>
-
-      <section class="panel quick-links">
-        <div class="panel-heading"><h2>Quick Links</h2><a href="#profile">Customise ⚙</a></div>
-        <div class="quick-grid">
-          <a class="quick-link" href="#students"><span>♙</span><small>My Students</small></a>
-          <a class="quick-link" href="#timetable"><span>▦</span><small>Timetable</small></a>
-          <a class="quick-link" href="#assignments"><span>▤</span><small>Assignments</small></a>
-          <a class="quick-link" href="#attendance"><span>✓</span><small>Attendance</small></a>
-          <a class="quick-link" href="#submissions"><span>⇧</span><small>Submissions</small></a>
-          <a class="quick-link" href="#progress"><span>◷</span><small>Hifdh Progress</small></a>
-          <a class="quick-link" href="#communication"><span>☏</span><small>Messages</small></a>
-        </div>
-      </section>
-
-      <div class="lower-grid">
-        <section class="panel">
-          <div class="panel-heading"><h2>Upcoming Activities</h2><a href="#timetable">View All</a></div>
-          <div class="activity"><div class="date-box">MAY<br>21</div><div><strong>Halaqa Session</strong><small>Qur'an memorisation · Class session</small></div></div>
-          <div class="activity"><div class="date-box">MAY<br>22</div><div><strong>Review Student Hifdh</strong><small>Student progress review</small></div></div>
-          <div class="activity"><div class="date-box">MAY<br>23</div><div><strong>Muraja'ah Assessment</strong><small>Revision and feedback</small></div></div>
-          <div class="activity"><div class="date-box">MAY<br>24</div><div><strong>Prepare Class Materials</strong><small>Upcoming halaqa lesson</small></div></div>
-        </section>
-
-        <section class="panel">
-          <div class="panel-heading"><h2>Student Submissions</h2><a href="#submissions">View All</a></div>
-          <div class="submission-content">
-            <div class="donut"><strong>—</strong></div>
-            <div class="submission-stats">
-              <div><span>Total assigned</span><span>—</span></div>
-              <div><span>Submitted</span><span>—</span></div>
-              <div><span>Pending</span><span>—</span></div>
-              <div><span>Overdue</span><span>—</span></div>
-            </div>
-          </div>
-          <p style="font-size:9px;color:#87918c;text-align:center;margin-top:12px">Submission overview will appear when records are connected.</p>
-        </section>
-
-        <section class="panel performance-panel">
-          <div class="panel-heading"><h2>Student Performance Overview</h2><select style="border:0;background:#f4f6f5;padding:5px;border-radius:5px;font-size:9px"><option>This Month</option><option>This Week</option></select></div>
-          <div class="performance-chart">
-            <div class="performance-pair"><i style="height:65%"></i><i style="height:53%"></i></div>
-            <div class="performance-pair"><i style="height:52%"></i><i style="height:43%"></i></div>
-            <div class="performance-pair"><i style="height:75%"></i><i style="height:64%"></i></div>
-            <div class="performance-pair"><i style="height:67%"></i><i style="height:70%"></i></div>
-            <div class="performance-pair"><i style="height:78%"></i><i style="height:61%"></i></div>
-          </div>
-          <div class="performance-labels"><span>Hifdh</span><span>Revision</span><span>Tajweed</span><span>Fiqh</span><span>Other</span></div>
-          <p style="font-size:9px;color:#87918c;margin-top:10px">Illustrative chart layout. Live performance data is not yet connected.</p>
-        </section>
-      </div>
-
-      <div class="bottom-grid">
-        <section class="panel">
-          <div class="panel-heading"><h2>Student Progress &amp; Attention</h2><a href="#progress">View All</a></div>
-          <div class="empty"><strong>Student progress will appear here</strong>Review Hifdh, Muraja'ah and learning progress for your assigned students.</div>
-        </section>
-        <section class="panel">
-          <div class="panel-heading"><h2>Notifications</h2><a href="#announcements">View All</a></div>
-          <div class="notice-row"><span class="notice-icon">▤</span><div><strong>New assignment submissions</strong><small>Student work will appear here</small></div></div>
-          <div class="notice-row"><span class="notice-icon">♙</span><div><strong>Student messages</strong><small>Class messages and questions</small></div></div>
-          <div class="notice-row"><span class="notice-icon">✓</span><div><strong>Attendance reminders</strong><small>Remember to submit class attendance</small></div></div>
-        </section>
-      </div>
-
-    </div>
-
-    <aside class="right-column">
-      <section class="panel calendar-panel">
-        <div class="panel-heading"><h2>Calendar</h2></div>
-        <div class="calendar-head">
-          <button onclick="moveMonth(-1)">‹</button>
-          <strong id="monthTitle"></strong>
-          <button onclick="moveMonth(1)">›</button>
-        </div>
-        <div class="calendar" id="calendar"></div>
-        <div style="border-top:1px solid #edf0ee;margin-top:15px;padding-top:15px">
-          <div class="panel-heading"><h2>Today's Schedule</h2><a href="#timetable">View Timetable</a></div>
-          <div class="empty"><strong>Your class timetable</strong>Your assigned class sessions and times will appear here.</div>
-        </div>
-      </section>
-
-      <section class="panel">
-        <div class="panel-heading"><h2>Teaching Reminders</h2></div>
-        <div class="reminder"><span class="reminder-icon">◷</span><div><strong>Upcoming Halaqa</strong><small>Check your next scheduled class</small></div></div>
-        <div class="reminder"><span class="reminder-icon" style="background:#fff5df;color:#b88b26">▤</span><div><strong>Pending Evaluations</strong><small>Review student submissions</small></div></div>
-        <div class="reminder"><span class="reminder-icon" style="background:#eaf5ed;color:#29945f">✓</span><div><strong>Attendance Records</strong><small>Keep your records updated</small></div></div>
-        <a class="full-calendar" href="#timetable">View All Reminders</a>
-      </section>
-    </aside>
-  </div>
-
-  <!-- EXISTING TEACHER WORKSPACES -->
-  <section class="portal-section" id="halaqa">
-    <div class="panel">
-      <div class="panel-heading"><h2>My Halaqa</h2></div>
-      <div class="empty"><strong>Halaqa Information</strong>Your assigned halaqa, programme, session and class details will appear here.</div>
-    </div>
+<div class="content" id="attendance-page">
+  <h1 class="page-title">Class Attendance</h1>
+  <p class="abla-lead">Mark the register for your assigned halaqa. Select one attendance status for each student, then save the class record.</p>
+  <section class="attendance-intro">
+    <div><h2>Today’s class register</h2><p>Choose the class date and record each student’s attendance.</p></div>
+    <div class="abla-name">Abla: <span data-profile-name>Educator</span></div>
   </section>
-
-  <section class="portal-section" id="students">
+  <section id="attendance">
     <div class="panel">
-      <div class="panel-heading"><h2>My Students</h2></div>
-      <div class="table-wrap">
-        <table><thead><tr><th>Student</th><th>Programme</th><th>Attendance</th><th>Progress</th><th>Status</th></tr></thead>
-        <tbody><tr><td colspan="5">Your assigned student records will appear here.</td></tr></tbody></table>
-      </div>
-    </div>
-  </section>
-
-  <section class="portal-section" id="attendance">
-    <div class="panel">
-      <div class="panel-heading"><h2>Track Attendance</h2></div>
+      <div class="panel-heading"><h2>Student attendance</h2></div>
       <div class="form-group"><label for="attendance-date">Class date</label><input type="date" id="attendance-date"></div>
-      <div class="empty"><strong>Your assigned students will appear here</strong>Attendance records will be available when your class list is loaded.</div>
+      <div class="table-wrap" id="abla-attendance-roster"></div>
+      <button class="primary-btn" type="button" id="abla-save-attendance">Save attendance</button>
+      <p id="abla-attendance-message" role="status"></p>
     </div>
   </section>
-
-  <section class="portal-section" id="assignments">
-    <div class="panel">
-      <div class="panel-heading"><h2>Create an Assignment</h2></div>
-      <form>
-        <div class="form-grid">
-          <div class="form-group"><label for="assignment-title">Assignment title</label><input id="assignment-title" placeholder="Enter assignment title"></div>
-          <div class="form-group"><label for="assignment-type">Assignment type</label><select id="assignment-type"><option>Hifdh</option><option>Muraja'ah</option><option>Tajweed</option><option>Tafseer</option><option>Other</option></select></div>
-          <div class="form-group"><label for="assignment-due">Due date</label><input id="assignment-due" type="date"></div>
-          <div class="form-group"><label for="assignment-target">Assign to</label><select id="assignment-target"><option>All students in my halaqa</option><option>Selected students</option></select></div>
-        </div>
-        <div class="form-group"><label for="assignment-instructions">Instructions</label><textarea id="assignment-instructions" placeholder="Write the work students should complete..."></textarea></div>
-        <button class="primary-btn" type="button">Create Assignment</button>
-      </form>
-    </div>
-  </section>
-
-  <section class="portal-section" id="submissions">
-    <div class="panel"><div class="panel-heading"><h2>Student Submissions</h2></div><div class="empty"><strong>No submissions to display</strong>Student submissions will appear here for your review and feedback.</div></div>
-  </section>
-
-  <section class="portal-section" id="progress">
-    <div class="panel"><div class="panel-heading"><h2>Hifdh &amp; Muraja'ah</h2></div><div class="empty"><strong>Student progress records</strong>Record memorisation, revision, assessments and feedback for your halaqa students.</div></div>
-  </section>
-
-  <section class="portal-section" id="timetable">
-    <div class="panel"><div class="panel-heading"><h2>Class Timetable</h2></div><div class="empty"><strong>Your timetable will appear here</strong>Your assigned class schedule will be displayed here.</div></div>
-  </section>
-
-  <section class="portal-section" id="communication">
-    <div class="panel">
-      <div class="panel-heading"><h2>Class Communication</h2></div>
-      <div class="empty"><strong>Your class conversations</strong>Use the existing URWA class messaging feature to communicate with your students.</div>
-    </div>
-  </section>
-
-  <section class="portal-section" id="announcements">
-    <div class="panel"><div class="panel-heading"><h2>Announcements</h2></div><div class="empty"><strong>No announcements yet</strong>URWA announcements relevant to your teaching role will appear here.</div></div>
-  </section>
-
-  <section class="portal-section" id="profile">
-    <div class="panel"><div class="panel-heading"><h2>My Profile</h2></div><p><strong>Name:</strong> <span data-profile-name>Educator Name</span></p><p><strong>Role:</strong> Approved Educator</p><p><strong>Halaqa:</strong> To be assigned</p></div>
-  </section>
-
-  <footer style="padding:25px 0;color:#89938e;font-size:10px;text-align:center">
-    URWA — The Firmest Handhold
-  </footer>
 </div>
 </main>
 </div>

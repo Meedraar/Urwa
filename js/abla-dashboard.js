@@ -80,7 +80,18 @@ async function boot(){
  const attendancePanel=$('#attendance .panel');
  if(attendancePanel){
   attendancePanel.innerHTML='<div class="panel-heading"><h2>Record Attendance</h2></div><div class="form-group"><label for="attendance-date">Class date</label><input type="date" id="attendance-date" value="'+new Date().toISOString().slice(0,10)+'"></div><div class="table-wrap" id="abla-attendance-roster"></div><button class="primary-btn" type="button" id="abla-save-attendance">Save attendance</button><p id="abla-attendance-message" role="status"></p>';
-  $('#abla-attendance-roster').innerHTML='<table><thead><tr><th>Student</th><th>Halaqa</th><th>Attendance</th></tr></thead><tbody>'+enrollments.map(e=>'<tr data-student="'+e.student_id+'" data-halaqa="'+e.halaqa_id+'"><td>'+esc(peopleById.get(e.student_id)?.full_name||'Student')+'</td><td>'+esc(halaqaById.get(e.halaqa_id)?.name||'')+'</td><td><select data-status><option value="present">Present</option><option value="late">Late</option><option value="absent">Absent</option><option value="excused">Excused</option></select></td></tr>').join('')+'</tbody></table>';
+  const roster=$('#abla-attendance-roster');
+  $('#attendance-date').value ||= new Date().toISOString().slice(0,10);
+  const renderAttendanceRoster=()=>{
+   const classDate=$('#attendance-date').value;
+   roster.innerHTML='<table><thead><tr><th>Student</th><th>Level</th><th>Abla</th><th>Halaqa</th><th>Attendance status</th></tr></thead><tbody>'+enrollments.map(e=>{
+    const existing=attendance.find(a=>a.student_id===e.student_id&&a.halaqa_id===e.halaqa_id&&a.class_date===classDate);
+    const status=existing?.status||'present';
+    return '<tr data-student="'+e.student_id+'" data-halaqa="'+e.halaqa_id+'"><td><strong>'+esc(peopleById.get(e.student_id)?.full_name||'Student')+'</strong></td><td>'+esc(e.level||'—')+'</td><td>'+esc(profile.full_name||'Abla')+'</td><td>'+esc(halaqaById.get(e.halaqa_id)?.name||'')+'</td><td><select data-status aria-label="Attendance for '+esc(peopleById.get(e.student_id)?.full_name||'student')+'"><option value="present" '+(status==='present'?'selected':'')+'>Present</option><option value="absent" '+(status==='absent'?'selected':'')+'>Absent</option><option value="excused" '+(status==='excused'?'selected':'')+'>Asked for permission</option></select></td></tr>';
+   }).join('')+'</tbody></table>';
+  };
+  renderAttendanceRoster();
+  $('#attendance-date').addEventListener('change',renderAttendanceRoster);
   $('#abla-save-attendance').addEventListener('click',async()=>{
    const button=$('#abla-save-attendance');button.disabled=true;
    try{

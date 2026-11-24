@@ -1,0 +1,63 @@
+/* URWA Abla portal refinement */
+:root{--abla-emerald:#0e4a40;--abla-deep:#09372f;--abla-gold:#e0a526;--abla-cream:#fbf6e9;--abla-mint:#e3f0ea;--abla-line:#e5ece7;--abla-muted:#73817a}
+body{background:#f7f8f5!important;color:#20332d!important;font-family:"DM Sans",system-ui,sans-serif!important}
+.sidebar{background:#fff!important;border-right:1px solid var(--abla-line)!important;box-shadow:4px 0 24px rgba(17,55,43,.035)}
+.brand strong{color:var(--abla-emerald)!important}.brand small{letter-spacing:1.1px!important}
+.nav a{border-radius:9px!important;border-left:0!important;padding:11px 12px!important;font-size:12px!important}
+.nav a:hover,.nav a.active{background:#eaf3ee!important;color:var(--abla-emerald)!important;box-shadow:inset 3px 0 var(--abla-gold)}
+.nav-label{color:#a18a56!important;letter-spacing:1.25px!important}
+.sidebar-bottom{background:var(--abla-cream)!important;border:1px solid #f0e4c7!important}
+.sidebar-bottom strong{color:var(--abla-emerald)!important}
+.sidebar-bottom a,.primary-btn,.welcome-button{background:var(--abla-emerald)!important;color:#fff!important;border-radius:9px!important}
+.sidebar-bottom a:hover,.primary-btn:hover,.welcome-button:hover{background:var(--abla-deep)!important}
+.main{background:#f7f8f5}.topbar{background:rgba(255,255,255,.96)!important;border-bottom:1px solid var(--abla-line)!important;backdrop-filter:blur(12px)}
+.menu-btn{color:var(--abla-emerald)!important}
+.search{border-color:var(--abla-line)!important;background:#fbfcfa}
+.search:focus-within{border-color:#9db9aa!important;box-shadow:0 0 0 3px rgba(14,74,64,.07)}
+.content{max-width:1500px!important;padding:26px 28px 40px!important}
+.page-title{font-family:"Playfair Display",Georgia,serif!important;font-size:27px!important;color:var(--abla-deep)!important;margin-bottom:5px!important}
+.abla-lead{color:var(--abla-muted);font-size:13px;line-height:1.7;margin:0 0 20px}
+.abla-hero{background:linear-gradient(115deg,#0e4a40,#155b4c 72%,#1b6654);color:white;border-radius:18px;padding:25px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px;box-shadow:0 12px 28px rgba(14,74,64,.12);margin-bottom:18px;position:relative;overflow:hidden}
+.abla-hero:after{content:"";position:absolute;width:230px;height:230px;border:1px solid rgba(255,255,255,.13);border-radius:50%;right:4%;top:-125px;box-shadow:0 0 0 24px rgba(255,255,255,.035),0 0 0 48px rgba(255,255,255,.025)}
+.abla-hero h2{font:600 25px "Playfair Display",Georgia,serif;margin:0 0 7px;color:#fff}
+.abla-hero p{font-size:12px;line-height:1.7;color:#e2eee8;margin:0;max-width:570px}
+.abla-hero .arabic{font-size:30px;color:#f4d98e;white-space:nowrap;z-index:1}
+.abla-hero .welcome-button{display:inline-block;margin-top:15px;background:#e0a526!important;color:#173d32!important;padding:10px 15px;font-weight:700}
+.stats{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:14px!important;margin:0 0 18px!important}
+.stat{border:1px solid var(--abla-line)!important;border-radius:14px!important;padding:17px!important;min-height:108px!important;box-shadow:0 4px 16px rgba(24,55,43,.025)}
+.stat h3{font-size:11px!important;color:#69776f!important}.stat strong{font-size:25px!important;color:var(--abla-deep)}
+.stat-icon{background:#eaf3ee!important;color:var(--abla-emerald)!important;border-radius:10px!important}
+.stat.green .stat-icon{background:#e6f2e9!important;color:#43805e!important}.stat.purple .stat-icon{background:#f4eff8!important;color:#8063a0!important}.stat.gold .stat-icon{background:#fff5df!important;color:#a97a1e!important}
+.abla-home-grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(260px,.8fr);gap:15px}
+.panel{border:1px solid var(--abla-line)!important;border-radius:14px!important;box-shadow:0 4px 16px rgba(24,55,43,.025);padding:18px!important}
+.panel-heading h2{font:600 16px "Playfair Display",Georgia,serif!important;color:var(--abla-deep)}
+.abla-shortcuts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.abla-shortcut{display:flex;align-items:center;gap:11px;padding:13px;border:1px solid var(--abla-line);border-radius:11px;background:#fff;transition:.18s ease}
+.abla-shortcut:hover{background:#f0f6f1;border-color:#c9dbcf;transform:translateY(-1px)}
+.abla-shortcut .shortcut-icon{width:37px;height:37px;border-radius:10px;display:grid;place-items:center;background:#eaf3ee;color:var(--abla-emerald);font-size:18px;flex:none}
+.abla-shortcut strong{display:block;font-size:11px;color:#234238}.abla-shortcut small{display:block;font-size:10px;color:var(--abla-muted);margin-top:3px}
+.abla-note{background:var(--abla-cream);border:1px solid #f0e4c7;border-radius:12px;padding:16px;color:#5f563f;font-size:12px;line-height:1.7}
+.abla-note strong{display:block;color:var(--abla-emerald);margin-bottom:5px}
+.abla-section-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 0 12px}
+.abla-section-head h2{font:600 17px "Playfair Display",Georgia,serif;color:var(--abla-deep);margin:0}
+.abla-section-head a{font-size:11px;color:var(--abla-emerald);font-weight:700}
+.attendance-intro{background:linear-gradient(120deg,#edf5ef,#fbf6e9);border:1px solid #dce9df;border-radius:15px;padding:19px 22px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;gap:15px}
+.attendance-intro h2{font:600 19px "Playfair Display",Georgia,serif;color:var(--abla-deep);margin:0 0 5px}
+.attendance-intro p{font-size:12px;color:#68786f;margin:0;line-height:1.6}
+.attendance-intro .abla-name{font-size:11px;color:var(--abla-emerald);font-weight:700;background:#fff;border:1px solid #dce9df;padding:9px 12px;border-radius:9px;white-space:nowrap}
+#attendance .panel{padding:20px!important}
+#attendance .panel-heading{margin-bottom:16px}
+#attendance .panel-heading h2{font-size:18px!important}
+#attendance .form-group{max-width:260px}
+#attendance input[type=date]{border:1px solid #dce6df;border-radius:9px;padding:10px 12px;background:#fff;color:#23382f}
+#abla-attendance-roster table{min-width:650px}
+#abla-attendance-roster th{background:#f5f8f5;color:#66766d;font-size:10px;letter-spacing:.04em;text-transform:uppercase}
+#abla-attendance-roster td{padding:13px 12px;color:#33463d}
+#abla-attendance-roster tbody tr:hover{background:#fbfcfa}
+#abla-attendance-roster select{min-width:170px;border:1px solid #dce6df;border-radius:8px;padding:9px 11px;background:#fff;color:#254438}
+#abla-attendance-roster select:focus,#attendance input:focus{outline:2px solid rgba(14,74,64,.14);border-color:#82a996}
+#abla-save-attendance{margin-top:16px;padding:11px 18px;font-weight:700}
+#abla-attendance-message{font-size:12px;margin-top:12px}
+@media(max-width:900px){.content{padding:20px 17px 32px!important}.abla-home-grid{grid-template-columns:1fr}.abla-hero{padding:22px}.abla-hero .arabic{font-size:24px}}
+@media(max-width:650px){.content{padding:15px 12px 28px!important}.page-title{font-size:23px!important}.abla-hero{align-items:flex-start;padding:20px;min-height:0}.abla-hero h2{font-size:21px}.abla-hero .arabic{display:none}.stats{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}.stat{padding:13px!important;min-height:100px!important}.abla-shortcuts{grid-template-columns:1fr 1fr}.attendance-intro{align-items:flex-start;flex-direction:column;padding:16px}.attendance-intro .abla-name{white-space:normal}}
+@media(max-width:420px){.abla-shortcuts{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr!important}}
