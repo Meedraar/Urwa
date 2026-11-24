@@ -53,7 +53,9 @@ async function boot(){
  const peopleById=new Map(people.map(x=>[x.id,x]));
  const legacyByStudent=new Map((legacyEnrollmentsQ.data||[]).map(x=>[x.student_id,x]));
  const halaqaById=new Map(halaqas.map(x=>[x.id,x]));
- const totalStudents=enrollments.length, totalAttendance=attendance.length;
+ const rosterKey=e=>e.student_id+'|'+e.halaqa_id;
+ const uniqueRoster=[...new Map(enrollments.map(e=>[rosterKey(e),e])).values()];
+ const totalStudents=uniqueRoster.length, totalAttendance=attendance.length;
  const present=attendance.filter(x=>['present','late'].includes(x.status)).length;
  const attendanceRate=totalAttendance?Math.round(present/totalAttendance*100)+'%':'—';
  const pendingReviews=submissions.filter(x=>!x.feedback).length;
@@ -63,10 +65,14 @@ async function boot(){
  if(kpis[2]) kpis[2].querySelector('strong').textContent=String((assignmentsQ.data||[]).length);
  if(kpis[3]) kpis[3].querySelector('strong').textContent=String(pendingReviews);
  const halaqaPanel=$('#halaqa .panel');
- if(halaqaPanel) halaqaPanel.innerHTML='<div class="panel-heading"><h2>My Halaqas</h2></div>'+halaqas.map(h=>'<div class="activity"><div class="date-box">◎</div><div><strong>'+esc(h.name)+'</strong><small>'+esc(h.description||'Assigned teaching group')+'</small></div></div>').join('');
+ if(halaqaPanel) halaqaPanel.innerHTML='<div class="panel-heading"><h2>My Halaqa Overview</h2></div>'+halaqas.map(h=>{
+  const members=uniqueRoster.filter(e=>e.halaqa_id===h.id);
+  const programmes=[...new Set(members.map(e=>e.programme))].join(', ');
+  return '<article class="activity"><div class="date-box">◎</div><div><strong>'+esc(h.name)+'</strong><small>'+esc(programmes||h.description||'Assigned learning circle')+' · '+members.length+' students</small></div><a href="my-students.html" style="margin-left:auto;color:#0e4a40;font-size:10px">View students</a></article>';
+ }).join('')+'<p class="abla-note">Your Halaqa workspace brings together its student roster, programme and level details, attendance history, timetable, assignments, progress records and class conversations.</p>';
  const studentTable=$('#students .table-wrap');
  if(studentTable) studentTable.innerHTML='<table><thead><tr><th>Student name</th><th>Email address</th><th>Halaqa</th><th>Programme</th><th>Learning level</th><th>Attendance</th><th>Assessment score</th><th>Action</th></tr></thead><tbody>'+
- enrollments.map(e=>{const p=peopleById.get(e.student_id)||{};const records=attendance.filter(a=>a.student_id===e.student_id&&a.halaqa_id===e.halaqa_id);const rate=records.length?Math.round(records.filter(a=>['present','late'].includes(a.status)).length/records.length*100)+'%':'—';const level=legacyByStudent.get(e.student_id)?.level||'Qaida';return '<tr><td>'+esc(p.full_name||'Student')+'</td><td>'+esc(p.email||'')+'</td><td>'+esc(halaqaById.get(e.halaqa_id)?.name||'—')+'</td><td>'+esc(e.programme||'—')+'</td><td>'+esc(level)+'</td><td>'+rate+'</td><td><input type="number" min="0" max="100" step="0.01" aria-label="Assessment score for '+esc(p.full_name||'student')+'" data-assessment-score="'+e.id+'" style="width:88px" placeholder="0–100"></td><td><button class="primary-btn" type="button" data-record-assessment="'+e.id+'">Submit assessment</button></td></tr>';}).join('')+'</tbody></table><p id="abla-assessment-message" role="status">Assessment recommendations are sent to URWA administration for review. Current levels do not change until approved.</p>';
+ uniqueRoster.map(e=>{const p=peopleById.get(e.student_id)||{};const records=attendance.filter(a=>a.student_id===e.student_id&&a.halaqa_id===e.halaqa_id);const rate=records.length?Math.round(records.filter(a=>['present','late'].includes(a.status)).length/records.length*100)+'%':'—';const level=legacyByStudent.get(e.student_id)?.level||'Qaida';return '<tr><td>'+esc(p.full_name||'Student')+'</td><td>'+esc(p.email||'')+'</td><td>'+esc(halaqaById.get(e.halaqa_id)?.name||'—')+'</td><td>'+esc(e.programme||'—')+'</td><td>'+esc(level)+'</td><td>'+rate+'</td><td><input type="number" min="0" max="100" step="0.01" aria-label="Assessment score for '+esc(p.full_name||'student')+'" data-assessment-score="'+e.id+'" style="width:88px" placeholder="0–100"></td><td><button class="primary-btn" type="button" data-record-assessment="'+e.id+'">Submit assessment</button></td></tr>';}).join('')+'</tbody></table><p id="abla-assessment-message" role="status">Assessment recommendations are sent to URWA administration for review. Current levels do not change until approved.</p>';
  studentTable?.querySelectorAll('[data-record-assessment]').forEach(button=>button.addEventListener('click',async()=>{
   button.disabled=true;
   try{
@@ -98,7 +104,7 @@ async function boot(){
    const button=$('#abla-save-attendance');button.disabled=true;
    try{
     const classDate=$('#attendance-date').value;
-    const rows=$$('[data-student]','#abla-attendance-roster');
+    const rows=$('[data-student]','#abla-attendance-roster');
     const records=rows.map(row=>({halaqa_id:row.dataset.halaqa,student_id:row.dataset.student,class_date:classDate,status:$('[data-status]',row).value,recorded_by:user.id}));
     if(!classDate||!records.length)throw new Error('Choose a class date and ensure your roster is available.');
     const {error}=await supabase.from('attendance').upsert(records,{onConflict:'halaqa_id,student_id,class_date'});
