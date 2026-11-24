@@ -89,16 +89,45 @@ async function adminLoad(user) {
             ? (teacherApplication.area_of_interest || 'Educator application')
             : (departmentApplication?.departments?.name || 'Department application') +
               (departmentApplication?.department_positions?.title ? ' · ' + departmentApplication.department_positions.title : '');
+        const placement = p.role === 'student'
+          ? '<div class="urwa-admin-actions">' +
+            '<select aria-label="Assign Abla for ' + esc(p.full_name || 'student') + '" data-student-abla="' + p.id + '">' +
+            '<option value="">Choose Abla</option>' +
+            teachers.filter(t => t.status === 'approved' && assignments.some(a => a.teacher_id === t.id && halaqas.some(h => h.id === a.halaqa_id && h.is_active)))
+              .map(t => '<option value="' + t.id + '">' + esc(t.full_name || 'Educator') + '</option>').join('') +
+            '</select>' +
+            '<select aria-label="Assign Halaqa for ' + esc(p.full_name || 'student') + '" data-student-halaqa="' + p.id + '">' +
+            '<option value="">Choose Abla first</option></select>' +
+            '<select aria-label="Assign learning level for ' + esc(p.full_name || 'student') + '" data-student-level="' + p.id + '">' +
+            ['Qaida','Level 1 – Foundation','Level 2 – Growth','Level 3 – Mastery'].map(level => '<option value="' + esc(level) + '" ' + ((enrollment.level || 'Qaida') === level ? 'selected' : '') + '>' + esc(level) + '</option>').join('') +
+            '</select></div>'
+          : '';
         return '<tr><td><b>' + esc(p.full_name || '—') + '</b><small>' + esc(p.email || '') +
           '</small></td><td>' + kind + '</td><td>' + esc(details) + '</td><td>Pending</td><td>' +
+          placement +
           '<button class="urwa-btn urwa-btn-primary urwa-btn-small" type="button" data-central-review="' + p.id + '" data-decision="approve">Approve</button> ' +
           '<button class="urwa-btn urwa-btn-outline urwa-btn-small" type="button" data-central-review="' + p.id + '" data-decision="reject">Reject</button></td></tr>';
       }).join('');
       centralApprovalPanel.innerHTML = '<div class="panel-header"><h2>Central Membership Approvals</h2></div>' +
         '<p>All student, educator and departmental membership applications are approved by URWA Admin. Departmental roles and educators cannot activate accounts or approve applicants.</p>' +
-        '<div class="table-wrapper"><table><thead><tr><th>Applicant</th><th>Application type</th><th>Details</th><th>Status</th><th>Admin decision</th></tr></thead><tbody>' +
+        '<div class="table-wrapper"><table><thead><tr><th>Applicant</th><th>Application type</th><th>Details</th><th>Status</th><th>Admin decision &amp; placement</th></tr></thead><tbody>' +
         (centralRows || '<tr><td colspan="5">No pending membership applications.</td></tr>') +
         '</tbody></table></div>';
+      centralApprovalPanel.querySelectorAll('[data-student-abla]').forEach(select => {
+        const studentId = select.dataset.studentAbla;
+        const halaqaSelect = centralApprovalPanel.querySelector('[data-student-halaqa="' + studentId + '"]');
+        const refreshHalaqas = () => {
+          const teacherId = select.value;
+          const current = byStudent.get(studentId)?.halaqa_id || '';
+          const available = assignments.filter(a => a.teacher_id === teacherId)
+            .map(a => halaqas.find(h => h.id === a.halaqa_id && h.is_active))
+            .filter(Boolean);
+          halaqaSelect.innerHTML = '<option value="">Choose Halaqa</option>' +
+            available.map(h => '<option value="' + h.id + '" ' + (h.id === current ? 'selected' : '') + '>' + esc(h.name) + '</option>').join('');
+        };
+        select.addEventListener('change', refreshHalaqas);
+        refreshHalaqas();
+      });
     }
 
     // Learning level cycle and assessment recommendation review (admin only).
@@ -375,9 +404,24 @@ async function initAdmin(user) {
       }
       const centralReview = event.target.closest('[data-central-review]');
       if (centralReview) {
+        const targetId = centralReview.dataset.centralReview;
+        const decision = centralReview.dataset.decision;
+        const applicant = people.find(p => p.id === targetId);
+        if (applicant?.role === 'student' && decision === 'approve') {
+          const ablaId = $('[data-student-abla="' + targetId + '"]')?.value;
+          const halaqaId = $('[data-student-halaqa="' + targetId + '"]')?.value;
+          const level = $('[data-student-level="' + targetId + '"]')?.value;
+          if (!ablaId || !halaqaId || !level) throw new Error('Choose the student’s Abla, Halaqa and learning level before approving.');
+          const validAssignment = assignments.some(a => a.teacher_id === ablaId && a.halaqa_id === halaqaId);
+          if (!validAssignment) throw new Error('The selected Abla is not assigned to that Halaqa. Please check the Halaqas page.');
+          const { error: placementError } = await supabase.from('student_enrollments')
+            .update({ halaqa_id: halaqaId, level })
+            .eq('student_id', targetId).eq('status', 'pending');
+          if (placementError) fail(placementError);
+        }
         const { error } = await supabase.rpc('admin_review_membership_application', {
-          target_user_id: centralReview.dataset.centralReview,
-          decision: centralReview.dataset.decision,
+          target_user_id: targetId,
+          decision,
           decision_notes: null
         });
         if (error) fail(error);
