@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap");
 /* URWA unified brand theme — follows the public homepage palette.
    Load this file last on every page so public, portal, auth and dashboard
    screens share one visual identity without changing their layouts. */
