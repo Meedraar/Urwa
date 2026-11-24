@@ -26,7 +26,7 @@ async function boot() {
     ? (document.querySelector('.content') || document.querySelector('.urwa-content'))
     : role === 'student'
       ? document.querySelector('.discussion-section')
-      : document.querySelector('.center-column');
+      : (document.querySelector('.portal-section#communication .panel') || document.querySelector('.center-column'));
   if (!target) return;
   if (role === 'student') {
     target.querySelector('.discussion-layout')?.remove();
@@ -76,29 +76,43 @@ async function loadMember(root,user,profile){
  let chats=[], active=null, channel=null, roster=[];
 
  if(role==='student'){
-  const {data:enrollments,error}=await supabase.from('student_enrollments').select('halaqa_id,programme,status').eq('student_id',user.id).eq('status','approved').not('halaqa_id','is',null);
+  const {data:enrollments,error}=await supabase.from('student_programme_enrollments').select('halaqa_id,programme,status').eq('student_id',user.id).eq('status','approved').not('halaqa_id','is',null);
   if(error) throw error;
-  const enrollment=enrollments?.[0];
-  if(!enrollment){select.innerHTML='<option>No halaqa assigned</option>';info.textContent='Your Abla will appear here after administration assigns your halaqa.';messages.innerHTML='<p class="hm-empty">You are not assigned to a halaqa yet.</p>';return;}
-  const {data:halaqa,error:he}=await supabase.from('halaqas').select('id,name').eq('id',enrollment.halaqa_id).maybeSingle(); if(he)throw he;
-  const {data:assignments,error:ae}=await supabase.from('teacher_assignments').select('teacher_id').eq('halaqa_id',enrollment.halaqa_id);if(ae)throw ae;
-  const ids=(assignments||[]).map(x=>x.teacher_id);
-  const teacherId=ids[0];
-  if(!teacherId){select.innerHTML='<option>Abla not assigned yet</option>';info.textContent=halaqa?.name||'Your halaqa';messages.innerHTML='<p class="hm-empty">Your Abla has not been assigned yet. Group messaging will be available once an Abla is assigned.</p>';return;}
-  chats=[{kind:'group',label:(halaqa?.name||'My Halaqa')+' · Group',halaqaId:enrollment.halaqa_id},{kind:'private',label:'Private chat · Your Abla',halaqaId:enrollment.halaqa_id,studentId:user.id,teacherId}];
-  info.textContent='Your assigned Abla · '+(halaqa?.name||'My Halaqa');
+  if(!enrollments?.length){select.innerHTML='<option>No halaqa assigned</option>';info.textContent='Your Abla will appear here after administration assigns your halaqa.';messages.innerHTML='<p class="hm-empty">You are not assigned to a halaqa yet.</p>';return;}
+  const ids=[...new Set(enrollments.map(e=>e.halaqa_id))];
+  const [{data:halaqas,error:he},{data:assignments,error:ae},{data:teachers,error:te}]=await Promise.all([
+   supabase.from('halaqas').select('id,name').in('id',ids),
+   supabase.from('teacher_assignments').select('halaqa_id,teacher_id').in('halaqa_id',ids),
+   supabase.from('profiles').select('id,full_name').eq('role','teacher').eq('status','approved')
+  ]);
+  if(he)throw he;if(ae)throw ae;if(te)throw te;
+  chats=[];
+  (enrollments||[]).forEach(enrollment=>{
+   const halaqa=(halaqas||[]).find(h=>h.id===enrollment.halaqa_id);
+   if(!chats.some(chat=>chat.kind==='group'&&chat.halaqaId===enrollment.halaqa_id))
+    chats.push({kind:'group',label:(halaqa?.name||'My Halaqa')+' · Group',halaqaId:enrollment.halaqa_id});
+   (assignments||[]).filter(a=>a.halaqa_id===enrollment.halaqa_id).forEach(a=>{
+    if(chats.some(chat=>chat.kind==='private'&&chat.halaqaId===enrollment.halaqa_id&&chat.teacherId===a.teacher_id))return;
+    const teacher=(teachers||[]).find(t=>t.id===a.teacher_id);
+    chats.push({kind:'private',label:'1-to-1 · '+(teacher?.full_name||'Your Abla')+' · '+(halaqa?.name||''),halaqaId:enrollment.halaqa_id,studentId:user.id,teacherId:a.teacher_id});
+   });
+  });
+  info.textContent='Choose a group conversation or a private 1-to-1 conversation with your assigned Abla.';
  } else {
   const {data:assignments,error}=await supabase.from('teacher_assignments').select('halaqa_id').eq('teacher_id',user.id);if(error)throw error;
   const ids=[...new Set((assignments||[]).map(x=>x.halaqa_id))];
   if(!ids.length){select.innerHTML='<option>No halaqas assigned</option>';info.textContent='Your assigned halaqas will appear here after administration assigns them.';messages.innerHTML='<p class="hm-empty">No halaqas are assigned to your account yet.</p>';return;}
-  const [{data:halaqas,error:he},{data:enrollments,error:ee}]=await Promise.all([
+  const [{data:halaqas,error:he},{data:enrollments,error:ee},{data:directory,error:de}]=await Promise.all([
    supabase.from('halaqas').select('id,name').in('id',ids).order('name'),
-   supabase.from('student_enrollments').select('student_id,halaqa_id').in('halaqa_id',ids).eq('status','approved')
-  ]);if(he)throw he;if(ee)throw ee;
+   supabase.from('student_programme_enrollments').select('student_id,halaqa_id').in('halaqa_id',ids).eq('status','approved'),
+   supabase.rpc('get_teacher_student_directory')
+  ]);if(he)throw he;if(ee)throw ee;if(de)throw de;
+  roster=directory||[];
   chats=[];
   (halaqas||[]).forEach(h=>{
    chats.push({kind:'group',label:h.name+' · Group',halaqaId:h.id});
-   (enrollments||[]).filter(e=>e.halaqa_id===h.id).forEach((e,i)=>chats.push({kind:'private',label:'Student '+(i+1)+' · Private',halaqaId:h.id,studentId:e.student_id,teacherId:user.id}));
+   const students=[...new Set((enrollments||[]).filter(e=>e.halaqa_id===h.id).map(e=>e.student_id))];
+   students.forEach(studentId=>{const person=roster.find(p=>p.id===studentId);chats.push({kind:'private',label:'1-to-1 · '+(person?.full_name||'Student'),halaqaId:h.id,studentId,teacherId:user.id});});
   });
   info.textContent='You can participate in your halaqa group chats and privately message students assigned to your classes.';
  }
