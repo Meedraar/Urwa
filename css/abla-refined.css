@@ -61,3 +61,16 @@ body{background:#f7f8f5!important;color:#20332d!important;font-family:"DM Sans",
 @media(max-width:900px){.content{padding:20px 17px 32px!important}.abla-home-grid{grid-template-columns:1fr}.abla-hero{padding:22px}.abla-hero .arabic{font-size:24px}}
 @media(max-width:650px){.content{padding:15px 12px 28px!important}.page-title{font-size:23px!important}.abla-hero{align-items:flex-start;padding:20px;min-height:0}.abla-hero h2{font-size:21px}.abla-hero .arabic{display:none}.stats{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important}.stat{padding:13px!important;min-height:100px!important}.abla-shortcuts{grid-template-columns:1fr 1fr}.attendance-intro{align-items:flex-start;flex-direction:column;padding:16px}.attendance-intro .abla-name{white-space:normal}}
 @media(max-width:420px){.abla-shortcuts{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr!important}}
+
+
+/* Attendance, Halaqa and timetable refinements */
+#abla-attendance-roster th,#students .table-wrap th{text-transform:uppercase;letter-spacing:.035em;font-size:10px;background:#f5f8f5}
+#abla-attendance-roster td,#students .table-wrap td{vertical-align:middle}
+#abla-attendance-roster select{min-width:145px}
+#timetable .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#timetable .form-group{min-width:0}
+#timetable input,#timetable select,#timetable textarea{width:100%;border:1px solid #dce6df;border-radius:9px;padding:10px 12px;background:#fff;color:#254438}
+#timetable table{min-width:680px}
+#timetable a{color:#0e4a40;text-decoration:underline}
+#timetable [data-delete-timetable]{background:#fff5f2;color:#a94438;border:1px solid #f1d5ce;padding:7px 10px;border-radius:7px}
+@media(max-width:650px){#timetable .form-grid{grid-template-columns:1fr}}
