@@ -89,15 +89,22 @@ async function adminLoad(user) {
             ? (teacherApplication.area_of_interest || 'Educator application')
             : (departmentApplication?.departments?.name || 'Department application') +
               (departmentApplication?.department_positions?.title ? ' · ' + departmentApplication.department_positions.title : '');
+        const programmeChoices = [
+          { key: 'Quran Halaqa', label: 'Qur’an Halaqa', schedule: 'Morning or Evening', sessions: ['Morning','Evening'] },
+          { key: 'Tajweed', label: 'Tajweed', schedule: 'Saturday & Sunday', sessions: ['Saturday & Sunday'] },
+          { key: 'Tafseer', label: 'Tafseer', schedule: 'Sunday', sessions: ['Sunday'] }
+        ];
         const placement = p.role === 'student'
-          ? '<div class="urwa-admin-actions">' +
-            '<select aria-label="Assign Abla for ' + esc(p.full_name || 'student') + '" data-student-abla="' + p.id + '">' +
-            '<option value="">Choose Abla</option>' +
-            teachers.filter(t => t.status === 'approved' && assignments.some(a => a.teacher_id === t.id && halaqas.some(h => h.id === a.halaqa_id && h.is_active)))
-              .map(t => '<option value="' + t.id + '">' + esc(t.full_name || 'Educator') + '</option>').join('') +
-            '</select>' +
-            '<select aria-label="Assign Halaqa for ' + esc(p.full_name || 'student') + '" data-student-halaqa="' + p.id + '">' +
-            '<option value="">Choose Abla first</option></select>' +
+          ? '<div class="urwa-admin-placement">' +
+            programmeChoices.map(programme => {
+              const selected = (enrollment.programme || 'Quran Halaqa') === programme.key;
+              return '<fieldset class="urwa-programme-placement"><label><input type="checkbox" data-student-programme="' + p.id + '" value="' + programme.key + '" ' + (selected ? 'checked' : '') + '> ' + programme.label + '</label>' +
+                '<small>' + programme.schedule + '</small>' +
+                '<select aria-label="' + programme.label + ' Halaqa" data-student-halaqa="' + p.id + '" data-programme-key="' + programme.key + '">' +
+                '<option value="">Choose Halaqa</option>' + halaqas.filter(h => h.is_active).map(h => '<option value="' + h.id + '">' + esc(h.name) + '</option>').join('') + '</select>' +
+                '<select aria-label="' + programme.label + ' Abla" data-student-abla="' + p.id + '" data-programme-key="' + programme.key + '">' +
+                '<option value="">Choose Abla</option>' + teachers.filter(t => t.status === 'approved').map(t => '<option value="' + t.id + '">' + esc(t.full_name || 'Educator') + '</option>').join('') + '</select></fieldset>';
+            }).join('') +
             '<select aria-label="Assign learning level for ' + esc(p.full_name || 'student') + '" data-student-level="' + p.id + '">' +
             ['Qaida','Level 1 – Foundation','Level 2 – Growth','Level 3 – Mastery'].map(level => '<option value="' + esc(level) + '" ' + ((enrollment.level || 'Qaida') === level ? 'selected' : '') + '>' + esc(level) + '</option>').join('') +
             '</select></div>'
@@ -113,20 +120,18 @@ async function adminLoad(user) {
         '<div class="table-wrapper"><table><thead><tr><th>Applicant</th><th>Application type</th><th>Details</th><th>Status</th><th>Admin decision &amp; placement</th></tr></thead><tbody>' +
         (centralRows || '<tr><td colspan="5">No pending membership applications.</td></tr>') +
         '</tbody></table></div>';
-      centralApprovalPanel.querySelectorAll('[data-student-abla]').forEach(select => {
-        const studentId = select.dataset.studentAbla;
-        const halaqaSelect = centralApprovalPanel.querySelector('[data-student-halaqa="' + studentId + '"]');
-        const refreshHalaqas = () => {
-          const teacherId = select.value;
-          const current = byStudent.get(studentId)?.halaqa_id || '';
-          const available = assignments.filter(a => a.teacher_id === teacherId)
-            .map(a => halaqas.find(h => h.id === a.halaqa_id && h.is_active))
-            .filter(Boolean);
-          halaqaSelect.innerHTML = '<option value="">Choose Halaqa</option>' +
-            available.map(h => '<option value="' + h.id + '" ' + (h.id === current ? 'selected' : '') + '>' + esc(h.name) + '</option>').join('');
+      // Halaqa names are the 32 named URWA groups. Abla choices are actual approved teacher accounts.
+      centralApprovalPanel.querySelectorAll('[data-student-halaqa]').forEach(select => {
+        const studentId = select.dataset.studentHalaqa;
+        const programmeKey = select.dataset.programmeKey;
+        const ablaSelect = centralApprovalPanel.querySelector('[data-student-abla="' + studentId + '"][data-programme-key="' + programmeKey + '"]');
+        const refreshAbla = () => {
+          const halaqaId = select.value;
+          const assignedTeacherIds = assignments.filter(a => a.halaqa_id === halaqaId).map(a => a.teacher_id);
+          const eligible = teachers.filter(t => t.status === 'approved' && assignedTeacherIds.includes(t.id));
+          ablaSelect.innerHTML = '<option value="">Choose Abla</option>' + eligible.map(t => '<option value="' + t.id + '">' + esc(t.full_name || 'Educator') + '</option>').join('');
         };
-        select.addEventListener('change', refreshHalaqas);
-        refreshHalaqas();
+        select.addEventListener('change', refreshAbla);
       });
     }
 
@@ -408,15 +413,25 @@ async function initAdmin(user) {
         const decision = centralReview.dataset.decision;
         const applicant = people.find(p => p.id === targetId);
         if (applicant?.role === 'student' && decision === 'approve') {
-          const ablaId = $('[data-student-abla="' + targetId + '"]')?.value;
-          const halaqaId = $('[data-student-halaqa="' + targetId + '"]')?.value;
           const level = $('[data-student-level="' + targetId + '"]')?.value;
-          if (!ablaId || !halaqaId || !level) throw new Error('Choose the student’s Abla, Halaqa and learning level before approving.');
-          const validAssignment = assignments.some(a => a.teacher_id === ablaId && a.halaqa_id === halaqaId);
-          if (!validAssignment) throw new Error('The selected Abla is not assigned to that Halaqa. Please check the Halaqas page.');
+          const selectedProgrammes = [...centralApprovalPanel.querySelectorAll('[data-student-programme="' + targetId + '"]:checked')];
+          if (!level || !selectedProgrammes.length) throw new Error('Choose at least one programme and a learning level before approving.');
+          const placements = selectedProgrammes.map(input => {
+            const key = input.value;
+            const halaqaId = centralApprovalPanel.querySelector('[data-student-halaqa="' + targetId + '"][data-programme-key="' + key + '"]')?.value;
+            const teacherId = centralApprovalPanel.querySelector('[data-student-abla="' + targetId + '"][data-programme-key="' + key + '"]')?.value;
+            const schedule = key === 'Quran Halaqa'
+              ? (centralApprovalPanel.querySelector('[data-student-session="' + targetId + '"][data-programme-key="' + key + '"]')?.value || 'Morning')
+              : key === 'Tajweed' ? 'Saturday & Sunday' : 'Sunday';
+            if (!halaqaId || !teacherId) throw new Error('Choose a Halaqa and an assigned Abla for ' + key + '.');
+            if (!assignments.some(a => a.teacher_id === teacherId && a.halaqa_id === halaqaId)) throw new Error('The selected Abla is not assigned to the chosen Halaqa.');
+            return { student_id: targetId, programme: key, halaqa_id: halaqaId, teacher_id: teacherId, schedule, status: 'pending' };
+          });
+          const { error: programmeError } = await supabase.from('student_programme_enrollments')
+            .upsert(placements, { onConflict: 'student_id,programme' });
+          if (programmeError) fail(programmeError);
           const { error: placementError } = await supabase.from('student_enrollments')
-            .update({ halaqa_id: halaqaId, level })
-            .eq('student_id', targetId).eq('status', 'pending');
+            .update({ level }).eq('student_id', targetId).eq('status', 'pending');
           if (placementError) fail(placementError);
         }
         const { error } = await supabase.rpc('admin_review_membership_application', {
