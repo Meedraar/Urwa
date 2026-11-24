@@ -536,6 +536,16 @@ async function studentLoad(user) {
     return e.programme + ' · ' + (h?.name || 'Halaqa not assigned') + ' · ' + e.schedule;
   });
   const halaqaName = programmeSummary.join(' | ') || 'Not assigned';
+  const timetableQ = halaqaIds.length
+    ? await supabase.from('halaqa_timetable').select('id,halaqa_id,title,day_of_week,start_time,end_time,location,meeting_link,notes').in('halaqa_id', halaqaIds).eq('is_active', true).order('day_of_week').order('start_time')
+    : { data: [], error: null };
+  if (timetableQ.error) fail(timetableQ.error);
+  const timetablePanel = $('#student-timetable-list');
+  if (timetablePanel) timetablePanel.innerHTML = (timetableQ.data || []).length
+    ? '<div class="table-wrap"><table><thead><tr><th>Day</th><th>Time</th><th>Class</th><th>Halaqa</th><th>Details</th></tr></thead><tbody>' +
+      timetableQ.data.map(x => '<tr><td>' + esc(x.day_of_week) + '</td><td>' + esc(String(x.start_time).slice(0,5)) + '–' + esc(String(x.end_time).slice(0,5)) + '</td><td>' + esc(x.title) + '</td><td>' + esc((studentHalaqas || []).find(h => h.id === x.halaqa_id)?.name || '') + '</td><td>' + esc(x.location || '') + (x.meeting_link ? ' · <a href="' + esc(x.meeting_link) + '" target="_blank" rel="noopener">Join class</a>' : '') + (x.notes ? '<small>' + esc(x.notes) + '</small>' : '') + '</td></tr>').join('') +
+      '</tbody></table></div>'
+    : '<p>Your Abla has not published a timetable yet.</p>';
   const announcementsQ = await supabase.from('announcements').select('id,title,message,audience,halaqa_id,published_at').or('audience.eq.all,audience.eq.students').order('published_at', { ascending: false });
   if (announcementsQ.error) fail(announcementsQ.error);
   const visibleAnnouncements = (announcementsQ.data || []).filter(x => !x.halaqa_id || halaqaIds.includes(x.halaqa_id));
