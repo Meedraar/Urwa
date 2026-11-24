@@ -122,19 +122,7 @@ async function adminLoad(user) {
         '<div class="table-wrapper"><table><thead><tr><th>Applicant</th><th>Application type</th><th>Details</th><th>Status</th><th>Admin decision &amp; placement</th></tr></thead><tbody>' +
         (centralRows || '<tr><td colspan="5">No pending membership applications.</td></tr>') +
         '</tbody></table></div>';
-      // Halaqa names are the 32 named URWA groups. Abla choices are actual approved teacher accounts.
-      centralApprovalPanel.querySelectorAll('[data-student-halaqa]').forEach(select => {
-        const studentId = select.dataset.studentHalaqa;
-        const programmeKey = select.dataset.programmeKey;
-        const ablaSelect = centralApprovalPanel.querySelector('[data-student-abla="' + studentId + '"][data-programme-key="' + programmeKey + '"]');
-        const refreshAbla = () => {
-          const halaqaId = select.value;
-          const assignedTeacherIds = assignments.filter(a => a.halaqa_id === halaqaId).map(a => a.teacher_id);
-          const eligible = teachers.filter(t => t.status === 'approved' && assignedTeacherIds.includes(t.id));
-          ablaSelect.innerHTML = '<option value="">Choose Abla</option>' + eligible.map(t => '<option value="' + t.id + '">' + esc(t.full_name || 'Educator') + '</option>').join('');
-        };
-        select.addEventListener('change', refreshAbla);
-      });
+      // Halaqa names are the 32 named URWA groups; choose an approved Abla account separately.
     }
 
     // Learning level cycle and assessment recommendation review (admin only).
@@ -435,11 +423,12 @@ async function initAdmin(user) {
             if (!halaqaId || !teacherId) throw new Error('Choose a Halaqa and an assigned Abla for ' + key + '.');
             return { student_id: targetId, programme: key, halaqa_id: halaqaId, teacher_id: teacherId, schedule, status: 'pending' };
           });
-          const { data: teacherLinks, error: teacherLinksError } = await supabase.from('teacher_assignments').select('teacher_id,halaqa_id');
-          if (teacherLinksError) fail(teacherLinksError);
-          if (placements.some(x => !(teacherLinks || []).some(a => a.teacher_id === x.teacher_id && a.halaqa_id === x.halaqa_id))) {
-            throw new Error('One of the selected Ablas is not assigned to the chosen Halaqa. Check the Halaqa assignments first.');
-          }
+          const teacherLinks = [...new Map(placements.map(x => [x.teacher_id + ':' + x.halaqa_id, {
+            teacher_id: x.teacher_id, halaqa_id: x.halaqa_id
+          }])).values()];
+          const { error: teacherAssignmentError } = await supabase.from('teacher_assignments')
+            .upsert(teacherLinks, { onConflict: 'teacher_id,halaqa_id', ignoreDuplicates: true });
+          if (teacherAssignmentError) fail(teacherAssignmentError);
           const { error: programmeError } = await supabase.from('student_programme_enrollments')
             .upsert(placements, { onConflict: 'student_id,programme' });
           if (programmeError) fail(programmeError);
